@@ -1,0 +1,134 @@
+# ==============================================
+# Visual Studio 2022 核心忽略规则
+# ==============================================
+
+# 用户特定文件
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.rsuser
+
+# Visual Studio 2022 缓存目录
+.vs/
+.vscode/
+
+# 编译输出目录
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+
+# 中间文件和编译产物
+*.obj
+*.pdb
+*.idb
+*.ilk
+*.pch
+*.gch
+*.tlog
+*.log
+*.cache
+*.cachefile
+*.sdf
+*.opensdf
+*.opendb
+*.VC.db
+*.VC.VC.opendb
+*.aps
+*.ncb
+*.ipch/
+*.bsc
+*.sbr
+*.tmp
+*.tmp_proj
+*.vspscc
+*.vssscc
+.builds
+*.pidb
+*.svclog
+*.scc
+
+# 动态/静态库和可执行文件
+*.dll
+*.lib
+*.exe
+*.out
+*.app
+*.so
+*.dylib
+*.a
+*.la
+*.lai
+
+# 预编译头文件
+*.pch
+*.gch
+
+# 资源编译器输出
+*.res
+*.rc2
+
+# ==============================================
+# llfcchat 项目特有忽略规则
+# ==============================================
+
+# 本地配置文件（包含数据库密码、邮箱密钥等敏感信息）
+config.ini
+*.config.local
+*.env
+*.env.local
+
+# 日志文件
+*.log
+logs/
+
+# 数据库文件
+*.db
+*.sqlite
+*.sqlite3
+
+# 临时文件
+*.bak
+*.backup
+*.orig
+*.old
+
+# ==============================================
+# 操作系统通用忽略规则
+# ==============================================
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# MacOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Linux
+*~
+
+# ==============================================
+# 其他工具忽略规则
+# ==============================================
+
+# Git 自身
+!.gitignore
+!.gitattributes
+
+# 压缩包
+*.zip
+*.rar
+*.7z
+*.tar.gz
+*.tar.bz2
