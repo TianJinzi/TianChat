@@ -1,5 +1,24 @@
 #pragma once
+#include <boost/beast/http.hpp>
+#include <boost/beast.hpp>
+#include <boost/asio.hpp>
+#include <memory>
+#include <iostream>
 #include <functional>
+#include <map>
+#include <unordered_map>
+#include <json/json.h>
+#include <json/value.h>
+#include <json/reader.h>
+#include <boost/filesystem.hpp>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/ini_parser.hpp>
+#include <atomic>
+#include <queue>
+#include <mutex>
+#include <condition_variable>
+#include <cassert>
+#include "hiredis.h"
 
 
 enum ErrorCodes {
@@ -48,5 +67,12 @@ enum MSG_IDS {
 	MSG_CHAT_LOGIN = 1005, //用户登陆
 	MSG_CHAT_LOGIN_RSP = 1006, //用户登陆回包
 };
+
+
+#define USERIPPREFIX  "uip_"
+#define USERTOKENPREFIX  "utoken_"
+#define IPCOUNTPREFIX  "ipcount_"
+#define USER_BASE_INFO "ubaseinfo_"
+#define LOGIN_COUNT  "logincount"
 
 

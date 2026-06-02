@@ -48,13 +48,19 @@
     <ClCompile Include="CSession.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="VerifyGrpcClient.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="StatusGrpcClient.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="MsgNode.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ChatGrpcClient.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="UserMgr.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ChatServiceImpl.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -98,19 +104,24 @@
     <ClInclude Include="data.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="VerifyGrpcClient.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="StatusGrpcClient.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="MsgNode.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="ChatGrpcClient.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="UserMgr.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ChatServiceImpl.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="config.ini" />
-    <None Include="LogicSystem.pp" />
     <None Include="message.proto" />
     <None Include="mysqlcppconn-10-vs14.dll" />
     <None Include="mysqlcppconnx-2-vs14.dll" />

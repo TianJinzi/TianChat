@@ -43,7 +43,6 @@ service StatusService {
 	rpc Login(LoginReq) returns(LoginRsp);
 }
 
-/*
 message AddFriendReq {
 	int32  applyuid = 1;
 	string name = 2;
@@ -165,5 +164,3 @@ service ChatService {
 	rpc NotifyKickUser(KickUserReq) returns (KickUserRsp){}
 	rpc NotifyChatImgMsg(NotifyChatImgReq) returns (NotifyChatImgRsp){}
 }
-
-*/
