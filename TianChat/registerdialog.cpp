@@ -44,21 +44,27 @@ RegisterDialog::RegisterDialog(QWidget *parent)
     connect(ui->pass_visible,&ClickedLabel::clicked,this,[this](){
         auto state=ui->pass_visible->GetCurState();
         if(state==ClickLbState::Normal){
+            qDebug()<<"隐藏密码";
             ui->pass_edit->setEchoMode(QLineEdit::Password);
         }else{
+            qDebug()<<"显示密码";
             ui->pass_edit->setEchoMode(QLineEdit::Normal);
         }
         qDebug()<<"Label was clicked!";
+        ui->pass_edit->update();
     });
 
     connect(ui->confirm_visible,&ClickedLabel::clicked,this,[this](){
         auto state=ui->confirm_visible->GetCurState();
         if(state==ClickLbState::Normal){
+            qDebug()<<"隐藏密码";
             ui->confirm_edit->setEchoMode(QLineEdit::Password);
         }else{
+            qDebug()<<"显示密码";
             ui->confirm_edit->setEchoMode(QLineEdit::Normal);
         }
         qDebug()<<"Label was clicked!";
+        ui->confirm_edit->update();
     });
 
     //page2的编写
