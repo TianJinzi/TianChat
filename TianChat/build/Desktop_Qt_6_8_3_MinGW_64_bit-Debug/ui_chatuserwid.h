@@ -23,8 +23,8 @@ class Ui_ChatUserWid
 public:
     QHBoxLayout *horizontalLayout;
     QWidget *icon_wid;
-    QHBoxLayout *horizontalLayout_2;
     QLabel *icon_lb;
+    QLabel *red_point;
     QWidget *user_info_wid;
     QVBoxLayout *verticalLayout;
     QLabel *user_name_lb;
@@ -46,17 +46,16 @@ public:
         icon_wid->setObjectName("icon_wid");
         icon_wid->setMinimumSize(QSize(50, 50));
         icon_wid->setMaximumSize(QSize(50, 50));
-        horizontalLayout_2 = new QHBoxLayout(icon_wid);
-        horizontalLayout_2->setSpacing(0);
-        horizontalLayout_2->setObjectName("horizontalLayout_2");
-        horizontalLayout_2->setContentsMargins(0, 0, 0, 0);
         icon_lb = new QLabel(icon_wid);
         icon_lb->setObjectName("icon_lb");
+        icon_lb->setGeometry(QRect(7, 12, 45, 45));
         icon_lb->setMinimumSize(QSize(45, 45));
         icon_lb->setMaximumSize(QSize(45, 45));
-
-        horizontalLayout_2->addWidget(icon_lb);
-
+        red_point = new QLabel(icon_wid);
+        red_point->setObjectName("red_point");
+        red_point->setGeometry(QRect(30, 0, 30, 30));
+        red_point->setMinimumSize(QSize(30, 30));
+        red_point->setMaximumSize(QSize(30, 30));
 
         horizontalLayout->addWidget(icon_wid);
 
@@ -102,6 +101,7 @@ public:
     {
         ChatUserWid->setWindowTitle(QCoreApplication::translate("ChatUserWid", "Form", nullptr));
         icon_lb->setText(QString());
+        red_point->setText(QString());
         user_name_lb->setText(QCoreApplication::translate("ChatUserWid", "tian", nullptr));
         user_chat_lb->setText(QCoreApplication::translate("ChatUserWid", "helloworld", nullptr));
         time_lb->setText(QCoreApplication::translate("ChatUserWid", "3.54", nullptr));

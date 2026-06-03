@@ -23,7 +23,7 @@ int main()
 	try {
 		auto pool = AsioIOServicePool::GetInstance();
 		//将登录数设置为0
-		RedisMgr::GetInstance()->HSet(LOGIN_COUNT, server_name, "0");
+		RedisMgr::GetInstance()->HSet(LOGIN_COUNT, server_name,"0");
 
 		//定义一个GrpcServer
 
@@ -39,7 +39,7 @@ int main()
 
 		//单独启动一个线程处理grpc服务
 		std::thread  grpc_server_thread([&server]() {
-			server->Wait();
+				server->Wait();
 			});
 
 		boost::asio::io_context  io_context;
@@ -52,7 +52,6 @@ int main()
 		auto port_str = cfg["SelfServer"]["Port"];
 		CServer s(io_context, atoi(port_str.c_str()));
 		io_context.run();
-
 		RedisMgr::GetInstance()->HDel(LOGIN_COUNT, server_name);
 		RedisMgr::GetInstance()->Close();
 		grpc_server_thread.join();
@@ -64,3 +63,4 @@ int main()
 	}
 
 }
+

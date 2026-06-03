@@ -31,18 +31,20 @@ using message::TextChatMsgReq;
 using message::TextChatMsgRsp;
 using message::TextChatData;
 
+
 class ChatConPool {
 public:
 	ChatConPool(size_t poolSize, std::string host, std::string port)
-		:poolSize_(poolSize)
-		, host_(host)
-		, port_(port)
-		, b_stop_(false) {
-		for (size_t i = 0;i < poolSize_;++i) {
-			std::shared_ptr<Channel> channel = grpc::CreateChannel(host + ":" + port, grpc::InsecureChannelCredentials());
+		: poolSize_(poolSize), host_(host), port_(port), b_stop_(false) {
+		for (size_t i = 0; i < poolSize_; ++i) {
+
+			std::shared_ptr<Channel> channel = grpc::CreateChannel(host + ":" + port,
+				grpc::InsecureChannelCredentials());
+
 			connections_.push(ChatService::NewStub(channel));
 		}
 	}
+
 	~ChatConPool() {
 		std::lock_guard<std::mutex> lock(mutex_);
 		Close();
@@ -53,14 +55,15 @@ public:
 
 	std::unique_ptr<ChatService::Stub> getConnection() {
 		std::unique_lock<std::mutex> lock(mutex_);
-		cond_.wait(lock, [this]() {
+		cond_.wait(lock, [this] {
 			if (b_stop_) {
 				return true;
 			}
 			return !connections_.empty();
-		});
+			});
+		//如果停止则直接返回空指针
 		if (b_stop_) {
-			return nullptr;
+			return  nullptr;
 		}
 		auto context = std::move(connections_.front());
 		connections_.pop();
@@ -82,16 +85,16 @@ public:
 	}
 
 private:
-	atomic<bool>b_stop_;
+	atomic<bool> b_stop_;
 	size_t poolSize_;
 	std::string host_;
 	std::string port_;
-	std::queue<std::unique_ptr<ChatService::Stub>>connections_;
+	std::queue<std::unique_ptr<ChatService::Stub> > connections_;
 	std::mutex mutex_;
 	std::condition_variable cond_;
 };
 
-class ChatGrpcClient:public Singleton<ChatGrpcClient>
+class ChatGrpcClient :public Singleton<ChatGrpcClient>
 {
 	friend class Singleton<ChatGrpcClient>;
 public:
@@ -105,6 +108,8 @@ public:
 	TextChatMsgRsp NotifyTextChatMsg(std::string server_ip, const TextChatMsgReq& req, const Json::Value& rtvalue);
 private:
 	ChatGrpcClient();
-	unordered_map<std::string, std::unique_ptr<ChatConPool>> _pools;
+	unordered_map<std::string, std::unique_ptr<ChatConPool>> _pools;	
 };
+
+
 

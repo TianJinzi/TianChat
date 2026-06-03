@@ -5,7 +5,7 @@
 #include <mutex>
 
 class CSession;
-class UserMgr : public Singleton<UserMgr>
+class UserMgr: public Singleton<UserMgr>
 {
 	friend class Singleton<UserMgr>;
 public:

@@ -1,52 +1,47 @@
-#include "AsioIOServicePool.h"
+ï»¿#include "AsioIOServicePool.h"
 #include <iostream>
 using namespace std;
+AsioIOServicePool::AsioIOServicePool(std::size_t size):_ioServices(size),
+_works(size), _nextIOService(0){
+	for (std::size_t i = 0; i < size; ++i) {
+		_works[i] = std::make_unique<Work>(_ioServices[i].get_executor());
+	}
 
-AsioIOServicePool::AsioIOServicePool(std::size_t size)
-    : _ioServices(size), _works(size), _nextIOService(0)
-{
-    // 
-    for (std::size_t i = 0; i < size; ++i) {
-        _works[i] = std::make_unique<Work>(boost::asio::make_work_guard(_ioServices[i]));
-    }
-
-    // ±éÀú¶à¸öioservice£¬´´½¨¶à¸öÏß³Ì£¬Ã¿¸öÏß³ÌÄÚ²¿Æô¶¯ioservice
-    for (std::size_t i = 0; i < _ioServices.size(); ++i) {
-        _threads.emplace_back([this, i]() {
-            _ioServices[i].run();
-            });
-    }
+	//éåŽ†å¤šä¸ªioserviceï¼Œåˆ›å»ºå¤šä¸ªçº¿ç¨‹ï¼Œæ¯ä¸ªçº¿ç¨‹å†…éƒ¨å¯åŠ¨ioservice
+	for (std::size_t i = 0; i < _ioServices.size(); ++i) {
+		_threads.emplace_back([this, i]() {
+			_ioServices[i].run();
+			});
+	}
 }
 
-AsioIOServicePool::~AsioIOServicePool()
-{
-    Stop();
-    std::cout << "AsioIOServicePool destruct" << endl;
+AsioIOServicePool::~AsioIOServicePool() {
+	std::cout << "AsioIOServicePool destruct" << endl;
 }
 
-boost::asio::io_context& AsioIOServicePool::GetIOService()
-{
-    auto& service = _ioServices[_nextIOService++];
-    if (_nextIOService == _ioServices.size()) {
-        _nextIOService = 0;
-    }
-    return service;
+boost::asio::io_context& AsioIOServicePool::GetIOService() {
+	auto& service = _ioServices[_nextIOService++];
+	if (_nextIOService == _ioServices.size()) {
+		_nextIOService = 0;
+	}
+	return service;
 }
 
-void AsioIOServicePool::Stop()
-{
-    // 1. Ö±½ÓÍ£Ö¹ËùÓÐ io_context£¨ÕýÈ··½Ê½£©
-    for (auto& io : _ioServices) {
-        io.stop();
-    }
+void AsioIOServicePool::Stop() {
+	// 1. ç›´æŽ¥åœæ­¢æ‰€æœ‰ io_context æ ¸å¿ƒæœåŠ¡ï¼ˆå…³é”®ä¿®å¤ç‚¹ï¼‰
+	for (auto& io_service : _ioServices) {
+		io_service.stop();
+	}
 
-    // 2. ÊÍ·Å work ÊØÎÀ
-    for (auto& work : _works) {
-        work.reset();
-    }
+	// 2. é‡Šæ”¾æ‰€æœ‰ work guardï¼Œè§£é™¤é˜»å¡ž
+	for (auto& work : _works) {
+		work.reset();
+	}
 
-    // 3. µÈ´ýËùÓÐÏß³ÌÍË³ö
-    for (auto& t : _threads) {
-        t.join();
-    }
+	// 3. ç­‰å¾…æ‰€æœ‰å·¥ä½œçº¿ç¨‹ä¼˜é›…é€€å‡º
+	for (auto& t : _threads) {
+		if (t.joinable()) {
+			t.join();
+		}
+	}
 }

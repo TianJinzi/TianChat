@@ -7,8 +7,8 @@
 #include <json/reader.h>
 #include "LogicSystem.h"
 
-CSession::CSession(boost::asio::io_context& io_context, CServer* server) :
-	_socket(io_context), _server(server), _b_close(false), _b_head_parse(false), _user_uid(0) {
+CSession::CSession(boost::asio::io_context& io_context, CServer* server):
+	_socket(io_context), _server(server), _b_close(false),_b_head_parse(false), _user_uid(0){
 	boost::uuids::uuid  a_uuid = boost::uuids::random_generator()();
 	_session_id = boost::uuids::to_string(a_uuid);
 	_recv_head_node = make_shared<MsgNode>(HEAD_TOTAL_LEN);
@@ -35,7 +35,7 @@ int CSession::GetUserId()
 	return _user_uid;
 }
 
-void CSession::Start() {
+void CSession::Start(){
 	AsyncReadHead(HEAD_TOTAL_LEN);
 }
 
@@ -65,11 +65,11 @@ void CSession::Send(char* msg, short max_length, short msgid) {
 	}
 
 	_send_que.push(make_shared<SendNode>(msg, max_length, msgid));
-	if (send_que_size > 0) {
+	if (send_que_size>0) {
 		return;
 	}
 	auto& msgnode = _send_que.front();
-	boost::asio::async_write(_socket, boost::asio::buffer(msgnode->_data, msgnode->_total_len),
+	boost::asio::async_write(_socket, boost::asio::buffer(msgnode->_data, msgnode->_total_len), 
 		std::bind(&CSession::HandleWrite, this, std::placeholders::_1, SharedSelf()));
 }
 
@@ -96,13 +96,13 @@ void CSession::AsyncReadBody(int total_len)
 
 			if (bytes_transfered < total_len) {
 				std::cout << "read length not match, read [" << bytes_transfered << "] , total ["
-					<< total_len << "]" << endl;
+					<< total_len<<"]" << endl;
 				Close();
 				_server->ClearSession(_session_id);
 				return;
 			}
 
-			memcpy(_recv_msg_node->_data, _data, bytes_transfered);
+			memcpy(_recv_msg_node->_data , _data , bytes_transfered);
 			_recv_msg_node->_cur_len += bytes_transfered;
 			_recv_msg_node->_data[_recv_msg_node->_total_len] = '\0';
 			cout << "receive data is " << _recv_msg_node->_data << endl;
@@ -196,22 +196,22 @@ void CSession::HandleWrite(const boost::system::error_code& error, std::shared_p
 	catch (std::exception& e) {
 		std::cerr << "Exception code : " << e.what() << endl;
 	}
-
+	
 }
 
 //读取完整长度
-void CSession::asyncReadFull(std::size_t maxLength, std::function<void(const boost::system::error_code&, std::size_t)> handler)
+void CSession::asyncReadFull(std::size_t maxLength, std::function<void(const boost::system::error_code&, std::size_t)> handler )
 {
 	::memset(_data, 0, MAX_LENGTH);
 	asyncReadLen(0, maxLength, handler);
 }
 
 //读取指定字节数
-void CSession::asyncReadLen(std::size_t read_len, std::size_t total_len,
+void CSession::asyncReadLen(std::size_t read_len, std::size_t total_len, 
 	std::function<void(const boost::system::error_code&, std::size_t)> handler)
 {
 	auto self = shared_from_this();
-	_socket.async_read_some(boost::asio::buffer(_data + read_len, total_len - read_len),
+	_socket.async_read_some(boost::asio::buffer(_data + read_len, total_len-read_len),
 		[read_len, total_len, handler, self](const boost::system::error_code& ec, std::size_t  bytesTransfered) {
 			if (ec) {
 				// 出现错误，调用回调函数
@@ -227,10 +227,10 @@ void CSession::asyncReadLen(std::size_t read_len, std::size_t total_len,
 
 			// 没有错误，且长度不足则继续读取
 			self->asyncReadLen(read_len + bytesTransfered, total_len, handler);
-		});
+	});
 }
 
-LogicNode::LogicNode(shared_ptr<CSession>  session,
-	shared_ptr<RecvNode> recvnode) :_session(session), _recvnode(recvnode) {
-
+LogicNode::LogicNode(shared_ptr<CSession>  session, 
+	shared_ptr<RecvNode> recvnode):_session(session),_recvnode(recvnode) {
+	
 }
