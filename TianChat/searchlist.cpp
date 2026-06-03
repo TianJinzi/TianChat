@@ -5,10 +5,11 @@
 #include "findsuccessdlg.h"
 #include "tcpmgr.h"
 #include "customizeedit.h"
-//#include "findfaildlg.h"
+#include "findfaildlg.h"
 #include "loadingdlg.h"
 #include "userdata.h"
 #include "usermgr.h"
+#include "QJsonDocument"
 
 SearchList::SearchList(QWidget *parent):QListWidget(parent)
     ,_find_dlg(nullptr)
@@ -38,12 +39,21 @@ void SearchList::CloseFindDlg()
 
 void SearchList::SetSearchEdit(QWidget *edit)
 {
-
+    _search_edit=edit;
 }
 
 void SearchList::waitPending(bool pending)
 {
-
+    if(pending){
+        _loadingDialog=new LoadingDlg(this);
+        _loadingDialog->setModal(true);
+        _loadingDialog->show();
+        _send_pending=pending;
+    }else{
+        _loadingDialog->hide();
+        _loadingDialog->deleteLater();
+        _send_pending=pending;
+    }
 }
 
 void SearchList::addTipItem()
@@ -89,30 +99,26 @@ void SearchList::slot_item_clicked(QListWidgetItem *item)
 
     if(itemType == ListItemType::ADD_USER_TIP_ITEM){
 
-        // if (_send_pending) {
-        //     return;
-        // }
+        if (_send_pending) {
+            return;
+        }
 
-        // if (!_search_edit) {
-        //     return;
-        // }
-        // waitPending(true);
-        // auto search_edit = dynamic_cast<CustomizeEdit*>(_search_edit);
-        // auto uid_str = search_edit->text();
-        // //此处发送请求给server
-        // QJsonObject jsonObj;
-        // jsonObj["uid"] = uid_str;
+        if (!_search_edit) {
+            return;
+        }
+        waitPending(true);
+        auto search_edit = dynamic_cast<CustomizeEdit*>(_search_edit);
+        auto uid_str = search_edit->text();
+        //此处发送请求给server
+        QJsonObject jsonObj;
+        jsonObj["uid"] = uid_str;
 
-        // QJsonDocument doc(jsonObj);
-        // QByteArray jsonData = doc.toJson(QJsonDocument::Compact);
+        QJsonDocument doc(jsonObj);
+        QByteArray jsonData = doc.toJson(QJsonDocument::Compact);
+        //发送tcp请求给chat server
+        emit TcpMgr::GetInstance()->sig_send_data(ReqId::ID_SEARCH_USER_REQ, jsonData);
+        qDebug()<<"item is clicked 发送tcp请求给chatserver ";
 
-        // //发送tcp请求给chat server
-        // emit TcpMgr::GetInstance()->sig_send_data(ReqId::ID_SEARCH_USER_REQ, jsonData);
-
-        _find_dlg=std::make_shared<FindSuccessDlg>(this);
-        auto si=std::make_shared<SearchInfo>(0,"tian","tian","hello,boy!",1);
-        std::dynamic_pointer_cast<FindSuccessDlg>(_find_dlg)->SetSearchInfo(si);
-        _find_dlg->show();
         return;
     }
 
@@ -123,5 +129,17 @@ void SearchList::slot_item_clicked(QListWidgetItem *item)
 
 void SearchList::slot_user_search(std::shared_ptr<SearchInfo> si)
 {
+    waitPending(false);
+    if(si==nullptr){
+        _find_dlg=std::make_shared<FindFailDlg>(this);
+    }else{
+        //分为两种情况
+        //1.已经是好友
 
+
+        //2.不是好友
+        _find_dlg=std::make_shared<FindSuccessDlg>(this);
+        std::dynamic_pointer_cast<FindSuccessDlg>(_find_dlg)->SetSearchInfo(si);
+    }
+    _find_dlg->show();
 }
