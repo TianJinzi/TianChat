@@ -32,10 +32,13 @@ SOURCES += \
     customizeedit.cpp \
     findfaildlg.cpp \
     findsuccessdlg.cpp \
+    friendinfopage.cpp \
     friendlabel.cpp \
     global.cpp \
     grouptipitem.cpp \
     httpmgr.cpp \
+    invaliditem.cpp \
+    lineitem.cpp \
     listitembase.cpp \
     loadingdlg.cpp \
     logindialog.cpp \
@@ -46,6 +49,7 @@ SOURCES += \
     registerdialog.cpp \
     resetdialog.cpp \
     searchlist.cpp \
+    statelabel.cpp \
     statewidget.cpp \
     tcpmgr.cpp \
     textbubble.cpp \
@@ -75,10 +79,13 @@ HEADERS += \
     customizeedit.h \
     findfaildlg.h \
     findsuccessdlg.h \
+    friendinfopage.h \
     friendlabel.h \
     global.h \
     grouptipitem.h \
     httpmgr.h \
+    invaliditem.h \
+    lineitem.h \
     listitembase.h \
     loadingdlg.h \
     logindialog.h \
@@ -89,6 +96,7 @@ HEADERS += \
     resetdialog.h \
     searchlist.h \
     singleton.h \
+    statelabel.h \
     statewidget.h \
     tcpmgr.h \
     textbubble.h \
@@ -108,8 +116,10 @@ FORMS += \
     conuseritem.ui \
     findfaildlg.ui \
     findsuccessdlg.ui \
+    friendinfopage.ui \
     friendlabel.ui \
     grouptipitem.ui \
+    lineitem.ui \
     loadingdlg.ui \
     logindialog.ui \
     mainwindow.ui \

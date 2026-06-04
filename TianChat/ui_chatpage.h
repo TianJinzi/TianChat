@@ -42,7 +42,7 @@ public:
     QSpacerItem *horizontalSpacer_15;
     ClickedLabel *file_lb;
     QSpacerItem *horizontalSpacer_16;
-    MessageTextEdit *chat_edit;
+    MessageTextEdit *chatEdit;
     QWidget *send_wid;
     QHBoxLayout *horizontalLayout_11;
     QSpacerItem *horizontalSpacer_17;
@@ -131,12 +131,12 @@ public:
 
         verticalLayout_8->addWidget(tool_wid);
 
-        chat_edit = new MessageTextEdit(chat_data_wid);
-        chat_edit->setObjectName("chat_edit");
-        chat_edit->setMinimumSize(QSize(0, 150));
-        chat_edit->setMaximumSize(QSize(16777215, 150));
+        chatEdit = new MessageTextEdit(chat_data_wid);
+        chatEdit->setObjectName("chat_edit");
+        chatEdit->setMinimumSize(QSize(0, 150));
+        chatEdit->setMaximumSize(QSize(16777215, 150));
 
-        verticalLayout_8->addWidget(chat_edit);
+        verticalLayout_8->addWidget(chatEdit);
 
         send_wid = new QWidget(chat_data_wid);
         send_wid->setObjectName("send_wid");

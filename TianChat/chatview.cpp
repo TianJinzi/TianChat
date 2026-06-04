@@ -58,14 +58,39 @@ void ChatView::insertChatItem(QWidget *before, QWidget *item)
 
 }
 
+void ChatView::removeAllItem()
+{
+    QVBoxLayout *layout = qobject_cast<QVBoxLayout *>(m_pScrollArea->widget()->layout());
+
+    int count = layout->count();
+
+    for (int i = 0; i < count - 1; ++i) {
+        QLayoutItem *item = layout->takeAt(0); // 始终从第一个控件开始删除
+        if (item) {
+            if (QWidget *widget = item->widget()) {
+                delete widget;
+            }
+            delete item;
+        }
+    }
+
+}
+
 bool ChatView::eventFilter(QObject *o, QEvent *e)
 {
-    if(e->type()==QEvent::Enter&&o==m_pScrollArea){
-        m_pScrollArea->verticalScrollBar()->setHidden(m_pScrollArea->verticalScrollBar()->maximum()==0);
-    }else if(e->type()==QEvent::Leave&&o==m_pScrollArea){
+    /*if(e->type() == QEvent::Resize && o == )
+    {
+
+    }
+    else */if(e->type() == QEvent::Enter && o == m_pScrollArea)
+    {
+        m_pScrollArea->verticalScrollBar()->setHidden(m_pScrollArea->verticalScrollBar()->maximum() == 0);
+    }
+    else if(e->type() == QEvent::Leave && o == m_pScrollArea)
+    {
         m_pScrollArea->verticalScrollBar()->setHidden(true);
     }
-    return QWidget::eventFilter(o,e);
+    return QWidget::eventFilter(o, e);
 }
 
 void ChatView::paintEvent(QPaintEvent *event)
@@ -91,5 +116,12 @@ void ChatView::onVScrollBarMoved(int min, int max)
 
 void ChatView::initStyleSheet()
 {
-
+    //    QScrollBar *scrollBar = m_pScrollArea->verticalScrollBar();
+    //    scrollBar->setStyleSheet("QScrollBar{background:transparent;}"
+    //                             "QScrollBar:vertical{background:transparent;width:8px;}"
+    //                             "QScrollBar::handle:vertical{background:red; border-radius:4px;min-height:20px;}"
+    //                             "QScrollBar::add-line:vertical{height:0px}"
+    //                             "QScrollBar::sub-line:vertical{height:0px}"
+    //                             "QScrollBar::add-page:vertical {background:transparent;}"
+    //                             "QScrollBar::sub-page:vertical {background:transparent;}");
 }
