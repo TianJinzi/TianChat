@@ -149,9 +149,7 @@
       <NoZstd>true</NoZstd>
       <ExecutionDescription>Rcc'ing %(Identity)...</ExecutionDescription>
       <QtRccDir>$(Configuration)</QtRccDir>
-      <QtRccFileName>%(Filename)_resource.rc</QtRccFileName>
-      <Generator>
-      </Generator>
+      <QtRccFileName>qrc_%(Filename).cpp</QtRccFileName>
     </QtRcc>
     <QtUic>
       <ExecutionDescription>Uic'ing %(Identity)...</ExecutionDescription>
@@ -218,9 +216,7 @@
       <NoZstd>true</NoZstd>
       <ExecutionDescription>Rcc'ing %(Identity)...</ExecutionDescription>
       <QtRccDir>$(Configuration)</QtRccDir>
-      <QtRccFileName>%(Filename)_resource.rc</QtRccFileName>
-      <Generator>
-      </Generator>
+      <QtRccFileName>qrc_%(Filename).cpp</QtRccFileName>
     </QtRcc>
     <QtUic>
       <ExecutionDescription>Uic'ing %(Identity)...</ExecutionDescription>
@@ -234,6 +230,7 @@
     <ClCompile Include="applyfrienditem.cpp" />
     <ClCompile Include="applyfriendlist.cpp" />
     <ClCompile Include="applyfriendpage.cpp" />
+    <ClCompile Include="authenfriend.cpp" />
     <ClCompile Include="bubbleframe.cpp" />
     <ClCompile Include="chatdialog.cpp" />
     <ClCompile Include="chatitembase.cpp" />
@@ -249,10 +246,13 @@
     <ClCompile Include="customizeedit.cpp" />
     <ClCompile Include="findfaildlg.cpp" />
     <ClCompile Include="findsuccessdlg.cpp" />
+    <ClCompile Include="friendinfopage.cpp" />
     <ClCompile Include="friendlabel.cpp" />
     <ClCompile Include="global.cpp" />
     <ClCompile Include="grouptipitem.cpp" />
     <ClCompile Include="httpmgr.cpp" />
+    <ClCompile Include="invaliditem.cpp" />
+    <ClCompile Include="lineitem.cpp" />
     <ClCompile Include="listitembase.cpp" />
     <ClCompile Include="loadingdlg.cpp" />
     <ClCompile Include="logindialog.cpp" />
@@ -263,6 +263,7 @@
     <ClCompile Include="registerdialog.cpp" />
     <ClCompile Include="resetdialog.cpp" />
     <ClCompile Include="searchlist.cpp" />
+    <ClCompile Include="statelabel.cpp" />
     <ClCompile Include="statewidget.cpp" />
     <ClCompile Include="tcpmgr.cpp" />
     <ClCompile Include="textbubble.cpp" />
@@ -276,6 +277,7 @@
     <QtMoc Include="applyfrienditem.h" />
     <QtMoc Include="applyfriendlist.h" />
     <QtMoc Include="applyfriendpage.h" />
+    <QtMoc Include="authenfriend.h" />
     <QtMoc Include="bubbleframe.h" />
     <QtMoc Include="chatdialog.h" />
     <QtMoc Include="chatitembase.h" />
@@ -291,10 +293,13 @@
     <QtMoc Include="customizeedit.h" />
     <QtMoc Include="findfaildlg.h" />
     <QtMoc Include="findsuccessdlg.h" />
+    <QtMoc Include="friendinfopage.h" />
     <QtMoc Include="friendlabel.h" />
     <ClInclude Include="global.h" />
     <QtMoc Include="grouptipitem.h" />
     <QtMoc Include="httpmgr.h" />
+    <QtMoc Include="invaliditem.h" />
+    <QtMoc Include="lineitem.h" />
     <QtMoc Include="listitembase.h" />
     <QtMoc Include="loadingdlg.h" />
     <QtMoc Include="logindialog.h" />
@@ -305,6 +310,7 @@
     <QtMoc Include="resetdialog.h" />
     <QtMoc Include="searchlist.h" />
     <ClInclude Include="singleton.h" />
+    <QtMoc Include="statelabel.h" />
     <QtMoc Include="statewidget.h" />
     <QtMoc Include="tcpmgr.h" />
     <QtMoc Include="textbubble.h" />
@@ -312,20 +318,25 @@
     <ClInclude Include="userdata.h" />
     <QtMoc Include="usermgr.h" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ResourceCompile Include="build\Desktop_Qt_6_8_3_MinGW_64_bit-Debug\TianChat_resource.rc" />
+  </ItemGroup>
   <ItemGroup>
     <QtUic Include="adduseritem.ui" />
     <QtUic Include="applyfriend.ui" />
     <QtUic Include="applyfrienditem.ui" />
     <QtUic Include="applyfriendpage.ui" />
+    <QtUic Include="authenfriend.ui" />
     <QtUic Include="chatdialog.ui" />
     <QtUic Include="chatpage.ui" />
     <QtUic Include="chatuserwid.ui" />
     <QtUic Include="conuseritem.ui" />
     <QtUic Include="findfaildlg.ui" />
     <QtUic Include="findsuccessdlg.ui" />
+    <QtUic Include="friendinfopage.ui" />
     <QtUic Include="friendlabel.ui" />
     <QtUic Include="grouptipitem.ui" />
+    <QtUic Include="lineitem.ui" />
     <QtUic Include="loadingdlg.ui" />
     <QtUic Include="logindialog.ui" />
     <QtUic Include="mainwindow.ui" />
@@ -395,9 +406,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="config.ini" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include=".\TianChat_resource.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <Import Project="$(QtMsBuild)\qt.targets" Condition="Exists('$(QtMsBuild)\qt.targets')" />

@@ -11,6 +11,7 @@ ApplyFriendItem::ApplyFriendItem(QWidget *parent)
     ui->addBtn->hide();
     connect(ui->addBtn,&ClickedBtn::clicked,[this](){
         emit this->sig_auth_friend(_apply_info);
+        qDebug()<<"addBtn is clicked,emit sig_auth_friend";
     });
 }
 

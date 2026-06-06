@@ -18308,31 +18308,6 @@ release/authenfriend.o: ../../authenfriend.cpp ../../authenfriend.h \
 		../../../../../../Qt/6.8.3/mingw_64/include/QtCore/QJsonArray \
 		../../../../../../Qt/6.8.3/mingw_64/include/QtCore/qjsonarray.h \
 		ui_authenfriend.h \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/QApplication \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/qapplication.h \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/QHBoxLayout \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/qboxlayout.h \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/qlayout.h \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/qlayoutitem.h \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/qgridlayout.h \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/QScrollArea \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/qscrollarea.h \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/qabstractscrollarea.h \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/QSpacerItem \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/QVBoxLayout \
-		../../clickedbtn.h \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/QPushButton \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/qpushbutton.h \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/qabstractbutton.h \
-		../../clickedoncelabel.h \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtGui/QMouseEvent \
-		../../customizeedit.h \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/QLineEdit \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/qlineedit.h \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtGui/qtextcursor.h \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtGui/qtextformat.h \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtGui/qpen.h \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtGui/qtextoption.h \
 		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/QScrollBar \
 		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/qscrollbar.h \
 		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/qabstractslider.h \
@@ -22397,25 +22372,6 @@ release/friendinfopage.o: ../../friendinfopage.cpp ../../friendinfopage.h \
 		../../../../../../Qt/6.8.3/mingw_64/include/QtCore/QJsonObject \
 		../../../../../../Qt/6.8.3/mingw_64/include/QtCore/qjsonobject.h \
 		ui_friendinfopage.h \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtCore/QVariant \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/QApplication \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/qapplication.h \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/QHBoxLayout \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/qboxlayout.h \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/qlayout.h \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/qlayoutitem.h \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/qgridlayout.h \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/QLabel \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/qlabel.h \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/qframe.h \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtGui/qpicture.h \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtGui/qtextdocument.h \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/QSpacerItem \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/QVBoxLayout \
-		../../clickedbtn.h \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/QPushButton \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/qpushbutton.h \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/qabstractbutton.h \
 		../../../../../../Qt/6.8.3/mingw_64/include/QtCore/QDebug
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\friendinfopage.o ..\..\friendinfopage.cpp
 
@@ -23939,16 +23895,7 @@ release/lineitem.o: ../../lineitem.cpp ../../lineitem.h \
 		../../../../../../Qt/6.8.3/mingw_64/include/QtGui/qpainterpath.h \
 		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/QStyle \
 		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/qstyle.h \
-		ui_lineitem.h \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/QApplication \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/qapplication.h \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/QFrame \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/qframe.h \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/QVBoxLayout \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/qboxlayout.h \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/qlayout.h \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/qlayoutitem.h \
-		../../../../../../Qt/6.8.3/mingw_64/include/QtWidgets/qgridlayout.h
+		ui_lineitem.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\lineitem.o ..\..\lineitem.cpp
 
 release/listitembase.o: ../../listitembase.cpp ../../listitembase.h \

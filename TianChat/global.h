@@ -81,7 +81,7 @@ struct ServerInfo{
 };
 
 enum ChatUIMode{
-    SearchMode,     //搜索魔石
+    SearchMode,     //搜索模式
     ChatMode,       //聊天模式
     ContactMode,    //练习模式
 };

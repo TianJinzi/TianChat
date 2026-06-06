@@ -22,6 +22,6 @@ FindFailDlg::~FindFailDlg()
 
 void FindFailDlg::on_fail_sure_btn_clicked()
 {
-
+    this->close();
 }
 

@@ -28,7 +28,7 @@ protected:
     void handleGlobalMousePress(QMouseEvent *event) ;
     void CloseFindDlg();
     void UpdateChatMsg(std::vector<std::shared_ptr<TextChatData>> msgdata);
-
+    
 private:
     void AddLBGroup(StateWidget* lb);
     void addChatUserList();

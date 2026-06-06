@@ -72,6 +72,9 @@
     <ClCompile Include="applyfriendpage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="authenfriend.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="bubbleframe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -117,6 +120,9 @@
     <ClCompile Include="findsuccessdlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="friendinfopage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="friendlabel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -127,6 +133,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="httpmgr.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="invaliditem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lineitem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="listitembase.cpp">
@@ -157,6 +169,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="searchlist.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="statelabel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="statewidget.cpp">
@@ -192,6 +207,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="applyfriendpage.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="authenfriend.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="bubbleframe.h">
@@ -239,6 +257,9 @@
     <QtMoc Include="findsuccessdlg.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="friendinfopage.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
     <QtMoc Include="friendlabel.h">
       <Filter>Header Files</Filter>
     </QtMoc>
@@ -249,6 +270,12 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="httpmgr.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="invaliditem.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="lineitem.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="listitembase.h">
@@ -281,6 +308,9 @@
     <ClInclude Include="singleton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <QtMoc Include="statelabel.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
     <QtMoc Include="statewidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
@@ -301,9 +331,6 @@
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include=".\TianChat_resource.rc" />
-  </ItemGroup>
-  <ItemGroup>
     <QtUic Include="adduseritem.ui">
       <Filter>Form Files</Filter>
     </QtUic>
@@ -314,6 +341,9 @@
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="applyfriendpage.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="authenfriend.ui">
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="chatdialog.ui">
@@ -334,10 +364,16 @@
     <QtUic Include="findsuccessdlg.ui">
       <Filter>Form Files</Filter>
     </QtUic>
+    <QtUic Include="friendinfopage.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
     <QtUic Include="friendlabel.ui">
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="grouptipitem.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="lineitem.ui">
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="loadingdlg.ui">
@@ -539,5 +575,8 @@
     <None Include="config.ini">
       <Filter>Distribution Files</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="build\Desktop_Qt_6_8_3_MinGW_64_bit-Debug\TianChat_resource.rc" />
   </ItemGroup>
 </Project>

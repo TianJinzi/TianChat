@@ -17,9 +17,9 @@
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 #include <chatview.h>
-#include <clickedbtn.h>
 #include <clickedlabel.h>
 #include <messagetextedit.h>
+#include "clickedbtn.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -132,7 +132,7 @@ public:
         verticalLayout_8->addWidget(tool_wid);
 
         chatEdit = new MessageTextEdit(chat_data_wid);
-        chatEdit->setObjectName("chat_edit");
+        chatEdit->setObjectName("chatEdit");
         chatEdit->setMinimumSize(QSize(0, 150));
         chatEdit->setMaximumSize(QSize(16777215, 150));
 

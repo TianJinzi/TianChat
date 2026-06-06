@@ -457,7 +457,7 @@ bool MysqlDao::GetFriendList(int self_id, std::vector<std::shared_ptr<UserInfo> 
 			if (user_info == nullptr) {
 				continue;
 			}
-
+			//强制展示原有的名字，防止为空，不过也可以设置为只要不为空就设置为back
 			user_info->back = user_info->name;
 			user_info_list.push_back(user_info);
 		}

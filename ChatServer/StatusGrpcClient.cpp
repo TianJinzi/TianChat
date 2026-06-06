@@ -1,5 +1,5 @@
 #include "StatusGrpcClient.h"
-
+//这里是gateserver使用的冗余代码，chatserver用不上，不要误解了
 GetChatServerRsp StatusGrpcClient::GetChatServer(int uid)
 {
 	ClientContext context;
