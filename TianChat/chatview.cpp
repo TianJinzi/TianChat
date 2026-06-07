@@ -64,6 +64,7 @@ void ChatView::removeAllItem()
 
     int count = layout->count();
 
+    //防止把最后那个留空位的widget删除掉
     for (int i = 0; i < count - 1; ++i) {
         QLayoutItem *item = layout->takeAt(0); // 始终从第一个控件开始删除
         if (item) {
@@ -106,7 +107,7 @@ void ChatView::onVScrollBarMoved(int min, int max)
     if(isAppended){
         QScrollBar* pVScrollBar=m_pScrollArea->verticalScrollBar();
         pVScrollBar->setSliderPosition(pVScrollBar->maximum());
-        //500毫秒内可以调用多次
+        //500毫秒内只执行一次
         QTimer::singleShot(500,[this](){
             isAppended=false;
         });

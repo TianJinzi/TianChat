@@ -175,7 +175,7 @@ void ChatPage::on_send_btn_clicked()
     textObj["touid"] = _user_info->_uid;
     QJsonDocument doc(textObj);
     QByteArray jsonData = doc.toJson(QJsonDocument::Compact);
-    //发送并清空之前累计的文本列表
+    //发送并清空之前累计的文本列表，不清理也一样，反正是临时变量
     txt_size = 0;
     textArray = QJsonArray();
     textObj = QJsonObject();

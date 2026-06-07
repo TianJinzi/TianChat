@@ -77,46 +77,5 @@ function main() {
     })
 }
 
-// // 原版正确写法，零报错，适配你的所有环境
-// const grpc = require('@grpc/grpc-js');
-// const message_proto = require('./proto');
-
-// // 最简单的服务方法：无异步、无邮件、直接返回
-// function GetVarifyCode(call, callback) {
-//     console.log("=====================================");
-//     console.log("🔥 成功收到请求！邮箱：", call.request.email);
-    
-//     // 固定返回值
-//     callback(null, {
-//         error: 0,
-//         email: call.request.email,
-//         code: "666666"
-//     });
-
-//     console.log("✅ 响应已发送给 GateServer！");
-//     console.log("=====================================");
-// }
-
-// // 标准启动代码（零报错）
-// function main() {
-//     const server = new grpc.Server();
-//     // 注册服务
-//     server.addService(message_proto.VarifyService.service, {
-//         GetVarifyCode: GetVarifyCode
-//     });
-
-//     // 正确的凭据写法（兼容你当前版本）
-//     server.bindAsync(
-//         '0.0.0.0:50051',
-//         grpc.ServerCredentials.createInsecure(),
-//         (err) => {
-//             if (err) {
-//                 console.error('启动失败：', err);
-//                 return;
-//             }
-//             console.log('✅ gRPC 服务已启动：127.0.0.1:50051');
-//         }
-//     );
-// }
 
 main();

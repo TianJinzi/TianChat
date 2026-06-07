@@ -19,7 +19,7 @@ GetChatServerRsp StatusGrpcClient::GetChatServer(int uid)
 		return reply;
 	}
 }
-
+//此处是调用Status的方法，验证token是否正确
 LoginRsp StatusGrpcClient::Login(int uid, std::string token)
 {
 	ClientContext context;

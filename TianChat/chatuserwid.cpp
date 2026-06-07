@@ -7,7 +7,7 @@ ChatUserWid::ChatUserWid(QWidget *parent) :
 {
     ui->setupUi(this);
     SetItemType(ListItemType::CHAT_USER_ITEM);
-    //ui->red_point->raise();
+    ui->red_point->raise();
     ShowRedPoint(false);
 }
 
@@ -52,9 +52,9 @@ void ChatUserWid::SetInfo(std::shared_ptr<FriendInfo> friend_info)
 void ChatUserWid::ShowRedPoint(bool bshow)
 {
     if(bshow){
-        //ui->red_point->show();
+        ui->red_point->show();
     }else{
-       // ui->red_point->hide();
+        ui->red_point->hide();
     }
 }
 

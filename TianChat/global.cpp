@@ -1,6 +1,6 @@
 #include "global.h"
-
-QString gate_url_prefix="";
+//如果要部署到远端记得要更改gate_url_preifx
+QString gate_url_prefix="http://127.0.0.1:8080";
 
 std::function<void(QWidget*)> repolish=[](QWidget* w){
     w->style()->unpolish(w);
