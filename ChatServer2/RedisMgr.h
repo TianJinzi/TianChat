@@ -171,8 +171,18 @@ public:
 		_con_pool->Close();
 		_con_pool->ClearConnections();
 	}
+
+	// 初始化脚本（程序启动时调用一次）
+	void InitScripts();
+	// 条件删除接口
+	int DelIfMatch(const std::string& key, const std::string& expectedValue);
+	
 private:
 	RedisMgr();
 	unique_ptr<RedisConPool>  _con_pool;
+	// 加载单个脚本并返回 SHA
+	std::string LoadScript(const std::string& script);
+	// 静态变量：缓存条件删除脚本的 SHA
+	static std::string _del_if_match_sha;
 };
 

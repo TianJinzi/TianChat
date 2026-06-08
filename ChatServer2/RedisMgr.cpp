@@ -1,12 +1,18 @@
 #include "RedisMgr.h"
 #include "const.h"
 #include "ConfigMgr.h"
+
+std::string RedisMgr::_del_if_match_sha;
+
+
 RedisMgr::RedisMgr() {
 	auto& gCfgMgr = ConfigMgr::Inst();
 	auto host = gCfgMgr["Redis"]["Host"];
 	auto port = gCfgMgr["Redis"]["Port"];
 	auto pwd = gCfgMgr["Redis"]["Passwd"];
 	_con_pool.reset(new RedisConPool(5, host.c_str(), atoi(port.c_str()), pwd.c_str()));
+	//初始化脚本
+	InitScripts();
 }
 
 RedisMgr::~RedisMgr() {
@@ -355,6 +361,69 @@ bool RedisMgr::ExistsKey(const std::string &key)
 	freeReplyObject(reply);
 	_con_pool->returnConnection(connect);
 	return true;
+}
+
+void RedisMgr::InitScripts() {
+	// 定义条件删除的 Lua 脚本
+	const std::string script = R"(
+        local current = redis.call('GET', KEYS[1])
+        if current == ARGV[1] then
+            return redis.call('DEL', KEYS[1])
+        else
+            return 0
+        end
+    )";
+	_del_if_match_sha = LoadScript(script);
+}
+
+int RedisMgr::DelIfMatch(const std::string& key, const std::string& expectedValue) {
+	if (_del_if_match_sha.empty()) {
+		// 脚本未初始化，尝试重新加载
+		InitScripts();
+		if (_del_if_match_sha.empty()) {
+			return -1;  // 仍然失败
+		}
+	}
+
+	auto connect = _con_pool->getConnection();
+	if (!connect) return -1;
+
+	// EVALSHA sha 1 key value
+	auto reply = (redisReply*)redisCommand(connect,
+		"EVALSHA %s 1 %s %s",
+		_del_if_match_sha.c_str(),
+		key.c_str(),
+		expectedValue.c_str());
+
+	if (!reply) {
+		std::cout << "DelIfMatch error on key: " << key << std::endl;
+		_con_pool->returnConnection(connect);
+		return -1;
+	}
+
+	int result = (reply->type == REDIS_REPLY_INTEGER) ? reply->integer : -1;
+	freeReplyObject(reply);
+	_con_pool->returnConnection(connect);
+	return result;  // 1=删除成功, 0=值不匹配未删除, -1=错误
+}
+
+std::string RedisMgr::LoadScript(const std::string& script) {
+	auto connect = _con_pool->getConnection();
+	if (!connect) {
+		return "";
+	}
+	
+	auto reply = (redisReply*)redisCommand(connect, "SCRIPT LOAD %s", script.c_str());
+	if (!reply || reply->type != REDIS_REPLY_STRING) {
+		if (reply) freeReplyObject(reply);
+		_con_pool->returnConnection(connect);
+		return "";
+	}
+
+	std::string sha(reply->str, reply->len);
+	freeReplyObject(reply);
+	_con_pool->returnConnection(connect);
+	return sha;
 }
 
 

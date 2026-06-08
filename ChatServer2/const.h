@@ -79,6 +79,15 @@ enum MSG_IDS {
 	ID_NOTIFY_TEXT_CHAT_MSG_REQ = 1019, //通知用户文本聊天信息
 };
 
+const std::string DELETE_IF_MATCH_SCRIPT = R"(
+    local current = redis.call("GET", KEYS[1])
+    if current == ARGV[1] then
+        return redis.call("DEL", KEYS[1])
+    else
+        return 0
+    end
+)";
+
 
 #define USERIPPREFIX  "uip_"
 #define USERTOKENPREFIX  "utoken_"
