@@ -23,6 +23,7 @@ public:
 private:
 	LogicSystem();
 	void DealMsg();
+	void processMessage(const std::shared_ptr<LogicNode>& msg_node);
 	void RegisterCallBacks();
 	void LoginHandler(shared_ptr<CSession> session, const short &msg_id, const string &msg_data);
 	void SearchInfo(std::shared_ptr<CSession> session, const short& msg_id, const string& msg_data);

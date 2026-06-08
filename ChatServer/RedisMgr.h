@@ -119,6 +119,9 @@ private:
 					if (context != nullptr) {
 						redisFree(context);
 					}
+					context = redisConnect(host_, port_);
+					// 不管这个连接好不好，先放回去，下次 checkThread 会再重连
+					connections_.push(context);
 					continue;
 				}
 
