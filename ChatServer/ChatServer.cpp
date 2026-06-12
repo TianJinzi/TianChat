@@ -10,6 +10,8 @@
 #include "ConfigMgr.h"
 #include "RedisMgr.h"
 #include "ChatServiceImpl.h"
+//定时器模块，后续在acceptor绑定的iocontext线程执行定时回调清理超时时间
+#include <boost/asio/deadline_timer.hpp>
 
 using namespace std;
 bool bstop = false;
@@ -51,6 +53,23 @@ int main()
 			});
 		auto port_str = cfg["SelfServer"]["Port"];
 		CServer s(io_context, atoi(port_str.c_str()));
+		////中间是新增的定时器逻辑
+		//boost::asio::deadline_timer timer(io_context);
+		//std::function<void(const boost::system::error_code&)> timer_cb;
+		//timer_cb = [&timer,&s,&timer_cb](const boost::system::error_code& ec) {
+		//	//此时是主动cancel取消定时器，直接返回
+		//	if (ec) {
+		//		return;
+		//	}
+		//	//这里检查所有的连接，进行处理
+
+		//	timer.expires_from_now(boost::posix_time::seconds(60));
+		//	timer.async_wait(timer_cb);
+		//};
+		//// 第一次启动定时，注册第一轮等待
+		//timer.expires_from_now(boost::posix_time::seconds(60));
+		//timer.async_wait(timer_cb);
+		///////
 		io_context.run();
 		RedisMgr::GetInstance()->HDel(LOGIN_COUNT, server_name);
 		RedisMgr::GetInstance()->Close();
@@ -61,6 +80,6 @@ int main()
 		RedisMgr::GetInstance()->HDel(LOGIN_COUNT, server_name);
 		RedisMgr::GetInstance()->Close();
 	}
-
+	
 }
 
