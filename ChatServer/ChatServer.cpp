@@ -11,7 +11,8 @@
 #include "RedisMgr.h"
 #include "ChatServiceImpl.h"
 //定时器模块，后续在acceptor绑定的iocontext线程执行定时回调清理超时时间
-#include <boost/asio/deadline_timer.hpp>
+#include <boost/asio/steady_timer.hpp>
+#include <chrono>
 
 using namespace std;
 bool bstop = false;
