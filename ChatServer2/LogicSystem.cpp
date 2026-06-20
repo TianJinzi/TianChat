@@ -324,6 +324,7 @@ void LogicSystem::AuthFriendApply(std::shared_ptr<CSession> session, const short
 
 	//先更新数据库
 	MysqlMgr::GetInstance()->AuthFriendApply(uid, touid);
+	MysqlMgr::GetInstance()->AuthFriendApply(touid, uid);
 
 	//更新数据库添加好友
 	MysqlMgr::GetInstance()->AddFriend(uid, touid,back_name);
