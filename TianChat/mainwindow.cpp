@@ -5,6 +5,10 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
+    , _login_dlg(nullptr)
+    , _reg_dlg(nullptr)
+    , _reset_dlg(nullptr)
+    , _chat_dlg(nullptr)
 {
     ui->setupUi(this);
     _login_dlg=new LoginDialog(this);
@@ -22,75 +26,105 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
-    if(_login_dlg){
-        delete _login_dlg;
-        _login_dlg=nullptr;
-    }
-    if(_reg_dlg){
-        delete _reg_dlg;
-        _reg_dlg=nullptr;
-    }
 }
 
 void MainWindow::SlotSwitchReg()
 {
-    _reg_dlg=new RegisterDialog(this);
-    _reg_dlg->setWindowFlags(Qt::CustomizeWindowHint|Qt::FramelessWindowHint);
 
-    connect(_reg_dlg,&RegisterDialog::sigSwitchLogin,this,&MainWindow::SlotSwitchLogin);
+    if (_login_dlg) {
+        _login_dlg = nullptr;
+    }
 
-    _reg_dlg->hide();
+    _reg_dlg = new RegisterDialog(this);
+    _reg_dlg->setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
+    connect(_reg_dlg, &RegisterDialog::sigSwitchLogin, this, &MainWindow::SlotSwitchLogin);
+    _reg_dlg->setVisible(false);   // 首次创建时立即隐藏，避免作为独立窗口闪现
+
+    QWidget* oldWid = centralWidget();
+    if (oldWid) oldWid->hide();
+
     setCentralWidget(_reg_dlg);
-    _login_dlg->hide();
     _reg_dlg->show();
 }
 
 void MainWindow::SlotSwitchLogin()
 {
+    if (_reset_dlg) {
+        _reset_dlg = nullptr;
+    }
+
     _login_dlg=new LoginDialog(this);
     _login_dlg->setWindowFlags(Qt::CustomizeWindowHint|Qt::FramelessWindowHint);
-    setCentralWidget(_login_dlg);
-    _reg_dlg->hide();
-    _login_dlg->show();
     connect(_login_dlg,&LoginDialog::switchRegister,this,&MainWindow::SlotSwitchReg);
     connect(_login_dlg,&LoginDialog::switchReset,this,&MainWindow::SlotSwitchReset);
+
+    QWidget* oldWid = centralWidget();
+    if (oldWid) oldWid->hide();
+
+    setCentralWidget(_login_dlg);
+    _login_dlg->show();
 }
 
 void MainWindow::SlotSwitchReset()
 {
+    if (_login_dlg)
+    {
+        _login_dlg = nullptr; // 先置空，防止后续二次delete
+    }
     //创建一个CentralWidget, 并将其设置为MainWindow的中心部件
     _reset_dlg = new ResetDialog(this);
     _reset_dlg->setWindowFlags(Qt::CustomizeWindowHint|Qt::FramelessWindowHint);
-    setCentralWidget(_reset_dlg);
+    connect(_reset_dlg, &ResetDialog::switchLogin, this, &MainWindow::SlotResetSwitchLogin);
 
-    _login_dlg->hide();
+    QWidget* oldWid = centralWidget();
+    if (oldWid) oldWid->hide();
+
+    setCentralWidget(_reset_dlg);
     _reset_dlg->show();
     //注册返回登录信号和槽函数
-    connect(_reset_dlg, &ResetDialog::switchLogin, this, &MainWindow::SlotResetSwitchLogin);
 }
 
 void MainWindow::SlotResetSwitchLogin()
 {
+    if (_reset_dlg)
+    {
+        _reset_dlg = nullptr;
+    }
     //创建一个CentralWidget, 并将其设置为MainWindow的中心部件
     _login_dlg = new LoginDialog(this);
     _login_dlg->setWindowFlags(Qt::CustomizeWindowHint|Qt::FramelessWindowHint);
-    setCentralWidget(_login_dlg);
-
-    _reset_dlg->hide();
-    _login_dlg->show();
-    //连接登录界面忘记密码信号
+        //连接登录界面忘记密码信号
     connect(_login_dlg, &LoginDialog::switchReset, this, &MainWindow::SlotSwitchReset);
-    //连接登录界面忘记密码信号
+        //连接登录界面忘记密码信号
     connect(_login_dlg, &LoginDialog::switchRegister, this, &MainWindow::SlotSwitchReg);
+
+    QWidget* oldWid = centralWidget();
+    if (oldWid) oldWid->hide();
+
+    setCentralWidget(_login_dlg);
+    _login_dlg->show();
 }
 
 void MainWindow::SlotSwitchChat()
 {
+    if (_chat_dlg) {
+        delete _chat_dlg;
+        _chat_dlg = nullptr;
+    }
+
     _chat_dlg=new ChatDialog(this);
     _chat_dlg->setWindowFlags(Qt::CustomizeWindowHint|Qt::FramelessWindowHint);
+    _chat_dlg->hide(); // 避免作为独立窗口闪现
+
+    if (_login_dlg) _login_dlg->hide();
+    if (_reg_dlg)   _reg_dlg->hide();
+    if (_reset_dlg) _reset_dlg->hide();
+
+    QWidget* oldWid = centralWidget();
+    if (oldWid) oldWid->hide();
+
     setCentralWidget(_chat_dlg);
     _chat_dlg->show();
-    _login_dlg->hide();
     this->setMinimumSize(QSize(1050,900));
     this->setMaximumSize(QWIDGETSIZE_MAX,QWIDGETSIZE_MAX);
 }

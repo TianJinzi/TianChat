@@ -319,9 +319,6 @@
     <QtMoc Include="usermgr.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="build\Desktop_Qt_6_8_3_MinGW_64_bit-Debug\TianChat_resource.rc" />
-  </ItemGroup>
-  <ItemGroup>
     <QtUic Include="adduseritem.ui" />
     <QtUic Include="applyfriend.ui" />
     <QtUic Include="applyfrienditem.ui" />
@@ -406,6 +403,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="config.ini" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="build\Desktop_Qt_6_8_3_MinGW_64_bit-Debug\TianChat_resource.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <Import Project="$(QtMsBuild)\qt.targets" Condition="Exists('$(QtMsBuild)\qt.targets')" />
