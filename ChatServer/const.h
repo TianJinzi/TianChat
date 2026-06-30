@@ -77,6 +77,7 @@ enum MSG_IDS {
 	ID_TEXT_CHAT_MSG_REQ = 1017, //文本聊天信息请求
 	ID_TEXT_CHAT_MSG_RSP = 1018, //文本聊天信息回复
 	ID_NOTIFY_TEXT_CHAT_MSG_REQ = 1019, //通知用户文本聊天信息
+	ID_NOTIFY_OFF_LINE_REQ = 1021, //通知用户下线
 };
 
 const std::string DELETE_IF_MATCH_SCRIPT = R"(
@@ -95,5 +96,13 @@ const std::string DELETE_IF_MATCH_SCRIPT = R"(
 #define USER_BASE_INFO "ubaseinfo_"
 #define LOGIN_COUNT  "logincount"
 #define NAME_INFO  "nameinfo_"
+#define LOCK_PREFIX "lock_"
+#define USER_SESSION_PREFIX "usession_"
+#define LOCK_COUNT "lockcount"
+
+//分布式锁的持有时间
+#define LOCK_TIME_OUT 10
+//分布式锁的重试时间
+#define ACQUIRE_TIME_OUT 5
 
 

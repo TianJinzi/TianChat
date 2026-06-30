@@ -259,6 +259,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainwindow.cpp" />
     <ClCompile Include="messagetextedit.cpp" />
+    <ClCompile Include="offlinedialog.cpp" />
     <ClCompile Include="picturebubble.cpp" />
     <ClCompile Include="registerdialog.cpp" />
     <ClCompile Include="resetdialog.cpp" />
@@ -309,6 +310,7 @@
     <QtMoc Include="registerdialog.h" />
     <QtMoc Include="resetdialog.h" />
     <QtMoc Include="searchlist.h" />
+    <QtMoc Include="offlinedialog.h" />
     <ClInclude Include="singleton.h" />
     <QtMoc Include="statelabel.h" />
     <QtMoc Include="statewidget.h" />
@@ -337,6 +339,7 @@
     <QtUic Include="loadingdlg.ui" />
     <QtUic Include="logindialog.ui" />
     <QtUic Include="mainwindow.ui" />
+    <QtUic Include="offlinedialog.ui" />
     <QtUic Include="registerdialog.ui" />
     <QtUic Include="resetdialog.ui" />
   </ItemGroup>

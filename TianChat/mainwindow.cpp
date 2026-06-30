@@ -21,6 +21,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(_login_dlg,&LoginDialog::switchRegister,this,&MainWindow::SlotSwitchReg);
     connect(_login_dlg,&LoginDialog::switchReset,this,&MainWindow::SlotSwitchReset);
     connect(TcpMgr::GetInstance().get(),&TcpMgr::sig_swich_chatdlg,this,&MainWindow::SlotSwitchChat);
+    connect(TcpMgr::GetInstance().get(),&TcpMgr::sig_notify_offline,this,&MainWindow::SlotChatSwitchOffDialog);
+
 }
 
 MainWindow::~MainWindow()
@@ -31,10 +33,6 @@ MainWindow::~MainWindow()
 void MainWindow::SlotSwitchReg()
 {
 
-    if (_login_dlg) {
-        _login_dlg = nullptr;
-    }
-
     _reg_dlg = new RegisterDialog(this);
     _reg_dlg->setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
     connect(_reg_dlg, &RegisterDialog::sigSwitchLogin, this, &MainWindow::SlotSwitchLogin);
@@ -42,17 +40,12 @@ void MainWindow::SlotSwitchReg()
 
     QWidget* oldWid = centralWidget();
     if (oldWid) oldWid->hide();
-
     setCentralWidget(_reg_dlg);
     _reg_dlg->show();
 }
 
 void MainWindow::SlotSwitchLogin()
 {
-    if (_reset_dlg) {
-        _reset_dlg = nullptr;
-    }
-
     _login_dlg=new LoginDialog(this);
     _login_dlg->setWindowFlags(Qt::CustomizeWindowHint|Qt::FramelessWindowHint);
     connect(_login_dlg,&LoginDialog::switchRegister,this,&MainWindow::SlotSwitchReg);
@@ -67,10 +60,6 @@ void MainWindow::SlotSwitchLogin()
 
 void MainWindow::SlotSwitchReset()
 {
-    if (_login_dlg)
-    {
-        _login_dlg = nullptr; // 先置空，防止后续二次delete
-    }
     //创建一个CentralWidget, 并将其设置为MainWindow的中心部件
     _reset_dlg = new ResetDialog(this);
     _reset_dlg->setWindowFlags(Qt::CustomizeWindowHint|Qt::FramelessWindowHint);
@@ -86,10 +75,6 @@ void MainWindow::SlotSwitchReset()
 
 void MainWindow::SlotResetSwitchLogin()
 {
-    if (_reset_dlg)
-    {
-        _reset_dlg = nullptr;
-    }
     //创建一个CentralWidget, 并将其设置为MainWindow的中心部件
     _login_dlg = new LoginDialog(this);
     _login_dlg->setWindowFlags(Qt::CustomizeWindowHint|Qt::FramelessWindowHint);
@@ -107,11 +92,6 @@ void MainWindow::SlotResetSwitchLogin()
 
 void MainWindow::SlotSwitchChat()
 {
-    if (_chat_dlg) {
-        delete _chat_dlg;
-        _chat_dlg = nullptr;
-    }
-
     _chat_dlg=new ChatDialog(this);
     _chat_dlg->setWindowFlags(Qt::CustomizeWindowHint|Qt::FramelessWindowHint);
     _chat_dlg->hide(); // 避免作为独立窗口闪现
@@ -127,4 +107,36 @@ void MainWindow::SlotSwitchChat()
     _chat_dlg->show();
     this->setMinimumSize(QSize(1050,900));
     this->setMaximumSize(QWIDGETSIZE_MAX,QWIDGETSIZE_MAX);
+}
+
+void MainWindow::SlotOffLineSwitchLogin()
+{
+    _login_dlg=new LoginDialog(this);
+    _login_dlg->setWindowFlags(Qt::CustomizeWindowHint|Qt::FramelessWindowHint);
+    connect(_login_dlg,&LoginDialog::switchRegister,this,&MainWindow::SlotSwitchReg);
+    connect(_login_dlg,&LoginDialog::switchReset,this,&MainWindow::SlotSwitchReset);
+
+    QWidget* oldWid = centralWidget();
+    if (oldWid) oldWid->hide();
+
+    setCentralWidget(_login_dlg);
+    _login_dlg->show();
+}
+
+void MainWindow::SlotChatSwitchOffDialog()
+{
+    _offLine_dlg=new OffLineDialog(this);
+    _offLine_dlg->setWindowFlags(Qt::CustomizeWindowHint|Qt::FramelessWindowHint);
+    connect(_offLine_dlg,&OffLineDialog::sig_switch_login,this,&MainWindow::SlotOffLineSwitchLogin);
+
+    QWidget* oldWid=centralWidget();
+    if(oldWid) {
+        oldWid->disconnect();
+        delete oldWid;
+        oldWid=nullptr;
+    }
+    setCentralWidget(_offLine_dlg);
+    _offLine_dlg->show();
+    this->setMinimumSize(QSize(300,500));
+    this->setMaximumSize(QSize(300,500));
 }

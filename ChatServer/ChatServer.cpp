@@ -38,6 +38,12 @@ int main()
 		builder.RegisterService(&service);
 		// 构建并启动gRPC服务器
 		std::unique_ptr<grpc::Server> server(builder.BuildAndStart());
+
+		if (server.get() == nullptr) {
+			std::cout << "grpc server is null!\n";
+			return -1;
+		}
+
 		std::cout << "RPC Server listening on " << server_address << std::endl;
 
 		//单独启动一个线程处理grpc服务

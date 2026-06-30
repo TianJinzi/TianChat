@@ -13,12 +13,14 @@
 #include <QDir>
 #include <QSettings>
 #include <QPainterPath>
-#include "QStyle"
+#include <QStyle>
 /**
- * @brief repolish 用来刷新qss
+ * @brief repolish用来根据属性刷新qss
  */
-
-extern std::function<void(QWidget*)>repolish;
+extern std::function<void(QWidget*)> repolish;
+/**
+ * @brief The ReqId enum 表示请求的id
+ */
 
 extern std::function<QString(QString)> xorString;
 
@@ -40,38 +42,39 @@ enum ReqId{
     ID_TEXT_CHAT_MSG_REQ  = 1017,  //文本聊天信息请求
     ID_TEXT_CHAT_MSG_RSP  = 1018,  //文本聊天信息回复
     ID_NOTIFY_TEXT_CHAT_MSG_REQ = 1019, //通知用户文本聊天信息
+    ID_NOTIFY_OFF_LINE_REQ = 1021, //通知用户下线
+};
+
+enum ErrorCodes{
+    SUCCESS = 0,
+    ERR_JSON = 1, //Json解析失败
+    ERR_NETWORK = 2,
 };
 
 enum Modules{
-    REGISTERMOD=0,
-    RESETMOD=1,
-    LOGINMOD=2,
+    REGISTERMOD = 0,
+    RESETMOD = 1,
+    LOGINMOD = 2,
 };
-
-
 
 enum TipErr{
     TIP_SUCCESS = 0,
     TIP_EMAIL_ERR = 1,
     TIP_PWD_ERR = 2,
-    TIP_PWD_CONFIRM = 3,
-    TIP_VARIFY_ERR = 4,
+    TIP_CONFIRM_ERR = 3,
+    TIP_PWD_CONFIRM = 4,
+    TIP_VARIFY_ERR = 5,
     TIP_USER_ERR = 6
 };
 
-
-enum ErrorCodes {
-    SUCCESS = 0,
-    ERR_JSON=1,     //json解析失败
-    ERR_NETWORK=2,  //网络错误
+enum ClickLbState{
+    Normal = 0,
+    Selected = 1
 };
 
-enum  ClickLbState{
-    Normal=0,   //睁眼
-    Selected=1  //闭眼
-};
 
 extern QString gate_url_prefix;
+
 
 struct ServerInfo{
     QString Host;
@@ -80,12 +83,27 @@ struct ServerInfo{
     int Uid;
 };
 
-enum ChatUIMode{
-    SearchMode,     //搜索模式
-    ChatMode,       //聊天模式
-    ContactMode,    //练习模式
+enum class ChatRole
+{
+
+    Self,
+    Other
 };
 
+struct MsgInfo{
+    QString msgFlag;//"text,image,file"
+    QString content;//表示文件和图像的url,文本信息
+    QPixmap pixmap;//文件和图片的缩略图
+};
+
+//聊天界面几种模式
+enum ChatUIMode{
+    SearchMode, //搜索模式
+    ChatMode, //聊天模式
+    ContactMode, //联系模式
+};
+
+//自定义QListWidgetItem的几种类型
 enum ListItemType{
     CHAT_USER_ITEM, //聊天用户
     CONTACT_USER_ITEM, //联系人用户
@@ -97,17 +115,6 @@ enum ListItemType{
     APPLY_FRIEND_ITEM, //好友申请
 };
 
-enum class ChatRole{
-    Self,
-    Other
-};
-
-struct MsgInfo{
-    QString msgFlag;//"text,image,file"
-    QString content;//表示文件和图像的url,文本信息
-    QPixmap pixmap;//文件和图片的缩略图
-};
-
 //申请好友标签输入框最低长度
 const int MIN_APPLY_LABEL_ED_LEN = 40;
 
@@ -116,12 +123,12 @@ const QString add_prefix = "添加标签 ";
 const int  tip_offset = 5;
 
 
-//测试数据
 const std::vector<QString>  strs ={"hello world !",
-                             "nice to meet u",
-                             "New year，new life",
-                             "You have to love yourself",
-                             "My love is written in the wind ever since the whole world is you"};
+                                   "nice to meet u",
+                                   "New year，new life",
+                                   "You have to love yourself",
+                                   "My love is written in the wind ever since the whole world is you"};
+
 const std::vector<QString> heads = {
     ":/res/head_1.jpg",
     ":/res/head_2.jpg",
@@ -129,17 +136,19 @@ const std::vector<QString> heads = {
     ":/res/head_4.jpg",
     ":/res/head_5.jpg"
 };
+
 const std::vector<QString> names = {
-    "llfc",
-    "zack",
-    "golang",
-    "cpp",
-    "java",
-    "nodejs",
-    "python",
-    "rust"
+    "HanMeiMei",
+    "Lily",
+    "Ben",
+    "Androw",
+    "Max",
+    "Summer",
+    "Candy",
+    "Hunter"
 };
 
 const int CHAT_COUNT_PER_PAGE = 13;
+
 
 #endif // GLOBAL_H

@@ -45,6 +45,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     messagetextedit.cpp \
+    offlinedialog.cpp \
     picturebubble.cpp \
     registerdialog.cpp \
     resetdialog.cpp \
@@ -91,6 +92,7 @@ HEADERS += \
     logindialog.h \
     mainwindow.h \
     messagetextedit.h \
+    offlinedialog.h \
     picturebubble.h \
     registerdialog.h \
     resetdialog.h \
@@ -123,6 +125,7 @@ FORMS += \
     loadingdlg.ui \
     logindialog.ui \
     mainwindow.ui \
+    offlinedialog.ui \
     registerdialog.ui \
     resetdialog.ui
 

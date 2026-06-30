@@ -29,7 +29,7 @@ ResetDialog::ResetDialog(QWidget *parent) :
 
 ResetDialog::~ResetDialog()
 {
-
+    qDebug()<<"resetDialog destruct";
 }
 
 
