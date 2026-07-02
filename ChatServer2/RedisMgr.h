@@ -47,7 +47,10 @@ public:
 	}
 
 	~RedisConPool() {
-
+		std::cout << "RedisConPool destruct begin" << std::endl;
+		Close();
+		ClearConnections();
+		std::cout << "RedisConPool destruct" << std::endl;
 	}
 
 	void ClearConnections() {
@@ -86,9 +89,15 @@ public:
 	}
 
 	void Close() {
-		b_stop_ = true;
+		if (b_stop_.exchange(true)) {
+			return;
+		}
+
 		cond_.notify_all();
-		check_thread_.join();
+
+		if (check_thread_.joinable()) {
+			check_thread_.join();
+		}
 	}
 
 private:
@@ -171,6 +180,10 @@ public:
 	bool Del(const std::string &key);
 	bool ExistsKey(const std::string &key);
 	void Close() {
+		if (!_con_pool) {
+			return;
+		}
+
 		_con_pool->Close();
 		_con_pool->ClearConnections();
 	}
@@ -188,6 +201,7 @@ public:
 
 	void IncreaseCount(std::string server_name);
 	void DecreaseCount(std::string server_name);
+	
 	void InitCount(std::string server_name);
 	void DelCount(std::string server_name);
 	

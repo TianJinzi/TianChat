@@ -22,6 +22,13 @@ class MainWindow;
 }
 QT_END_NAMESPACE
 
+enum UIStatus{
+    LOGIN_UI,
+    REGISTER_UI,
+    RESET_UI,
+    CHAT_UI,
+};
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -37,6 +44,7 @@ public slots:
     void SlotSwitchChat();
     void SlotOffLineSwitchLogin();
     void SlotChatSwitchOffDialog();
+    void SlotExcetpOffline();
 
 private:
     Ui::MainWindow *ui;
@@ -45,5 +53,6 @@ private:
     ResetDialog* _reset_dlg;
     ChatDialog* _chat_dlg;
     OffLineDialog* _offLine_dlg;
+    UIStatus _ui_status;
 };
 #endif // MAINWINDOW_H

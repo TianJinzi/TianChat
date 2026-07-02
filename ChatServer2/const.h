@@ -62,6 +62,9 @@ private:
 #define MAX_RECVQUE  10000
 #define MAX_SENDQUE 1000
 
+//超时时间
+constexpr double TIMEOUT_PERIOD = 20;
+
 
 enum MSG_IDS {
 	MSG_CHAT_LOGIN = 1005, //用户登陆
@@ -78,6 +81,8 @@ enum MSG_IDS {
 	ID_TEXT_CHAT_MSG_RSP = 1018, //文本聊天信息回复
 	ID_NOTIFY_TEXT_CHAT_MSG_REQ = 1019, //通知用户文本聊天信息
 	ID_NOTIFY_OFF_LINE_REQ = 1021, //通知用户下线
+	ID_HEARTBEAT_REQ=1023,	//心跳请求
+	ID_HEARTBEAT_RSP=1024	//心跳回复
 };
 
 const std::string DELETE_IF_MATCH_SCRIPT = R"(

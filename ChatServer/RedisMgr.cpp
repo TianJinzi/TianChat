@@ -17,7 +17,8 @@ RedisMgr::RedisMgr() {
 }
 
 RedisMgr::~RedisMgr() {
-	
+	std::cout << "RedisMgr destruct begin" << std::endl;
+	std::cout << "RedisMgr destruct end" << std::endl;
 }
 
 

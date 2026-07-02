@@ -15,11 +15,29 @@ LogicSystem::LogicSystem():_b_stop(false){
 }
 
 LogicSystem::~LogicSystem(){
-	_b_stop = true;
-	_consume.notify_one();
-	_worker_thread.join();
+	std::cout << "LogicSystem desturct!" << std::endl;
 
 }
+
+void LogicSystem::Stop() {
+	{
+		std::lock_guard<std::mutex> lock(_mutex);
+		if (_b_stop) {
+			_p_server.reset();
+			return;
+		}
+		_b_stop = true;
+	}
+
+	_consume.notify_one();
+
+	if (_worker_thread.joinable()) {
+		_worker_thread.join();
+	}
+
+	_p_server.reset();
+}
+
 
 void LogicSystem::PostMsgToQue(shared_ptr < LogicNode> msg) {
 	std::unique_lock<std::mutex> unique_lk(_mutex);
@@ -83,6 +101,9 @@ void LogicSystem::RegisterCallBacks() {
 		placeholders::_1, placeholders::_2, placeholders::_3);
 
 	_fun_callbacks[ID_TEXT_CHAT_MSG_REQ] = std::bind(&LogicSystem::DealChatTextMsg, this,
+		placeholders::_1, placeholders::_2, placeholders::_3);
+
+	_fun_callbacks[ID_HEARTBEAT_REQ] = std::bind(&LogicSystem::HeartBeatHandler, this,
 		placeholders::_1, placeholders::_2, placeholders::_3);
 	
 }
@@ -223,7 +244,6 @@ void LogicSystem::LoginHandler(shared_ptr<CSession> session, const short& msg_id
 
 	}
 
-	RedisMgr::GetInstance()->IncreaseCount(server_name);
 	return;
 }
 
@@ -484,6 +504,17 @@ void LogicSystem::DealChatTextMsg(std::shared_ptr<CSession> session, const short
 
 	//·¢ËÍÍ¨Öª todo...
 	ChatGrpcClient::GetInstance()->NotifyTextChatMsg(to_ip_value, text_msg_req, rtvalue);
+}
+
+void LogicSystem::HeartBeatHandler(std::shared_ptr<CSession> session, const short& msg_id, const string& msg_data) {
+	Json::Reader  reader;
+	Json::Value root;
+	reader.parse(msg_data, root);
+	auto uid = root["fromuid"].asInt();
+	std::cout << "receive heartbeat  from " << uid << endl;
+	Json::Value rtvalue;
+	rtvalue["error"] = ErrorCodes::Success;
+	session->Send(rtvalue.toStyledString(), ID_HEARTBEAT_RSP);
 }
 
 
