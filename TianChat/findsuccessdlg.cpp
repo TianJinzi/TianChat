@@ -1,31 +1,25 @@
 #include "findsuccessdlg.h"
 #include "ui_findsuccessdlg.h"
-#include "applyfriend.h"
 #include <QDir>
-
-FindSuccessDlg::FindSuccessDlg(QWidget *parent)
-    : QDialog(parent)
-    , ui(new Ui::FindSuccessDlg)
-    ,_parent(parent)
+#include "applyfriend.h"
+#include <memory>
+FindSuccessDlg::FindSuccessDlg(QWidget *parent) :
+    QDialog(parent),
+    ui(new Ui::FindSuccessDlg),_parent(parent)
 {
     ui->setupUi(this);
+    // 设置对话框标题
     setWindowTitle("添加");
-    //隐藏对话框标题栏
-    setWindowFlags(windowFlags()|Qt::FramelessWindowHint);
-    //获取当前应用程序路径
-    QString app_path=QCoreApplication::applicationDirPath();
-    //打印调试
-    qDebug()<<"app_path is "<<app_path;
-    QString pix_path=QDir::toNativeSeparators(app_path+QDir::separator()+"static"+QDir::separator()+"head_1.jpg");
-
-    qDebug()<<"pix_path is "<<pix_path;
+    // 隐藏对话框标题栏
+    setWindowFlags(windowFlags() | Qt::FramelessWindowHint);
+    this->setObjectName("FindSuccessDlg");
+    // 获取当前应用程序的路径
+    QString app_path = QCoreApplication::applicationDirPath();
+    QString pix_path = QDir::toNativeSeparators(app_path +
+                             QDir::separator() + "static"+QDir::separator()+"head_1.jpg");
     QPixmap head_pix(pix_path);
-    //可能要声明voliate才行？
-    if(head_pix.isNull()){
-        qDebug()<<"the head_pix is null!";
-    }
-    head_pix=head_pix.scaled(ui->head_lb->size(),
-                Qt::KeepAspectRatio,Qt::SmoothTransformation);
+    head_pix = head_pix.scaled(ui->head_lb->size(),
+            Qt::KeepAspectRatio, Qt::SmoothTransformation);
     ui->head_lb->setPixmap(head_pix);
     ui->add_friend_btn->SetState("normal","hover","press");
     this->setModal(true);
@@ -39,16 +33,21 @@ FindSuccessDlg::~FindSuccessDlg()
 void FindSuccessDlg::SetSearchInfo(std::shared_ptr<SearchInfo> si)
 {
     ui->name_lb->setText(si->_name);
-    _si=si;
+    // 加载图片
+    QPixmap pixmap(si->_icon);
+
+    // 设置图片自动缩放
+    ui->head_lb->setPixmap(pixmap.scaled(ui->head_lb->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    ui->head_lb->setScaledContents(true);
+    _si = si;
 }
 
 void FindSuccessDlg::on_add_friend_btn_clicked()
 {
-    //todo      添加好友界面弹出
-    this->hide();
-    auto applyFriend=new ApplyFriend(_parent);
-    applyFriend->SetSearchInfo(_si);
-    applyFriend->setModal(true);
-    applyFriend->show();
+   this->hide();
+   //弹出加好友界面
+   auto applyFriend = new ApplyFriend(_parent);
+   applyFriend->SetSearchInfo(_si);
+   applyFriend->setModal(true);
+   applyFriend->show();
 }
-

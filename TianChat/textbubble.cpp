@@ -1,7 +1,8 @@
-#include "TextBubble.h"
+﻿#include "TextBubble.h"
 #include <QFontMetricsF>
 #include <QDebug>
 #include <QFont>
+#include "global.h"
 #include <QTimer>
 #include <QTextDocument>
 #include <QTextBlock>
@@ -15,13 +16,10 @@ TextBubble::TextBubble(ChatRole role, const QString &text, QWidget *parent)
     m_pTextEdit->setReadOnly(true);
     m_pTextEdit->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     m_pTextEdit->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-
     m_pTextEdit->installEventFilter(this);
-
     QFont font("Microsoft YaHei");
     font.setPointSize(12);
     m_pTextEdit->setFont(font);
-
     setPlainText(text);
     setWidget(m_pTextEdit);
     initStyleSheet();
@@ -50,14 +48,11 @@ void TextBubble::setPlainText(const QString &text)
     //遍历每一段找到 最宽的那一段
     for (QTextBlock it = doc->begin(); it != doc->end(); it = it.next())    //字体总长
     {
-        // 错误（你现在的写法）
-        //int txtW = int(fm.horizontalAdvance(it.text()));
-        // 正确（拿真实渲染宽度）
-        int txtW = fm.boundingRect(it.text()).width();
+        int txtW = int(fm.horizontalAdvance(it.text()));
         max_width = max_width < txtW ? txtW : max_width;                 //找到最长的那段
     }
-    //设置这个气泡的最大宽度 只需要设置一次，这里为了避免换行的问题手动调整了精度，加了20
-    setMaximumWidth(max_width + doc_margin * 2 + (margin_left + margin_right)+20);        //设置最大宽度
+    //设置这个气泡的最大宽度 只需要设置一次
+    setMaximumWidth(max_width + doc_margin * 2 + (margin_left + margin_right));        //设置最大宽度
 }
 
 void TextBubble::adjustTextHeight()

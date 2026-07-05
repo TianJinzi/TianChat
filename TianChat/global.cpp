@@ -1,20 +1,29 @@
 #include "global.h"
-//如果要部署到远端记得要更改gate_url_preifx
-QString gate_url_prefix="http://127.0.0.1:8080";
+#include <QEventLoop>
+#include <QTimer>
 
-std::function<void(QWidget*)> repolish=[](QWidget* w){
+std::function<void(QWidget*)> repolish =[](QWidget *w){
     w->style()->unpolish(w);
     w->style()->polish(w);
 };
 
-std::function<QString(QString)> xorString=[](QString input){
-    QString result=input;
-    int length=input.length();
-    length=length%225;
-    for(int i=0;i<length;++i){
-        //对每个字符进行异或操作
-        //这里假设字符都是ASCII，因此直接转换为QChar
-        result[i]=QChar(static_cast<ushort>(input[i].unicode()^static_cast<ushort>(length)));
+std::function<QString(QString)> xorString = [](QString input){
+    QString result = input; // 复制原始字符串，以便进行修改
+    int length = input.length(); // 获取字符串的长度
+    ushort xor_code = length % 255;
+    for (int i = 0; i < length; ++i) {
+        // 对每个字符进行异或操作
+        // 注意：这里假设字符都是ASCII，因此直接转换为QChar
+        result[i] = QChar(static_cast<ushort>(input[i].unicode() ^ xor_code));
     }
     return result;
 };
+
+QString gate_url_prefix = "";
+
+void delay_run(int msecs) {
+    QEventLoop loop;
+    // singleShot 到时后会触发 loop.quit()，从而退出事件循环
+    QTimer::singleShot(msecs, &loop, &QEventLoop::quit);
+    loop.exec();
+}

@@ -1,30 +1,30 @@
 #include "clickedbtn.h"
-#include "global.h"
 #include <QVariant>
+#include "global.h"
+#include <QKeyEvent>
 
-
-ClickedBtn::ClickedBtn(QWidget *parent):QPushButton(parent)
+ClickedBtn::ClickedBtn(QWidget *parent):QPushButton (parent)
 {
-    setCursor(Qt::PointingHandCursor);
+    setCursor(Qt::PointingHandCursor); // 设置光标为小手
     setFocusPolicy(Qt::NoFocus);
 }
 
-ClickedBtn::~ClickedBtn()
-{
+ClickedBtn::~ClickedBtn(){
 
 }
 
+
 void ClickedBtn::SetState(QString normal, QString hover, QString press)
 {
-    _hover=hover;
-    _normal=normal;
-    _press=press;
+    _hover = hover;
+    _normal = normal;
+    _press = press;
     setProperty("state",normal);
     repolish(this);
     update();
 }
 
-void ClickedBtn::enterEvent(QEnterEvent *event)
+void ClickedBtn::enterEvent(QEnterEvent*event)
 {
     setProperty("state",_hover);
     repolish(this);
@@ -55,5 +55,3 @@ void ClickedBtn::mouseReleaseEvent(QMouseEvent *event)
     update();
     QPushButton::mouseReleaseEvent(event);
 }
-
-

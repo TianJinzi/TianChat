@@ -113,7 +113,7 @@ Status ChatServiceImpl::NotifyTextChatMsg(::grpc::ServerContext* context,
 	for (auto& msg : request->textmsgs()) {
 		Json::Value element;
 		element["content"] = msg.msgcontent();
-		element["msgid"] = msg.msgid();
+		element["msgid"] = msg.msg_id();
 		text_array.append(element);
 	}
 	rtvalue["text_array"] = text_array;

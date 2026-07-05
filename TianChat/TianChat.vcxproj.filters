@@ -189,10 +189,19 @@
     <ClCompile Include="userdata.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="offlinedialog.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
     <ClCompile Include="usermgr.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="offlinedialog.cpp">
+    <ClCompile Include="userinfopage.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="imagecropperlabel.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="customizetextedit.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -335,6 +344,18 @@
     <QtMoc Include="offlinedialog.h">
       <Filter>Generated Files</Filter>
     </QtMoc>
+    <QtMoc Include="userinfopage.h">
+      <Filter>Generated Files</Filter>
+    </QtMoc>
+    <QtMoc Include="imagecropperdialog.h">
+      <Filter>Generated Files</Filter>
+    </QtMoc>
+    <QtMoc Include="imagecropperlabel.h">
+      <Filter>Generated Files</Filter>
+    </QtMoc>
+    <QtMoc Include="customizetextedit.h">
+      <Filter>Generated Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="adduseritem.ui">
@@ -398,6 +419,9 @@
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="offlinedialog.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="userinfopage.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
@@ -584,6 +608,74 @@
     <None Include="config.ini">
       <Filter>Distribution Files</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ui_adduseritem.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_applyfriend.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_applyfrienditem.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_applyfriendpage.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_authenfriend.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_chatdialog.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_chatpage.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_chatuserwid.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_conuseritem.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_findfaildlg.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_findsuccessdlg.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_friendinfopage.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_friendlabel.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_grouptipitem.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_lineitem.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_loadingdlg.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_logindialog.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_mainwindow.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_offlinedialog.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_registerdialog.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_resetdialog.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui_userinfopage.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="build\Desktop_Qt_6_8_3_MinGW_64_bit-Debug\TianChat_resource.rc" />

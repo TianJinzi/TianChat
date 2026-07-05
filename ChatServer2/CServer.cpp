@@ -72,19 +72,23 @@ void CServer::on_timer(const boost::system::error_code& e) {
 	}
 	std::vector<std::shared_ptr<CSession>>_expired_sessions;
 	int session_count = 0;
+	std::map<std::string, shared_ptr<CSession>>sessions_copy;
 	{
-		lock_guard<mutex> lock(_mutex);
-		time_t now = time(nullptr);
-		for (auto iter = _sessions.begin();iter != _sessions.end();++iter) {
-			auto b_expired = iter->second->IsHeartbeatExpired(now);
-			if (b_expired) {
-				iter->second->Close();
-				_expired_sessions.push_back(iter->second);
-			}else{
-				session_count++;
-			}
-		}
+		lock_guard<mutex>lock(_mutex);
+		sessions_copy = _sessions;
 	}
+	time_t now = std::time(nullptr);
+	for (auto iter = sessions_copy.begin();iter != sessions_copy.end();iter++) {
+		auto b_expired = iter->second->IsHeartbeatExpired(now);
+		if (b_expired) {
+			iter->second->Close();
+			_expired_sessions.push_back(iter->second);
+			continue;
+		}
+		session_count++;
+		
+	}
+
 	//…Ë÷√session ˝¡ø
 	auto& cfg = ConfigMgr::Inst();
 	auto self_name = cfg["SelfServer"]["Name"];

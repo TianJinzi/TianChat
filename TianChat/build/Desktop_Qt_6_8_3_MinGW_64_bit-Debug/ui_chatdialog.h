@@ -27,6 +27,7 @@
 #include "clickedbtn.h"
 #include "customizeedit.h"
 #include "searchlist.h"
+#include "userinfopage.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -41,6 +42,7 @@ public:
     QLabel *side_head_lb;
     StateWidget *side_chat_lb;
     StateWidget *side_contact_lb;
+    StateWidget *side_settings_lb;
     QWidget *widget;
     QSpacerItem *verticalSpacer;
     QWidget *chat_user_wid;
@@ -55,6 +57,7 @@ public:
     ContactUserList *con_user_list;
     QStackedWidget *stackedWidget;
     ChatPage *chat_page;
+    UserInfoPage *user_info_page;
     ApplyFriendPage *friend_apply_page;
     FriendInfoPage *friend_info_page;
 
@@ -84,7 +87,7 @@ public:
         widget_2->setObjectName("widget_2");
         widget_2->setMinimumSize(QSize(29, 29));
         verticalLayout_5 = new QVBoxLayout(widget_2);
-        verticalLayout_5->setSpacing(30);
+        verticalLayout_5->setSpacing(25);
         verticalLayout_5->setObjectName("verticalLayout_5");
         verticalLayout_5->setContentsMargins(0, 0, 0, 0);
         side_head_lb = new QLabel(widget_2);
@@ -107,6 +110,13 @@ public:
         side_contact_lb->setMaximumSize(QSize(30, 30));
 
         verticalLayout_5->addWidget(side_contact_lb);
+
+        side_settings_lb = new StateWidget(widget_2);
+        side_settings_lb->setObjectName("side_settings_lb");
+        side_settings_lb->setMinimumSize(QSize(30, 30));
+        side_settings_lb->setMaximumSize(QSize(30, 30));
+
+        verticalLayout_5->addWidget(side_settings_lb);
 
 
         verticalLayout_4->addWidget(widget_2);
@@ -191,6 +201,9 @@ public:
         chat_page = new ChatPage();
         chat_page->setObjectName("chat_page");
         stackedWidget->addWidget(chat_page);
+        user_info_page = new UserInfoPage();
+        user_info_page->setObjectName("user_info_page");
+        stackedWidget->addWidget(user_info_page);
         friend_apply_page = new ApplyFriendPage();
         friend_apply_page->setObjectName("friend_apply_page");
         stackedWidget->addWidget(friend_apply_page);

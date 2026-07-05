@@ -29,8 +29,14 @@
    <property name="spacing">
     <number>5</number>
    </property>
+   <property name="leftMargin">
+    <number>6</number>
+   </property>
    <property name="topMargin">
     <number>2</number>
+   </property>
+   <property name="rightMargin">
+    <number>6</number>
    </property>
    <property name="bottomMargin">
     <number>2</number>
@@ -104,7 +110,7 @@
    <item>
     <widget class="QLabel" name="user_name_lb">
      <property name="text">
-      <string/>
+      <string>TextLabel</string>
      </property>
     </widget>
    </item>

@@ -147,7 +147,7 @@ TextChatMsgRsp ChatGrpcClient::NotifyTextChatMsg(std::string server_ip,
 		rsp.set_touid(req.touid());
 		for (const auto& text_data : req.textmsgs()) {
 			TextChatData* new_msg = rsp.add_textmsgs();
-			new_msg->set_msgid(text_data.msgid());
+			new_msg->set_unique_id(text_data.unique_id());
 			new_msg->set_msgcontent(text_data.msgcontent());
 		}
 		
@@ -177,8 +177,10 @@ TextChatMsgRsp ChatGrpcClient::NotifyTextChatMsg(std::string server_ip,
 KickUserRsp ChatGrpcClient::NotifyKickUser(std::string server_ip, const KickUserReq& req)
 {
 	KickUserRsp rsp;
-	rsp.set_uid(req.uid());
-	rsp.set_error(ErrorCodes::RPCFailed); // Ä¬ÈÏÊ§°Ü
+	Defer defer([&rsp, &req]() {
+		rsp.set_error(ErrorCodes::Success);
+		rsp.set_uid(req.uid());
+		});
 
 	auto find_iter = _pools.find(server_ip);
 	if (find_iter == _pools.end()) {
@@ -198,6 +200,5 @@ KickUserRsp ChatGrpcClient::NotifyKickUser(std::string server_ip, const KickUser
 		return rsp;
 	}
 
-	rsp.set_error(ErrorCodes::Success);
 	return rsp;
 }

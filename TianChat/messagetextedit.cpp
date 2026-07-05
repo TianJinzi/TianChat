@@ -1,4 +1,4 @@
-#include "MessageTextEdit.h"
+﻿#include "MessageTextEdit.h"
 #include <QDebug>
 #include <QMessageBox>
 
@@ -10,7 +10,7 @@ MessageTextEdit::MessageTextEdit(QWidget *parent)
     //this->setStyleSheet("border: none;");
     this->setMaximumHeight(60);
 
-    //    connect(this,SIGNAL(textChanged()),this,SLOT(textEditChanged()));
+//    connect(this,SIGNAL(textChanged()),this,SLOT(textEditChanged()));
 
 }
 
@@ -26,10 +26,12 @@ QVector<MsgInfo> MessageTextEdit::getMsgList()
     QString doc = this->document()->toPlainText();
     QString text="";//存储文本信息
     int indexUrl = 0;
+    //这个是存储的富文本信息，包括图片的url以及文件的url
     int count = mMsgList.size();
 
     for(int index=0; index<doc.size(); index++)
     {
+        //如果遇到替换符，说明后面的是图片或者文件的url
         if(doc[index]==QChar::ObjectReplacementCharacter)
         {
             if(!text.isEmpty())
@@ -52,6 +54,7 @@ QVector<MsgInfo> MessageTextEdit::getMsgList()
         }
         else
         {
+            //追加字符到文本消息中
             text.append(doc[index]);
         }
     }
@@ -96,10 +99,10 @@ void MessageTextEdit::insertFileFromUrl(const QStringList &urls)
         return;
 
     foreach (QString url, urls){
-        if(isImage(url))
-            insertImages(url);
-        else
-            insertTextFile(url);
+         if(isImage(url))
+             insertImages(url);
+         else
+             insertTextFile(url);
     }
 }
 
@@ -111,7 +114,7 @@ void MessageTextEdit::insertImages(const QString &url)
     {
         if(image.width()>image.height())
         {
-            image =  image.scaledToWidth(120,Qt::SmoothTransformation);
+          image =  image.scaledToWidth(120,Qt::SmoothTransformation);
         }
         else
             image = image.scaledToHeight(80,Qt::SmoothTransformation);
@@ -159,10 +162,10 @@ void MessageTextEdit::insertFromMimeData(const QMimeData *source)
 
     foreach (QString url, urls)
     {
-        if(isImage(url))
-            insertImages(url);
-        else
-            insertTextFile(url);
+         if(isImage(url))
+             insertImages(url);
+         else
+             insertTextFile(url);
     }
 }
 
@@ -222,7 +225,7 @@ QPixmap MessageTextEdit::getFileIconPixmap(const QString &url)
     pix.fill();
 
     QPainter painter;
-    // painter.setRenderHint(QPainter::Antialiasing, true);
+   // painter.setRenderHint(QPainter::Antialiasing, true);
     //painter.setFont(font);
     painter.begin(&pix);
     // 文件图标

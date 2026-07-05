@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>510</width>
+    <height>491</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -31,7 +31,13 @@
    </property>
    <item>
     <widget class="QWidget" name="friend_apply_wid" native="true">
-     <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_7">
       <property name="spacing">
        <number>0</number>
       </property>
@@ -48,12 +54,12 @@
        <number>0</number>
       </property>
       <item>
-       <spacer name="horizontalSpacer_2">
+       <spacer name="horizontalSpacer_8">
         <property name="orientation">
-         <enum>Qt::Orientation::Horizontal</enum>
+         <enum>Qt::Horizontal</enum>
         </property>
         <property name="sizeType">
-         <enum>QSizePolicy::Policy::Fixed</enum>
+         <enum>QSizePolicy::Fixed</enum>
         </property>
         <property name="sizeHint" stdset="0">
          <size>
@@ -86,8 +92,8 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="widget_2" native="true">
-     <layout class="QVBoxLayout" name="verticalLayout_2">
+    <widget class="QWidget" name="widget_3" native="true">
+     <layout class="QVBoxLayout" name="verticalLayout_7">
       <property name="spacing">
        <number>0</number>
       </property>

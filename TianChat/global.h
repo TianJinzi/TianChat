@@ -1,19 +1,14 @@
 #ifndef GLOBAL_H
 #define GLOBAL_H
-
 #include <QWidget>
 #include <functional>
-#include <QRegularExpression>
+#include "QStyle"
 #include <memory>
-#include <iostream>
-#include <mutex>
-#include <QByteArray>
-#include <QNetworkReply>
 #include <QJsonObject>
+#include <QJsonDocument>
+#include <QNetworkReply>
 #include <QDir>
 #include <QSettings>
-#include <QPainterPath>
-#include <QStyle>
 /**
  * @brief repolish用来根据属性刷新qss
  */
@@ -23,6 +18,12 @@ extern std::function<void(QWidget*)> repolish;
  */
 
 extern std::function<QString(QString)> xorString;
+
+/*
+* @brief 延迟执行
+*/
+
+extern void delay_run(int msecs);
 
 enum ReqId{
     ID_GET_VARIFY_CODE = 1001, //获取验证码
@@ -43,8 +44,14 @@ enum ReqId{
     ID_TEXT_CHAT_MSG_RSP  = 1018,  //文本聊天信息回复
     ID_NOTIFY_TEXT_CHAT_MSG_REQ = 1019, //通知用户文本聊天信息
     ID_NOTIFY_OFF_LINE_REQ = 1021, //通知用户下线
-    ID_HEARTBEAT_REQ=1023,	//心跳请求
-    ID_HEARTBEAT_RSP=1024	//心跳回复
+    ID_HEART_BEAT_REQ = 1023,      //心跳请求
+    ID_HEARTBEAT_RSP = 1024,       //心跳回复
+    ID_LOAD_CHAT_THREAD_REQ = 1025,      //加载聊天线程
+    ID_LOAD_CHAT_THREAD_RSP = 1026,      //加载聊天线程回复
+    ID_CREATE_PRIVATE_CHAT_REQ = 1027, //创建私聊请求
+    ID_CREATE_PRIVATE_CHAT_RSP = 1028, //创建私聊回复
+    ID_LOAD_CHAT_MSG_REQ = 1029,      //加载聊天消息
+    ID_LOAD_CHAT_MSG_RSP = 1030,      //加载聊天消息
 };
 
 enum ErrorCodes{
@@ -103,6 +110,7 @@ enum ChatUIMode{
     SearchMode, //搜索模式
     ChatMode, //聊天模式
     ContactMode, //联系模式
+    SettingsMode, //设置模式
 };
 
 //自定义QListWidgetItem的几种类型
@@ -126,10 +134,10 @@ const int  tip_offset = 5;
 
 
 const std::vector<QString>  strs ={"hello world !",
-                                   "nice to meet u",
-                                   "New year，new life",
-                                   "You have to love yourself",
-                                   "My love is written in the wind ever since the whole world is you"};
+                             "nice to meet u",
+                             "New year，new life",
+                            "You have to love yourself",
+                            "My love is written in the wind ever since the whole world is you"};
 
 const std::vector<QString> heads = {
     ":/res/head_1.jpg",
@@ -152,5 +160,23 @@ const std::vector<QString> names = {
 
 const int CHAT_COUNT_PER_PAGE = 13;
 
+enum MsgStatus{
+    UN_READ = 0,  //对方未读
+    SEND_FAILED = 1,  //发送失败
+    READED = 2  //对方已读
+};
+
+//聊天形式，私聊和群聊
+enum class ChatFormType {
+    PRIVATE = 0,
+    GROUP = 1
+};
+
+//聊天消息类型，文本，图片，文件等
+enum class ChatMsgType {
+    TEXT = 0,
+    PIC = 1,
+    FILE = 2
+};
 
 #endif // GLOBAL_H

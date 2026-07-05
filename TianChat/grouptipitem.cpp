@@ -23,3 +23,5 @@ void GroupTipItem::SetGroupTip(QString str)
 {
     ui->label->setText(str);
 }
+
+

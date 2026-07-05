@@ -39,8 +39,11 @@ public:
 	void AsyncReadBody(int length);
 	void AsyncReadHead(int total_len);
 	void NotifyOffline(int uid);
+	//判断心跳是否过期
 	bool IsHeartbeatExpired(std::time_t& now);
+	//更新心跳
 	void UpdateHeartbeat();
+	//处理异常连接
 	void DealExceptionSession();
 private:
 	void asyncReadFull(std::size_t maxLength, std::function<void(const boost::system::error_code& , std::size_t)> handler);
@@ -63,9 +66,9 @@ private:
 	std::shared_ptr<MsgNode> _recv_head_node;
 	int _user_uid;
 	//记录上次接受数据的时间
-	std::atomic<time_t> _last_heartbeat_time;
-	//session锁
-	std::mutex _session_lock;
+	std::atomic<time_t> _last_heartbeat;
+	//session 锁
+	std::mutex _session_mtx;
 };
 
 class LogicNode {

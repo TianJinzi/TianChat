@@ -10,9 +10,7 @@
 #include "ConfigMgr.h"
 #include "RedisMgr.h"
 #include "ChatServiceImpl.h"
-//定时器模块，后续在acceptor绑定的iocontext线程执行定时回调清理超时时间
-#include <boost/asio/steady_timer.hpp>
-#include <chrono>
+#include "const.h"
 
 using namespace std;
 bool bstop = false;
@@ -27,17 +25,16 @@ int main()
 		auto pool = AsioIOServicePool::GetInstance();
 		//将登录数设置为0
 		RedisMgr::GetInstance()->HSet(LOGIN_COUNT, server_name, "0");
-		Defer derfer([server_name]() {
-			RedisMgr::GetInstance()->HDel(LOGIN_COUNT, server_name);
-			std::cout << "success HDel" << std::endl;
-			RedisMgr::GetInstance()->Close();
-			std::cout << "RedisMgr Close" << std::endl;
+		Defer derfer ([server_name]() {
+				RedisMgr::GetInstance()->HDel(LOGIN_COUNT, server_name);
+				RedisMgr::GetInstance()->Close();
 			});
 
 		boost::asio::io_context  io_context;
 		auto port_str = cfg["SelfServer"]["Port"];
 		//创建Cserver智能指针
 		auto pointer_server = std::make_shared<CServer>(io_context, atoi(port_str.c_str()));
+		//启动定时器
 		pointer_server->StartTimer();
 
 		//定义一个GrpcServer
@@ -48,7 +45,6 @@ int main()
 		// 监听端口和添加服务
 		builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
 		builder.RegisterService(&service);
-
 		service.RegisterServer(pointer_server);
 		// 构建并启动gRPC服务器
 		std::unique_ptr<grpc::Server> server(builder.BuildAndStart());
@@ -56,33 +52,29 @@ int main()
 
 		//单独启动一个线程处理grpc服务
 		std::thread  grpc_server_thread([&server]() {
-			server->Wait();
+				server->Wait();
 			});
 
-
+	
 		boost::asio::signal_set signals(io_context, SIGINT, SIGTERM);
-		signals.async_wait([pointer_server,&io_context, pool, &server](auto, auto) {
-			pointer_server->Stop();
-			server->Shutdown();
+		signals.async_wait([&io_context, pool, &server](auto, auto) {
 			io_context.stop();
 			pool->Stop();
-			//要停止逻辑线程，不然无法正常退出
-			LogicSystem::GetInstance()->Stop();
-			std::cout << "signal get! pool Stop" << std::endl;
+			server->Shutdown();
 			});
-
-
+		
+	
 		//将Cserver注册给逻辑类方便以后清除连接
 		LogicSystem::GetInstance()->SetServer(pointer_server);
 		io_context.run();
-		std::cout << "io_context shutdown!" << std::endl;
 
 		grpc_server_thread.join();
-		std::cout << "grpc_server_thread join" << std::endl;
-
+		pointer_server->StopTimer();
+		return 0;
 	}
 	catch (std::exception& e) {
 		std::cerr << "Exception: " << e.what() << endl;
 	}
+
 }
 

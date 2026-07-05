@@ -1,11 +1,9 @@
-#ifndef TEXTBUBBLE_H
+﻿#ifndef TEXTBUBBLE_H
 #define TEXTBUBBLE_H
 
-
 #include <QTextEdit>
-#include <QHBoxLayout>
 #include "BubbleFrame.h"
-#include "global.h"
+#include <QHBoxLayout>
 
 class TextBubble : public BubbleFrame
 {

@@ -1,11 +1,10 @@
-#ifndef BUBBLEFRAME_H
-#define BUBBLEFRAME_H
+﻿#ifndef BUBBLE_H
+#define BUBBLE_H
 
 #include <QFrame>
-#include <QHBoxLayout>
 #include "global.h"
-
-class BubbleFrame:public QFrame
+#include <QHBoxLayout>
+class BubbleFrame : public QFrame
 {
     Q_OBJECT
 public:
@@ -18,8 +17,7 @@ protected:
 private:
     QHBoxLayout *m_pHLayout;
     ChatRole m_role;
-    int      m_margin;
-
+     int      m_margin;
 };
 
-#endif // BUBBLEFRAME_H
+#endif // BUBBLE_H

@@ -1,18 +1,17 @@
 #ifndef CLICKEDONCELABEL_H
 #define CLICKEDONCELABEL_H
-
 #include <QLabel>
 #include <QMouseEvent>
 
-class ClickedOnceLabel : public QLabel
+class ClickedOnceLabel:public QLabel
 {
     Q_OBJECT
 public:
-    ClickedOnceLabel(QWidget* parent=nullptr);
-    virtual void mouseReleaseEvent(QMouseEvent* ev)override;
+    ClickedOnceLabel(QWidget *parent=nullptr);
+    virtual void mouseReleaseEvent(QMouseEvent *ev) override;
 
 signals:
-    void clicked(QString);
+    void clicked(QString );
 };
 
 #endif // CLICKEDONCELABEL_H

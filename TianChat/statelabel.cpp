@@ -1,5 +1,4 @@
 #include "statelabel.h"
-#include <QEnterEvent>
 
 StateLabel::StateLabel(QWidget* parent):QLabel(parent),_curstate(ClickLbState::Normal)
 {

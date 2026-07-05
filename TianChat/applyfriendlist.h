@@ -3,16 +3,15 @@
 #include <QListWidget>
 #include <QEvent>
 
-class ApplyFriendList:public QListWidget
+class ApplyFriendList: public QListWidget
 {
-    Q_OBJECT
+     Q_OBJECT
 public:
-    ApplyFriendList(QWidget* parent=nullptr);
+    ApplyFriendList(QWidget *parent = nullptr);
 protected:
-    bool eventFilter(QObject* watched,QEvent* event)override;
+    bool eventFilter(QObject *watched, QEvent *event) override;
 
 private slots:
-
 
 signals:
     void sig_show_search(bool);

@@ -1,9 +1,7 @@
-#include "bubbleframe.h"
+﻿#include "BubbleFrame.h"
 #include <QPainter>
 #include <QDebug>
-
 const int WIDTH_SANJIAO  = 8;  //三角宽
-
 BubbleFrame::BubbleFrame(ChatRole role, QWidget *parent)
     :QFrame(parent)
     ,m_role(role)
@@ -72,4 +70,3 @@ void BubbleFrame::paintEvent(QPaintEvent *e)
 
     return QFrame::paintEvent(e);
 }
-

@@ -1,19 +1,46 @@
-# ==============================================
-# Visual Studio 2022 核心忽略规则
-# ==============================================
+# ============================================================
+# Keep project files that are needed to open/build the project
+# ============================================================
 
-# 用户特定文件
+!.gitignore
+!.gitattributes
+!*.sln
+!*.vcxproj
+!*.vcxproj.filters
+!*.vcxproj.props
+!*.props
+!*.targets
+!*.pro
+!*.pri
+!*.ui
+!*.qrc
+!ui_*.h
+!package.json
+!package-lock.json
+!yarn.lock
+!pnpm-lock.yaml
+
+# ============================================================
+# Visual Studio / C++ local files
+# ============================================================
+
 *.suo
 *.user
 *.userosscache
 *.sln.docstates
 *.rsuser
+*.vcxproj.user
 
-# Visual Studio 2022 缓存目录
 .vs/
 .vscode/
+*.VC.db
+*.VC.VC.opendb
+*.opendb
+*.sdf
+*.opensdf
+*.ipch/
 
-# 编译输出目录（这些目录下的所有文件都会被忽略，包括里面的dll/lib）
+# Build output directories
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
@@ -23,8 +50,11 @@ x86/
 [Bb]in/
 [Oo]bj/
 [Ll]og/
+build/
+build-*/
+out/
 
-# 中间文件和编译产物
+# C/C++ intermediate files
 *.obj
 *.pdb
 *.idb
@@ -32,17 +62,11 @@ x86/
 *.pch
 *.gch
 *.tlog
-*.log
+*.lastbuildstate
 *.cache
 *.cachefile
-*.sdf
-*.opensdf
-*.opendb
-*.VC.db
-*.VC.VC.opendb
 *.aps
 *.ncb
-*.ipch/
 *.bsc
 *.sbr
 *.tmp
@@ -54,22 +78,16 @@ x86/
 *.svclog
 *.scc
 
-# 可执行文件（项目自己编译生成的exe会被忽略）
+# Local build executables
 *.exe
 *.out
 *.app
 
-# 预编译头文件
-*.pch
-*.gch
-
-# 资源编译器输出
+# Resource compiler output
 *.res
 *.rc2
 
-# ==============================================
-# 明确保留所有库文件（关键修改）
-# ==============================================
+# Keep checked-in libraries when they are intentionally added.
 !*.dll
 !*.lib
 !*.so
@@ -78,59 +96,94 @@ x86/
 !*.la
 !*.lai
 
-# ==============================================
-# llfcchat 项目特有忽略规则
-# ==============================================
+# ============================================================
+# Qt / CMake generated files
+# ============================================================
 
-# 本地配置文件（包含数据库密码、邮箱密钥等敏感信息）
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+compile_commands.json
+CTestTestfile.cmake
+Testing/
+install_manifest.txt
+
+.qmake.stash
+.qtc_clangd/
+moc_*.cpp
+qrc_*.cpp
+*.qmlc
+*.jsc
+
+# Qt Creator user/session files
+*.pro.user
+*.pro.user.*
+*.creator.user
+*.cxx
+
+# ============================================================
+# Node.js
+# ============================================================
+
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.npm/
+.yarn/
+.pnpm-store/
+.eslintcache
+.parcel-cache/
+.turbo/
+.next/
+coverage/
+dist/
+
+# ============================================================
+# Local config and secrets
+# ============================================================
+
 config.ini
 *.config.local
+*.local.json
 *.env
-*.env.local
+*.env.*
+!.env.example
+!.env.sample
 
-# 日志文件
-*.log
+# ============================================================
+# Logs, databases, temp files
+# ============================================================
+
 logs/
-
-# 数据库文件
+*.log
 *.db
 *.sqlite
 *.sqlite3
-
-# 临时文件
 *.bak
 *.backup
 *.orig
 *.old
 
-# ==============================================
-# 操作系统通用忽略规则
-# ==============================================
+# ============================================================
+# OS files
+# ============================================================
 
-# Windows
 Thumbs.db
 ehthumbs.db
 Desktop.ini
 $RECYCLE.BIN/
-
-# MacOS
 .DS_Store
 .AppleDouble
 .LSOverride
 ._*
-
-# Linux
 *~
 
-# ==============================================
-# 其他工具忽略规则
-# ==============================================
+# ============================================================
+# Archives and generated packages
+# ============================================================
 
-# Git 自身
-!.gitignore
-!.gitattributes
-
-# 压缩包
 *.zip
 *.rar
 *.7z

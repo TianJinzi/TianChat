@@ -32,6 +32,4 @@ signals:
     void sig_auth_friend(std::shared_ptr<ApplyInfo> apply_info);
 };
 
-
-
 #endif // APPLYFRIENDITEM_H

@@ -3,7 +3,6 @@
 
 #include <QWidget>
 #include "listitembase.h"
-
 namespace Ui {
 class AddUserItem;
 }
@@ -15,9 +14,10 @@ class AddUserItem : public ListItemBase
 public:
     explicit AddUserItem(QWidget *parent = nullptr);
     ~AddUserItem();
-    QSize sizeHint()const override{
-        return QSize(250,70);
+    QSize sizeHint() const override {
+        return QSize(250, 70); // 返回自定义的尺寸
     }
+protected:
 
 private:
     Ui::AddUserItem *ui;

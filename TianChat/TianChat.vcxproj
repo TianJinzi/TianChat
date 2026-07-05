@@ -244,6 +244,7 @@
     <ClCompile Include="contactuserlist.cpp" />
     <ClCompile Include="conuseritem.cpp" />
     <ClCompile Include="customizeedit.cpp" />
+    <ClCompile Include="customizetextedit.cpp" />
     <ClCompile Include="findfaildlg.cpp" />
     <ClCompile Include="findsuccessdlg.cpp" />
     <ClCompile Include="friendinfopage.cpp" />
@@ -251,6 +252,7 @@
     <ClCompile Include="global.cpp" />
     <ClCompile Include="grouptipitem.cpp" />
     <ClCompile Include="httpmgr.cpp" />
+    <ClCompile Include="imagecropperlabel.cpp" />
     <ClCompile Include="invaliditem.cpp" />
     <ClCompile Include="lineitem.cpp" />
     <ClCompile Include="listitembase.cpp" />
@@ -270,9 +272,16 @@
     <ClCompile Include="textbubble.cpp" />
     <ClCompile Include="timerbtn.cpp" />
     <ClCompile Include="userdata.cpp" />
-    <ClCompile Include="usermgr.cpp" />
+    <ClCompile Include="userinfopage.cpp" />
+    <ClCompile Include="usermgr.cpp">
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="userinfopage.h" />
     <QtMoc Include="adduseritem.h" />
     <QtMoc Include="applyfriend.h" />
     <QtMoc Include="applyfrienditem.h" />
@@ -296,6 +305,7 @@
     <QtMoc Include="findsuccessdlg.h" />
     <QtMoc Include="friendinfopage.h" />
     <QtMoc Include="friendlabel.h" />
+    <QtMoc Include="customizetextedit.h" />
     <ClInclude Include="global.h" />
     <QtMoc Include="grouptipitem.h" />
     <QtMoc Include="httpmgr.h" />
@@ -311,12 +321,36 @@
     <QtMoc Include="resetdialog.h" />
     <QtMoc Include="searchlist.h" />
     <QtMoc Include="offlinedialog.h" />
+    <QtMoc Include="imagecropperdialog.h" />
+    <QtMoc Include="imagecropperlabel.h" />
     <ClInclude Include="singleton.h" />
     <QtMoc Include="statelabel.h" />
     <QtMoc Include="statewidget.h" />
     <QtMoc Include="tcpmgr.h" />
     <QtMoc Include="textbubble.h" />
     <ClInclude Include="timerbtn.h" />
+    <ClInclude Include="ui_adduseritem.h" />
+    <ClInclude Include="ui_applyfriend.h" />
+    <ClInclude Include="ui_applyfrienditem.h" />
+    <ClInclude Include="ui_applyfriendpage.h" />
+    <ClInclude Include="ui_authenfriend.h" />
+    <ClInclude Include="ui_chatdialog.h" />
+    <ClInclude Include="ui_chatpage.h" />
+    <ClInclude Include="ui_chatuserwid.h" />
+    <ClInclude Include="ui_conuseritem.h" />
+    <ClInclude Include="ui_findfaildlg.h" />
+    <ClInclude Include="ui_findsuccessdlg.h" />
+    <ClInclude Include="ui_friendinfopage.h" />
+    <ClInclude Include="ui_friendlabel.h" />
+    <ClInclude Include="ui_grouptipitem.h" />
+    <ClInclude Include="ui_lineitem.h" />
+    <ClInclude Include="ui_loadingdlg.h" />
+    <ClInclude Include="ui_logindialog.h" />
+    <ClInclude Include="ui_mainwindow.h" />
+    <ClInclude Include="ui_offlinedialog.h" />
+    <ClInclude Include="ui_registerdialog.h" />
+    <ClInclude Include="ui_resetdialog.h" />
+    <ClInclude Include="ui_userinfopage.h" />
     <ClInclude Include="userdata.h" />
     <QtMoc Include="usermgr.h" />
   </ItemGroup>
@@ -342,6 +376,7 @@
     <QtUic Include="offlinedialog.ui" />
     <QtUic Include="registerdialog.ui" />
     <QtUic Include="resetdialog.ui" />
+    <QtUic Include="userinfopage.ui" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\add_friend.png" />

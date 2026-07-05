@@ -3,11 +3,11 @@
 #include <QScrollBar>
 #include "listitembase.h"
 
-ApplyFriendList::ApplyFriendList(QWidget *parent):QListWidget(parent)
+ApplyFriendList::ApplyFriendList(QWidget *parent)
 {
     Q_UNUSED(parent);
-    this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+     this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+     this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     // 安装事件过滤器
     this->viewport()->installEventFilter(this);
 }
@@ -30,7 +30,7 @@ bool ApplyFriendList::eventFilter(QObject *watched, QEvent *event)
         if (event->type() == QEvent::MouseButtonPress) {
             emit sig_show_search(false);
         }
-    }
+   }
 
     // 检查事件是否是鼠标滚轮事件
     if (watched == this->viewport() && event->type() == QEvent::Wheel) {
@@ -47,4 +47,5 @@ bool ApplyFriendList::eventFilter(QObject *watched, QEvent *event)
     return QListWidget::eventFilter(watched, event);
 
 }
+
 

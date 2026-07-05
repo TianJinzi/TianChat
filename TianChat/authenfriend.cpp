@@ -3,7 +3,6 @@
 #include "clickedlabel.h"
 #include "friendlabel.h"
 #include <QScrollBar>
-#include <QJsonDocument>
 #include "usermgr.h"
 #include "tcpmgr.h"
 
@@ -28,8 +27,8 @@ AuthenFriend::AuthenFriend(QWidget *parent) :
     _tip_cur_point = QPoint(5, 5);
 
     _tip_data = { "同学","家人","菜鸟教程","C++ Primer","Rust 程序设计",
-                 "父与子学Python","nodejs开发指南","go 语言开发指南",
-                 "游戏伙伴","金融投资","微信读书","拼多多拼友" };
+                             "父与子学Python","nodejs开发指南","go 语言开发指南",
+                                "游戏伙伴","金融投资","微信读书","拼多多拼友" };
 
     connect(ui->more_lb, &ClickedOnceLabel::clicked, this, &AuthenFriend::ShowMoreLabel);
     InitTipLbs();
@@ -62,7 +61,7 @@ void AuthenFriend::InitTipLbs()
 
         auto* lb = new ClickedLabel(ui->lb_list);
         lb->SetState("normal", "hover", "pressed", "selected_normal",
-                     "selected_hover", "selected_pressed");
+            "selected_hover", "selected_pressed");
         lb->setObjectName("tipslb");
         lb->setText(_tip_data[i]);
         connect(lb, &ClickedLabel::clicked, this, &AuthenFriend::SlotChangeFriendLabelByTip);
@@ -83,11 +82,11 @@ void AuthenFriend::InitTipLbs()
 
         }
 
-        auto next_point = _tip_cur_point;
+       auto next_point = _tip_cur_point;
 
-        AddTipLbs(lb, _tip_cur_point,next_point, textWidth, textHeight);
+       AddTipLbs(lb, _tip_cur_point,next_point, textWidth, textHeight);
 
-        _tip_cur_point = next_point;
+       _tip_cur_point = next_point;
     }
 
 }
@@ -161,7 +160,7 @@ void AuthenFriend::ShowMoreLabel()
 
         auto* lb = new ClickedLabel(ui->lb_list);
         lb->SetState("normal", "hover", "pressed", "selected_normal",
-                     "selected_hover", "selected_pressed");
+            "selected_hover", "selected_pressed");
         lb->setObjectName("tipslb");
         lb->setText(_tip_data[i]);
         connect(lb, &ClickedLabel::clicked, this, &AuthenFriend::SlotChangeFriendLabelByTip);
@@ -177,7 +176,7 @@ void AuthenFriend::ShowMoreLabel()
 
         }
 
-        next_point = _tip_cur_point;
+         next_point = _tip_cur_point;
 
         AddTipLbs(lb, _tip_cur_point, next_point, textWidth, textHeight);
 
@@ -185,8 +184,8 @@ void AuthenFriend::ShowMoreLabel()
 
     }
 
-    int diff_height = next_point.y() + textHeight + tip_offset - ui->lb_list->height();
-    ui->lb_list->setFixedHeight(next_point.y() + textHeight + tip_offset);
+   int diff_height = next_point.y() + textHeight + tip_offset - ui->lb_list->height();
+   ui->lb_list->setFixedHeight(next_point.y() + textHeight + tip_offset);
 
     //qDebug()<<"after resize ui->lb_list size is " <<  ui->lb_list->size();
     ui->scrollcontent->setFixedHeight(ui->scrollcontent->height()+diff_height);
@@ -197,7 +196,6 @@ void AuthenFriend::resetLabels()
     auto max_width = ui->gridWidget->width();
     auto label_height = 0;
     for(auto iter = _friend_labels.begin(); iter != _friend_labels.end(); iter++){
-        //todo... 添加宽度统计
         if( _label_point.x() + iter.value()->width() > max_width) {
             _label_point.setY(_label_point.y()+iter.value()->height()+6);
             _label_point.setX(2);
@@ -212,14 +210,14 @@ void AuthenFriend::resetLabels()
     }
 
     if(_friend_labels.isEmpty()){
-        ui->lb_ed->move(_label_point);
-        return;
+         ui->lb_ed->move(_label_point);
+         return;
     }
 
     if(_label_point.x() + MIN_APPLY_LABEL_ED_LEN > ui->gridWidget->width()){
         ui->lb_ed->move(2,_label_point.y()+label_height+6);
     }else{
-        ui->lb_ed->move(_label_point);
+         ui->lb_ed->move(_label_point);
     }
 }
 
@@ -234,7 +232,7 @@ void AuthenFriend::addLabel(QString name)
     tmplabel->setObjectName("FriendLabel");
 
     auto max_width = ui->gridWidget->width();
-    //todo... 添加宽度统计
+
     if (_label_point.x() + tmplabel->width() > max_width) {
         _label_point.setY(_label_point.y() + tmplabel->height() + 6);
         _label_point.setX(2);
@@ -285,38 +283,38 @@ void AuthenFriend::SlotRemoveFriendLabel(QString name)
     _label_point.setX(2);
     _label_point.setY(6);
 
-    auto find_iter = _friend_labels.find(name);
+   auto find_iter = _friend_labels.find(name);
 
-    if(find_iter == _friend_labels.end()){
+   if(find_iter == _friend_labels.end()){
+       return;
+   }
+
+   auto find_key = _friend_label_keys.end();
+   for(auto iter = _friend_label_keys.begin(); iter != _friend_label_keys.end();
+       iter++){
+       if(*iter == name){
+           find_key = iter;
+           break;
+       }
+   }
+
+   if(find_key != _friend_label_keys.end()){
+      _friend_label_keys.erase(find_key);
+   }
+
+
+   delete find_iter.value();
+
+   _friend_labels.erase(find_iter);
+
+   resetLabels();
+
+   auto find_add = _add_labels.find(name);
+   if(find_add == _add_labels.end()){
         return;
-    }
+   }
 
-    auto find_key = _friend_label_keys.end();
-    for(auto iter = _friend_label_keys.begin(); iter != _friend_label_keys.end();
-         iter++){
-        if(*iter == name){
-            find_key = iter;
-            break;
-        }
-    }
-
-    if(find_key != _friend_label_keys.end()){
-        _friend_label_keys.erase(find_key);
-    }
-
-
-    delete find_iter.value();
-
-    _friend_labels.erase(find_iter);
-
-    resetLabels();
-
-    auto find_add = _add_labels.find(name);
-    if(find_add == _add_labels.end()){
-        return;
-    }
-
-    find_add.value()->ResetNormalState();
+   find_add.value()->ResetNormalState();
 }
 
 //点击标已有签添加或删除新联系人的标签
@@ -379,7 +377,7 @@ void AuthenFriend::SlotAddFirendLabelByClickTip(QString text)
 
     auto* lb = new ClickedLabel(ui->lb_list);
     lb->SetState("normal", "hover", "pressed", "selected_normal",
-                 "selected_hover", "selected_pressed");
+        "selected_hover", "selected_pressed");
     lb->setObjectName("tipslb");
     lb->setText(text);
     connect(lb, &ClickedLabel::clicked, this, &AuthenFriend::SlotChangeFriendLabelByTip);
@@ -400,7 +398,7 @@ void AuthenFriend::SlotAddFirendLabelByClickTip(QString text)
 
     auto next_point = _tip_cur_point;
 
-    AddTipLbs(lb, _tip_cur_point, next_point, textWidth,textHeight);
+     AddTipLbs(lb, _tip_cur_point, next_point, textWidth,textHeight);
     _tip_cur_point = next_point;
 
     int diff_height = next_point.y() + textHeight + tip_offset - ui->lb_list->height();

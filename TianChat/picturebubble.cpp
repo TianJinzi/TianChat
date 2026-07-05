@@ -1,11 +1,12 @@
-#include "picturebubble.h"
+﻿#include "PictureBubble.h"
 #include <QLabel>
+
 
 #define PIC_MAX_WIDTH 160
 #define PIC_MAX_HEIGHT 90
 
 PictureBubble::PictureBubble(const QPixmap &picture, ChatRole role, QWidget *parent)
-    :BubbleFrame(role,parent)
+    :BubbleFrame(role, parent)
 {
     QLabel *lb = new QLabel();
     lb->setScaledContents(true);

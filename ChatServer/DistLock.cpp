@@ -10,17 +10,19 @@
 #include <boost/uuid/uuid_io.hpp>
 #include <hiredis.h>
 
+
+//定义单例模式
 DistLock& DistLock::Inst() {
 	static DistLock lock;
 	return lock;
 }
 
+// 使用 Boost UUID 生成全局唯一标识符（UUID）
 static std::string generateUUID() {
 	boost::uuids::uuid uuid = boost::uuids::random_generator()();
-	return to_string(uuid); 
+	return to_string(uuid);
 }
 
-// 尝试获取锁，返回锁的唯一标识符（UUID），如果获取失败则返回空字符串
 // 尝试获取锁，返回锁的唯一标识符（UUID），如果获取失败则返回空字符串
 std::string DistLock::acquireLock(redisContext* context, const std::string& lockName,
     int lockTimeout, int acquireTimeout) {
@@ -46,11 +48,12 @@ std::string DistLock::acquireLock(redisContext* context, const std::string& lock
     return "";
 }
 
+// 释放锁，只有锁的持有者才能释放，返回是否成功
 bool DistLock::releaseLock(redisContext* context, const std::string& lockName,
-    const std::string& identifier)  {
-    const std::string lockKey = "lock:" + lockName;
-    //Lua脚本，判断锁的标识是否匹配,匹配就删除锁
-    const char* luaScript="if redis.call('get', KEYS[1]) == ARGV[1] then \
+    const std::string& identifier) {
+    std::string lockKey = "lock:" + lockName;
+    // Lua 脚本：判断锁标识是否匹配，匹配则删除锁
+    const char* luaScript = "if redis.call('get', KEYS[1]) == ARGV[1] then \
                                 return redis.call('del', KEYS[1]) \
                              else \
                                 return 0 \
@@ -67,6 +70,4 @@ bool DistLock::releaseLock(redisContext* context, const std::string& lockName,
         freeReplyObject(reply);
     }
     return success;
-
 }
-

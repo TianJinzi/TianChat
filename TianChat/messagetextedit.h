@@ -1,4 +1,4 @@
-#ifndef MESSAGETEXTEDIT_H
+﻿#ifndef MESSAGETEXTEDIT_H
 #define MESSAGETEXTEDIT_H
 
 #include <QObject>
@@ -55,6 +55,5 @@ private:
     QVector<MsgInfo> mMsgList;
     QVector<MsgInfo> mGetMsgList;
 };
-
 
 #endif // MESSAGETEXTEDIT_H

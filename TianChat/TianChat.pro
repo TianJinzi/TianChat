@@ -37,6 +37,7 @@ SOURCES += \
     global.cpp \
     grouptipitem.cpp \
     httpmgr.cpp \
+    imagecropperlabel.cpp \
     invaliditem.cpp \
     lineitem.cpp \
     listitembase.cpp \
@@ -56,6 +57,7 @@ SOURCES += \
     textbubble.cpp \
     timerbtn.cpp \
     userdata.cpp \
+    userinfopage.cpp \
     usermgr.cpp
 
 HEADERS += \
@@ -85,6 +87,8 @@ HEADERS += \
     global.h \
     grouptipitem.h \
     httpmgr.h \
+    imagecropperdialog.h \
+    imagecropperlabel.h \
     invaliditem.h \
     lineitem.h \
     listitembase.h \
@@ -104,6 +108,7 @@ HEADERS += \
     textbubble.h \
     timerbtn.h \
     userdata.h \
+    userinfopage.h \
     usermgr.h
 
 FORMS += \
@@ -127,7 +132,8 @@ FORMS += \
     mainwindow.ui \
     offlinedialog.ui \
     registerdialog.ui \
-    resetdialog.ui
+    resetdialog.ui \
+    userinfopage.ui
 
 RC_ICONS=icon.ico
 DESTDIR=./bin

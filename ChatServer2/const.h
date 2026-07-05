@@ -1,24 +1,5 @@
 #pragma once
-#include <boost/beast/http.hpp>
-#include <boost/beast.hpp>
-#include <boost/asio.hpp>
-#include <memory>
-#include <iostream>
 #include <functional>
-#include <map>
-#include <unordered_map>
-#include <json/json.h>
-#include <json/value.h>
-#include <json/reader.h>
-#include <boost/filesystem.hpp>
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/ini_parser.hpp>
-#include <atomic>
-#include <queue>
-#include <mutex>
-#include <condition_variable>
-#include <cassert>
-#include "hiredis.h"
 
 
 enum ErrorCodes {
@@ -34,6 +15,8 @@ enum ErrorCodes {
 	PasswdInvalid = 1009,   //密码更新失败
 	TokenInvalid = 1010,   //Token失效
 	UidInvalid = 1011,  //uid无效
+	CREATE_CHAT_FAILED = 1012, //创建聊天失败
+	LOAD_CHAT_FAILED = 1013, //加载聊天失败
 };
 
 
@@ -62,9 +45,6 @@ private:
 #define MAX_RECVQUE  10000
 #define MAX_SENDQUE 1000
 
-//超时时间
-constexpr double TIMEOUT_PERIOD = 20;
-
 
 enum MSG_IDS {
 	MSG_CHAT_LOGIN = 1005, //用户登陆
@@ -72,7 +52,7 @@ enum MSG_IDS {
 	ID_SEARCH_USER_REQ = 1007, //用户搜索请求
 	ID_SEARCH_USER_RSP = 1008, //搜索用户回包
 	ID_ADD_FRIEND_REQ = 1009, //申请添加好友请求
-	ID_ADD_FRIEND_RSP = 1010, //申请添加好友回复
+	ID_ADD_FRIEND_RSP  = 1010, //申请添加好友回复
 	ID_NOTIFY_ADD_FRIEND_REQ = 1011,  //通知用户添加好友申请
 	ID_AUTH_FRIEND_REQ = 1013,  //认证好友请求
 	ID_AUTH_FRIEND_RSP = 1014,  //认证好友回复
@@ -81,19 +61,16 @@ enum MSG_IDS {
 	ID_TEXT_CHAT_MSG_RSP = 1018, //文本聊天信息回复
 	ID_NOTIFY_TEXT_CHAT_MSG_REQ = 1019, //通知用户文本聊天信息
 	ID_NOTIFY_OFF_LINE_REQ = 1021, //通知用户下线
-	ID_HEARTBEAT_REQ=1023,	//心跳请求
-	ID_HEARTBEAT_RSP=1024	//心跳回复
+	ID_HEART_BEAT_REQ = 1023,      //心跳请求
+	ID_HEARTBEAT_RSP = 1024,       //心跳回复
+	ID_LOAD_CHAT_THREAD_REQ = 1025, //加载聊天线程请求
+	ID_LOAD_CHAT_THREAD_RSP = 1026, //加载聊天线程回复
+	ID_CREATE_PRIVATE_CHAT_REQ = 1027, //创建私聊请求
+	ID_CREATE_PRIVATE_CHAT_RSP = 1028, //创建私聊回复
+
+	ID_LOAD_CHAT_MSG_REQ = 1029,      //加载聊天消息
+	ID_LOAD_CHAT_MSG_RSP = 1030,      //加载聊天消息
 };
-
-const std::string DELETE_IF_MATCH_SCRIPT = R"(
-    local current = redis.call("GET", KEYS[1])
-    if current == ARGV[1] then
-        return redis.call("DEL", KEYS[1])
-    else
-        return 0
-    end
-)";
-
 
 #define USERIPPREFIX  "uip_"
 #define USERTOKENPREFIX  "utoken_"

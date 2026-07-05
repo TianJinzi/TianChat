@@ -1,8 +1,8 @@
 #ifndef GROUPTIPITEM_H
 #define GROUPTIPITEM_H
 
-#include "listitembase.h"
 #include <QWidget>
+#include "listitembase.h"
 
 namespace Ui {
 class GroupTipItem;

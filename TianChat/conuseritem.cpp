@@ -1,9 +1,9 @@
 #include "conuseritem.h"
 #include "ui_conuseritem.h"
 
-ConUserItem::ConUserItem(QWidget *parent)
-    : ListItemBase(parent)
-    , ui(new Ui::ConUserItem)
+ConUserItem::ConUserItem(QWidget *parent) :
+    ListItemBase(parent),
+    ui(new Ui::ConUserItem)
 {
     ui->setupUi(this);
     SetItemType(ListItemType::CONTACT_USER_ITEM);
@@ -36,16 +36,16 @@ void ConUserItem::SetInfo(std::shared_ptr<AuthInfo> auth_info)
 
 void ConUserItem::SetInfo(int uid, QString name, QString icon)
 {
-    _info = std::make_shared<UserInfo>(uid,name, name, icon, 0);
+     _info = std::make_shared<UserInfo>(uid,name, name, icon, 0);
 
-    // 加载图片
-    QPixmap pixmap(_info->_icon);
+     // 加载图片
+     QPixmap pixmap(_info->_icon);
 
-    // 设置图片自动缩放
-    ui->icon_lb->setPixmap(pixmap.scaled(ui->icon_lb->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
-    ui->icon_lb->setScaledContents(true);
+     // 设置图片自动缩放
+     ui->icon_lb->setPixmap(pixmap.scaled(ui->icon_lb->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+     ui->icon_lb->setScaledContents(true);
 
-    ui->user_name_lb->setText(_info->_name);
+     ui->user_name_lb->setText(_info->_name);
 }
 
 void ConUserItem::SetInfo(std::shared_ptr<AuthRsp> auth_rsp){
@@ -75,4 +75,3 @@ std::shared_ptr<UserInfo> ConUserItem::GetInfo()
 {
     return _info;
 }
-

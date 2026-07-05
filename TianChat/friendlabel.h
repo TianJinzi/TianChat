@@ -2,6 +2,7 @@
 #define FRIENDLABEL_H
 
 #include <QFrame>
+#include <QString>
 
 namespace Ui {
 class FriendLabel;
