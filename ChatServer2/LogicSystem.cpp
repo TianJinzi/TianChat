@@ -19,9 +19,7 @@ LogicSystem::LogicSystem():_b_stop(false), _p_server(nullptr){
 }
 
 LogicSystem::~LogicSystem(){
-	_b_stop = true;
-	_consume.notify_one();
-	_worker_thread.join();
+
 }
 
 void LogicSystem::PostMsgToQue(shared_ptr < LogicNode> msg) {
@@ -39,6 +37,15 @@ void LogicSystem::SetServer(std::shared_ptr<CServer> pserver) {
 	_p_server = pserver;
 }
 
+void LogicSystem::Stop() {
+	_b_stop = true;
+	_consume.notify_all();
+
+	if (_worker_thread.joinable()) {
+		_worker_thread.join();
+		std::cout << "LogicSystem worker_thread is joined\n" << std::endl;
+	}
+}
 
 void LogicSystem::DealMsg() {
 	for (;;) {
@@ -159,6 +166,7 @@ void LogicSystem::LoginHandler(shared_ptr<CSession> session, const short &msg_id
 	rtvalue["sex"] = user_info->sex;
 	rtvalue["icon"] = user_info->icon;
 
+
 	//从数据库获取申请列表
 	std::vector<std::shared_ptr<ApplyInfo>> apply_list;
 	auto b_apply = GetFriendApplyInfo(uid, apply_list);
@@ -189,6 +197,8 @@ void LogicSystem::LoginHandler(shared_ptr<CSession> session, const short &msg_id
 		obj["desc"] = friend_ele->desc;
 		obj["back"] = friend_ele->back;
 		rtvalue["friend_list"].append(obj);
+
+		std::cout << "friend information is :" << obj << std::endl;
 	}
 
 	auto server_name = ConfigMgr::Inst().GetValue("SelfServer", "Name");

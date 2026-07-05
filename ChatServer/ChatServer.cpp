@@ -61,6 +61,9 @@ int main()
 			io_context.stop();
 			pool->Stop();
 			server->Shutdown();
+			//这里要释放LogicSystem对Server的智能指针才能让他们被析构
+			LogicSystem::GetInstance()->SetServer(nullptr);
+			LogicSystem::GetInstance()->Stop();
 			});
 		
 	

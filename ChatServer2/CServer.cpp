@@ -4,24 +4,21 @@
 #include "UserMgr.h"
 #include "RedisMgr.h"
 #include "ConfigMgr.h"
+
 CServer::CServer(boost::asio::io_context& io_context, short port):_io_context(io_context), _port(port),
-_acceptor(io_context, tcp::endpoint(tcp::v4(),port)),_timer(io_context,std::chrono::seconds(60)),_b_stop(false)
+_acceptor(io_context, tcp::endpoint(tcp::v4(),port)), _timer(_io_context, std::chrono::seconds(60))
 {
 	cout << "Server start success, listen on port : " << _port << endl;
+
 	StartAccept();
 }
 
 CServer::~CServer() {
 	cout << "Server destruct listen on port : " << _port << endl;
+	
 }
 
 void CServer::HandleAccept(shared_ptr<CSession> new_session, const boost::system::error_code& error){
-	if (_b_stop) {
-		return;
-	}
-	if (error == boost::asio::error::operation_aborted) {
-		return;
-	}
 	if (!error) {
 		new_session->Start();
 		lock_guard<mutex> lock(_mutex);
@@ -40,6 +37,7 @@ void CServer::StartAccept() {
 	_acceptor.async_accept(new_session->GetSocket(), std::bind(&CServer::HandleAccept, this, new_session, placeholders::_1));
 }
 
+//根据session 的id删除session，并移除用户和session的关联
 void CServer::ClearSession(std::string session_id) {
 	
 	lock_guard<mutex> lock(_mutex);
@@ -54,7 +52,9 @@ void CServer::ClearSession(std::string session_id) {
 	
 }
 
+//根据用户获取session
 shared_ptr<CSession> CServer::GetSession(std::string uuid) {
+	lock_guard<mutex> lock(_mutex);
 	auto it = _sessions.find(uuid);
 	if (it != _sessions.end()) {
 		return it->second;
@@ -62,31 +62,41 @@ shared_ptr<CSession> CServer::GetSession(std::string uuid) {
 	return nullptr;
 }
 
-void CServer::on_timer(const boost::system::error_code& e) {
-	if (e == boost::asio::error::operation_aborted) {
+bool CServer::CheckValid(std::string uuid)
+{
+	lock_guard<mutex> lock(_mutex);
+	auto it = _sessions.find(uuid);
+	if (it != _sessions.end()) {
+		return true;
+	}
+	return false;
+}
+
+void CServer::on_timer(const boost::system::error_code& ec) {
+	if (ec) {
+		std::cout << "timer error: " << ec.message() << std::endl;
 		return;
 	}
-	if (e) {
-		std::cout << "timer error" << e.message() << std::endl;
-		return;
-	}
-	std::vector<std::shared_ptr<CSession>>_expired_sessions;
+	std::vector<std::shared_ptr<CSession>> _expired_sessions;
 	int session_count = 0;
-	std::map<std::string, shared_ptr<CSession>>sessions_copy;
+	//此处加锁遍历session
+	std::map<std::string, shared_ptr<CSession>> sessions_copy;
 	{
-		lock_guard<mutex>lock(_mutex);
+		lock_guard<mutex> lock(_mutex);
 		sessions_copy = _sessions;
 	}
+
 	time_t now = std::time(nullptr);
-	for (auto iter = sessions_copy.begin();iter != sessions_copy.end();iter++) {
+	for (auto iter = sessions_copy.begin(); iter != sessions_copy.end(); iter++) {
 		auto b_expired = iter->second->IsHeartbeatExpired(now);
 		if (b_expired) {
+			//关闭socket, 其实这里也会触发async_read的错误处理
 			iter->second->Close();
+			//收集过期信息
 			_expired_sessions.push_back(iter->second);
 			continue;
 		}
 		session_count++;
-		
 	}
 
 	//设置session数量
@@ -95,46 +105,28 @@ void CServer::on_timer(const boost::system::error_code& e) {
 	auto count_str = std::to_string(session_count);
 	RedisMgr::GetInstance()->HSet(LOGIN_COUNT, self_name, count_str);
 
-
-	//处理过期session
-	for (auto& session : _expired_sessions) {
+	//处理过期session, 单独提出，防止死锁
+	for (auto &session : _expired_sessions) {
 		session->DealExceptionSession();
 	}
-	//再设置下一个60s检测
+	
+	//再次设置，下一个60s检测
 	_timer.expires_after(std::chrono::seconds(60));
-	auto self = shared_from_this();
-	_timer.async_wait([self](boost::system::error_code e) {
-		self->on_timer(e);
+	_timer.async_wait([this](boost::system::error_code ec) {
+		on_timer(ec);
+	});
+}
+
+void CServer::StartTimer()
+{
+	//启动定时器
+	auto self(shared_from_this());
+	_timer.async_wait([self](boost::system::error_code ec) {
+		self->on_timer(ec);
 		});
 }
 
-bool CServer::CheckValid(std::string session_id) {
-	lock_guard<mutex>lock(_mutex);
-	auto it = _sessions.find(session_id);
-	if (it != _sessions.end()) {
-		return true;
-	}
-	return false;
-}
-
-void CServer::StartTimer() {
-	auto self = shared_from_this();
-	_timer.async_wait([self](boost::system::error_code e) {
-		self->on_timer(e);
-		});
-}
-
-void CServer::Stop() {
-	std::lock_guard<std::mutex> lock(_mutex);
-	_b_stop = true;
-	boost::system::error_code ec;
-
+void CServer::StopTimer()
+{
 	_timer.cancel();
-	_acceptor.cancel(ec);
-	_acceptor.close(ec);
-
-	for (auto se : _sessions) {
-		se.second->Close();
-	}
-	_sessions.clear();
 }
