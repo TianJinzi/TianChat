@@ -56,10 +56,11 @@ public:
 
         name_lb = new QLabel(widget);
         name_lb->setObjectName("name_lb");
+        name_lb->setAlignment(Qt::AlignCenter);
 
         horizontalLayout->addWidget(name_lb);
 
-        horizontalSpacer = new QSpacerItem(155, 20, QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Minimum);
+        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Minimum);
 
         horizontalLayout->addItem(horizontalSpacer);
 
@@ -89,8 +90,8 @@ public:
     void retranslateUi(QDialog *FindSuccessDlg)
     {
         FindSuccessDlg->setWindowTitle(QCoreApplication::translate("FindSuccessDlg", "Dialog", nullptr));
-        head_lb->setText(QCoreApplication::translate("FindSuccessDlg", "TextLabel", nullptr));
-        name_lb->setText(QCoreApplication::translate("FindSuccessDlg", "TextLabel", nullptr));
+        head_lb->setText(QString());
+        name_lb->setText(QCoreApplication::translate("FindSuccessDlg", "\351\246\231\346\260\264\346\234\211\346\257\222", nullptr));
         add_friend_btn->setText(QCoreApplication::translate("FindSuccessDlg", "\346\267\273\345\212\240\345\210\260\351\200\232\350\256\257\345\275\225", nullptr));
     } // retranslateUi
 

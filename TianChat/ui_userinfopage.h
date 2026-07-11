@@ -11,7 +11,6 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QFrame>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
@@ -25,189 +24,173 @@ QT_BEGIN_NAMESPACE
 class Ui_UserInfoPage
 {
 public:
-    QHBoxLayout *horizontalLayout;
-    QSpacerItem *horizontalSpacer;
-    QWidget *widget;
-    QVBoxLayout *verticalLayout;
-    QSpacerItem *verticalSpacer_2;
-    QLabel *label;
+    QHBoxLayout *horizontalLayout_6;
+    QSpacerItem *horizontalSpacer_4;
+    QVBoxLayout *verticalLayout_2;
     QSpacerItem *verticalSpacer_3;
-    QWidget *widget_2;
-    QHBoxLayout *horizontalLayout_5;
+    QLabel *label_4;
+    QSpacerItem *verticalSpacer_4;
+    QHBoxLayout *horizontalLayout;
     QLabel *head_lb;
     QSpacerItem *horizontalSpacer_6;
     QPushButton *up_btn;
-    QSpacerItem *verticalSpacer;
-    QWidget *widget_3;
+    QSpacerItem *verticalSpacer_2;
     QHBoxLayout *horizontalLayout_2;
-    QLabel *label_2;
+    QLabel *label;
     QLineEdit *nick_ed;
-    QSpacerItem *horizontalSpacer_3;
-    QWidget *widget_4;
+    QSpacerItem *horizontalSpacer;
     QHBoxLayout *horizontalLayout_3;
-    QLabel *label_3;
+    QLabel *label_2;
     QLineEdit *name_ed;
-    QSpacerItem *horizontalSpacer_4;
-    QWidget *widget_5;
-    QHBoxLayout *horizontalLayout_4;
-    QLabel *label_4;
-    QLineEdit *desc_ed;
-    QSpacerItem *horizontalSpacer_5;
-    QFrame *frame;
-    QHBoxLayout *horizontalLayout_6;
-    QPushButton *pushButton;
     QSpacerItem *horizontalSpacer_2;
+    QHBoxLayout *horizontalLayout_4;
+    QLabel *label_3;
+    QLineEdit *desc_ed;
+    QSpacerItem *horizontalSpacer_3;
+    QHBoxLayout *horizontalLayout_5;
+    QPushButton *submit_btn;
+    QSpacerItem *verticalSpacer;
+    QSpacerItem *horizontalSpacer_5;
 
     void setupUi(QWidget *UserInfoPage)
     {
         if (UserInfoPage->objectName().isEmpty())
             UserInfoPage->setObjectName("UserInfoPage");
-        UserInfoPage->resize(422, 599);
-        horizontalLayout = new QHBoxLayout(UserInfoPage);
+        UserInfoPage->resize(508, 487);
+        horizontalLayout_6 = new QHBoxLayout(UserInfoPage);
+        horizontalLayout_6->setObjectName("horizontalLayout_6");
+        horizontalSpacer_4 = new QSpacerItem(40, 20, QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Minimum);
+
+        horizontalLayout_6->addItem(horizontalSpacer_4);
+
+        verticalLayout_2 = new QVBoxLayout();
+        verticalLayout_2->setObjectName("verticalLayout_2");
+        verticalLayout_2->setContentsMargins(5, 5, 5, 5);
+        verticalSpacer_3 = new QSpacerItem(20, 40, QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Fixed);
+
+        verticalLayout_2->addItem(verticalSpacer_3);
+
+        label_4 = new QLabel(UserInfoPage);
+        label_4->setObjectName("label_4");
+
+        verticalLayout_2->addWidget(label_4);
+
+        verticalSpacer_4 = new QSpacerItem(20, 40, QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Fixed);
+
+        verticalLayout_2->addItem(verticalSpacer_4);
+
+        horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName("horizontalLayout");
-        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Minimum);
-
-        horizontalLayout->addItem(horizontalSpacer);
-
-        widget = new QWidget(UserInfoPage);
-        widget->setObjectName("widget");
-        widget->setMinimumSize(QSize(250, 0));
-        verticalLayout = new QVBoxLayout(widget);
-        verticalLayout->setObjectName("verticalLayout");
-        verticalSpacer_2 = new QSpacerItem(20, 20, QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Fixed);
-
-        verticalLayout->addItem(verticalSpacer_2);
-
-        label = new QLabel(widget);
-        label->setObjectName("label");
-
-        verticalLayout->addWidget(label);
-
-        verticalSpacer_3 = new QSpacerItem(20, 20, QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Fixed);
-
-        verticalLayout->addItem(verticalSpacer_3);
-
-        widget_2 = new QWidget(widget);
-        widget_2->setObjectName("widget_2");
-        widget_2->setMinimumSize(QSize(0, 270));
-        horizontalLayout_5 = new QHBoxLayout(widget_2);
-        horizontalLayout_5->setObjectName("horizontalLayout_5");
-        head_lb = new QLabel(widget_2);
+        head_lb = new QLabel(UserInfoPage);
         head_lb->setObjectName("head_lb");
         head_lb->setMinimumSize(QSize(200, 200));
         head_lb->setMaximumSize(QSize(200, 200));
 
-        horizontalLayout_5->addWidget(head_lb);
+        horizontalLayout->addWidget(head_lb);
 
         horizontalSpacer_6 = new QSpacerItem(40, 20, QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Minimum);
 
-        horizontalLayout_5->addItem(horizontalSpacer_6);
+        horizontalLayout->addItem(horizontalSpacer_6);
 
-        up_btn = new QPushButton(widget_2);
+        up_btn = new QPushButton(UserInfoPage);
         up_btn->setObjectName("up_btn");
-        up_btn->setMinimumSize(QSize(60, 0));
-        up_btn->setMaximumSize(QSize(60, 16777215));
+        up_btn->setMinimumSize(QSize(120, 30));
+        up_btn->setMaximumSize(QSize(120, 30));
 
-        horizontalLayout_5->addWidget(up_btn);
+        horizontalLayout->addWidget(up_btn);
 
 
-        verticalLayout->addWidget(widget_2);
+        verticalLayout_2->addLayout(horizontalLayout);
 
-        verticalSpacer = new QSpacerItem(20, 20, QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Fixed);
+        verticalSpacer_2 = new QSpacerItem(20, 20, QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Fixed);
 
-        verticalLayout->addItem(verticalSpacer);
+        verticalLayout_2->addItem(verticalSpacer_2);
 
-        widget_3 = new QWidget(widget);
-        widget_3->setObjectName("widget_3");
-        horizontalLayout_2 = new QHBoxLayout(widget_3);
+        horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setObjectName("horizontalLayout_2");
-        label_2 = new QLabel(widget_3);
-        label_2->setObjectName("label_2");
-        label_2->setMinimumSize(QSize(35, 0));
-        label_2->setMaximumSize(QSize(35, 16777215));
+        label = new QLabel(UserInfoPage);
+        label->setObjectName("label");
 
-        horizontalLayout_2->addWidget(label_2);
+        horizontalLayout_2->addWidget(label);
 
-        nick_ed = new QLineEdit(widget_3);
+        nick_ed = new QLineEdit(UserInfoPage);
         nick_ed->setObjectName("nick_ed");
+        nick_ed->setMinimumSize(QSize(200, 30));
+        nick_ed->setMaximumSize(QSize(200, 30));
 
         horizontalLayout_2->addWidget(nick_ed);
 
-        horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Minimum);
+        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Minimum);
 
-        horizontalLayout_2->addItem(horizontalSpacer_3);
+        horizontalLayout_2->addItem(horizontalSpacer);
 
 
-        verticalLayout->addWidget(widget_3);
+        verticalLayout_2->addLayout(horizontalLayout_2);
 
-        widget_4 = new QWidget(widget);
-        widget_4->setObjectName("widget_4");
-        horizontalLayout_3 = new QHBoxLayout(widget_4);
+        horizontalLayout_3 = new QHBoxLayout();
         horizontalLayout_3->setObjectName("horizontalLayout_3");
-        label_3 = new QLabel(widget_4);
-        label_3->setObjectName("label_3");
-        label_3->setMinimumSize(QSize(35, 0));
-        label_3->setMaximumSize(QSize(35, 16777215));
+        label_2 = new QLabel(UserInfoPage);
+        label_2->setObjectName("label_2");
 
-        horizontalLayout_3->addWidget(label_3);
+        horizontalLayout_3->addWidget(label_2);
 
-        name_ed = new QLineEdit(widget_4);
+        name_ed = new QLineEdit(UserInfoPage);
         name_ed->setObjectName("name_ed");
+        name_ed->setMinimumSize(QSize(200, 30));
+        name_ed->setMaximumSize(QSize(200, 30));
 
         horizontalLayout_3->addWidget(name_ed);
 
-        horizontalSpacer_4 = new QSpacerItem(40, 20, QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Minimum);
+        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Minimum);
 
-        horizontalLayout_3->addItem(horizontalSpacer_4);
+        horizontalLayout_3->addItem(horizontalSpacer_2);
 
 
-        verticalLayout->addWidget(widget_4);
+        verticalLayout_2->addLayout(horizontalLayout_3);
 
-        widget_5 = new QWidget(widget);
-        widget_5->setObjectName("widget_5");
-        horizontalLayout_4 = new QHBoxLayout(widget_5);
+        horizontalLayout_4 = new QHBoxLayout();
         horizontalLayout_4->setObjectName("horizontalLayout_4");
-        label_4 = new QLabel(widget_5);
-        label_4->setObjectName("label_4");
-        label_4->setMinimumSize(QSize(35, 0));
-        label_4->setMaximumSize(QSize(35, 16777215));
+        label_3 = new QLabel(UserInfoPage);
+        label_3->setObjectName("label_3");
 
-        horizontalLayout_4->addWidget(label_4);
+        horizontalLayout_4->addWidget(label_3);
 
-        desc_ed = new QLineEdit(widget_5);
+        desc_ed = new QLineEdit(UserInfoPage);
         desc_ed->setObjectName("desc_ed");
+        desc_ed->setMinimumSize(QSize(200, 30));
+        desc_ed->setMaximumSize(QSize(200, 30));
 
         horizontalLayout_4->addWidget(desc_ed);
 
-        horizontalSpacer_5 = new QSpacerItem(40, 20, QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Minimum);
+        horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Minimum);
 
-        horizontalLayout_4->addItem(horizontalSpacer_5);
-
-
-        verticalLayout->addWidget(widget_5);
-
-        frame = new QFrame(widget);
-        frame->setObjectName("frame");
-        frame->setFrameShape(QFrame::Shape::StyledPanel);
-        frame->setFrameShadow(QFrame::Shadow::Raised);
-        horizontalLayout_6 = new QHBoxLayout(frame);
-        horizontalLayout_6->setObjectName("horizontalLayout_6");
-        pushButton = new QPushButton(frame);
-        pushButton->setObjectName("pushButton");
-        pushButton->setMinimumSize(QSize(60, 0));
-        pushButton->setMaximumSize(QSize(60, 16777215));
-
-        horizontalLayout_6->addWidget(pushButton);
+        horizontalLayout_4->addItem(horizontalSpacer_3);
 
 
-        verticalLayout->addWidget(frame);
+        verticalLayout_2->addLayout(horizontalLayout_4);
+
+        horizontalLayout_5 = new QHBoxLayout();
+        horizontalLayout_5->setObjectName("horizontalLayout_5");
+        submit_btn = new QPushButton(UserInfoPage);
+        submit_btn->setObjectName("submit_btn");
+        submit_btn->setMinimumSize(QSize(100, 30));
+        submit_btn->setMaximumSize(QSize(100, 30));
+
+        horizontalLayout_5->addWidget(submit_btn);
 
 
-        horizontalLayout->addWidget(widget);
+        verticalLayout_2->addLayout(horizontalLayout_5);
 
-        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Minimum);
+        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Expanding);
 
-        horizontalLayout->addItem(horizontalSpacer_2);
+        verticalLayout_2->addItem(verticalSpacer);
+
+
+        horizontalLayout_6->addLayout(verticalLayout_2);
+
+        horizontalSpacer_5 = new QSpacerItem(40, 20, QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Minimum);
+
+        horizontalLayout_6->addItem(horizontalSpacer_5);
 
 
         retranslateUi(UserInfoPage);
@@ -217,14 +200,14 @@ public:
 
     void retranslateUi(QWidget *UserInfoPage)
     {
-        UserInfoPage->setWindowTitle(QCoreApplication::translate("UserInfoPage", "Dialog", nullptr));
-        label->setText(QCoreApplication::translate("UserInfoPage", "\345\237\272\346\234\254\344\277\241\346\201\257", nullptr));
+        UserInfoPage->setWindowTitle(QCoreApplication::translate("UserInfoPage", "Form", nullptr));
+        label_4->setText(QCoreApplication::translate("UserInfoPage", "\345\237\272\346\234\254\344\277\241\346\201\257", nullptr));
         head_lb->setText(QString());
         up_btn->setText(QCoreApplication::translate("UserInfoPage", "\344\270\212\344\274\240", nullptr));
-        label_2->setText(QCoreApplication::translate("UserInfoPage", "\346\230\265\347\247\260\357\274\232", nullptr));
-        label_3->setText(QCoreApplication::translate("UserInfoPage", "\347\224\250\346\210\267\345\220\215\357\274\232", nullptr));
-        label_4->setText(QCoreApplication::translate("UserInfoPage", ":\346\217\217\350\277\260:", nullptr));
-        pushButton->setText(QCoreApplication::translate("UserInfoPage", "\346\217\220\344\272\244", nullptr));
+        label->setText(QCoreApplication::translate("UserInfoPage", "\346\230\265\347\247\260\357\274\232 ", nullptr));
+        label_2->setText(QCoreApplication::translate("UserInfoPage", "\347\224\250\346\210\267\345\220\215:", nullptr));
+        label_3->setText(QCoreApplication::translate("UserInfoPage", "\346\217\217\350\277\260:  ", nullptr));
+        submit_btn->setText(QCoreApplication::translate("UserInfoPage", "\346\217\220\344\272\244", nullptr));
     } // retranslateUi
 
 };

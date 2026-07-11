@@ -25,10 +25,10 @@ class Ui_LoadingDlg
 public:
     QVBoxLayout *verticalLayout;
     QSpacerItem *verticalSpacer;
-    QWidget *widget;
-    QVBoxLayout *verticalLayout_2;
-    QLabel *status_lb;
     QWidget *widget_2;
+    QHBoxLayout *horizontalLayout_2;
+    QLabel *status_lb;
+    QWidget *widget;
     QHBoxLayout *horizontalLayout;
     QLabel *loading_lb;
     QSpacerItem *verticalSpacer_2;
@@ -40,40 +40,40 @@ public:
         LoadingDlg->resize(400, 300);
         verticalLayout = new QVBoxLayout(LoadingDlg);
         verticalLayout->setObjectName("verticalLayout");
-        verticalSpacer = new QSpacerItem(20, 15, QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Fixed);
+        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Expanding);
 
         verticalLayout->addItem(verticalSpacer);
 
-        widget = new QWidget(LoadingDlg);
-        widget->setObjectName("widget");
-        widget->setMinimumSize(QSize(0, 30));
-        widget->setMaximumSize(QSize(16777215, 30));
-        verticalLayout_2 = new QVBoxLayout(widget);
-        verticalLayout_2->setObjectName("verticalLayout_2");
-        verticalLayout_2->setContentsMargins(0, 0, 0, 0);
-        status_lb = new QLabel(widget);
-        status_lb->setObjectName("status_lb");
-
-        verticalLayout_2->addWidget(status_lb);
-
-
-        verticalLayout->addWidget(widget);
-
         widget_2 = new QWidget(LoadingDlg);
         widget_2->setObjectName("widget_2");
-        horizontalLayout = new QHBoxLayout(widget_2);
-        horizontalLayout->setObjectName("horizontalLayout");
-        loading_lb = new QLabel(widget_2);
-        loading_lb->setObjectName("loading_lb");
-        loading_lb->setMinimumSize(QSize(200, 200));
-        loading_lb->setMaximumSize(QSize(200, 200));
+        horizontalLayout_2 = new QHBoxLayout(widget_2);
+        horizontalLayout_2->setObjectName("horizontalLayout_2");
+        status_lb = new QLabel(widget_2);
+        status_lb->setObjectName("status_lb");
+        status_lb->setAlignment(Qt::AlignCenter);
 
-        horizontalLayout->addWidget(loading_lb);
+        horizontalLayout_2->addWidget(status_lb);
 
 
         verticalLayout->addWidget(widget_2);
 
-        verticalSpacer_2 = new QSpacerItem(20, 15, QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Fixed);
+        widget = new QWidget(LoadingDlg);
+        widget->setObjectName("widget");
+        widget->setMinimumSize(QSize(50, 50));
+        horizontalLayout = new QHBoxLayout(widget);
+        horizontalLayout->setObjectName("horizontalLayout");
+        loading_lb = new QLabel(widget);
+        loading_lb->setObjectName("loading_lb");
+        loading_lb->setMinimumSize(QSize(200, 200));
+        loading_lb->setMaximumSize(QSize(200, 200));
+        loading_lb->setAlignment(Qt::AlignCenter);
+
+        horizontalLayout->addWidget(loading_lb);
+
+
+        verticalLayout->addWidget(widget);
+
+        verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Expanding);
 
         verticalLayout->addItem(verticalSpacer_2);
 

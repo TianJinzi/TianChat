@@ -36,7 +36,7 @@ public:
         horizontalLayout = new QHBoxLayout(ConUserItem);
         horizontalLayout->setSpacing(5);
         horizontalLayout->setObjectName("horizontalLayout");
-        horizontalLayout->setContentsMargins(-1, 2, -1, 2);
+        horizontalLayout->setContentsMargins(6, 2, 6, 2);
         widget = new QWidget(ConUserItem);
         widget->setObjectName("widget");
         widget->setMinimumSize(QSize(60, 60));
@@ -70,7 +70,7 @@ public:
         ConUserItem->setWindowTitle(QCoreApplication::translate("ConUserItem", "Form", nullptr));
         icon_lb->setText(QString());
         red_point->setText(QString());
-        user_name_lb->setText(QString());
+        user_name_lb->setText(QCoreApplication::translate("ConUserItem", "TextLabel", nullptr));
     } // retranslateUi
 
 };

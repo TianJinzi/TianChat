@@ -43,6 +43,7 @@ public:
 
         message_tip = new QLabel(AddUserItem);
         message_tip->setObjectName("message_tip");
+        message_tip->setAlignment(Qt::AlignCenter);
 
         horizontalLayout->addWidget(message_tip);
 

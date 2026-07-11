@@ -179,4 +179,7 @@ enum class ChatMsgType {
     FILE = 2
 };
 
+Q_DECLARE_METATYPE(ServerInfo)
+Q_DECLARE_METATYPE(ReqId)
+
 #endif // GLOBAL_H

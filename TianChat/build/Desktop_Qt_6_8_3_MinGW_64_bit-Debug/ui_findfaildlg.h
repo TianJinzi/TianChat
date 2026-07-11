@@ -37,7 +37,13 @@ public:
         if (FindFailDlg->objectName().isEmpty())
             FindFailDlg->setObjectName("FindFailDlg");
         FindFailDlg->resize(260, 163);
-        FindFailDlg->setMinimumSize(QSize(5, 0));
+        QSizePolicy sizePolicy(QSizePolicy::Policy::Preferred, QSizePolicy::Policy::Ignored);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(FindFailDlg->sizePolicy().hasHeightForWidth());
+        FindFailDlg->setSizePolicy(sizePolicy);
+        FindFailDlg->setMinimumSize(QSize(260, 163));
+        FindFailDlg->setMaximumSize(QSize(260, 163));
         verticalLayout = new QVBoxLayout(FindFailDlg);
         verticalLayout->setObjectName("verticalLayout");
         verticalSpacer = new QSpacerItem(20, 20, QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Fixed);
@@ -82,7 +88,7 @@ public:
     {
         FindFailDlg->setWindowTitle(QCoreApplication::translate("FindFailDlg", "Dialog", nullptr));
         fail_tip->setText(QCoreApplication::translate("FindFailDlg", "\346\227\240\346\263\225\346\211\276\345\210\260\350\257\245\347\224\250\346\210\267", nullptr));
-        fail_tip2->setText(QCoreApplication::translate("FindFailDlg", "\350\257\267\344\275\240\346\243\200\346\237\245\344\275\240\345\241\253\345\206\231\347\232\204\350\264\246\346\210\267\346\230\257\345\220\246\346\255\243\347\241\256", nullptr));
+        fail_tip2->setText(QCoreApplication::translate("FindFailDlg", "\350\257\267\346\243\200\346\237\245\344\275\240\345\241\253\345\206\231\347\232\204\350\264\246\345\217\267\346\230\257\345\220\246\346\255\243\347\241\256", nullptr));
         fail_sure_btn->setText(QCoreApplication::translate("FindFailDlg", "\347\241\256\345\256\232", nullptr));
     } // retranslateUi
 

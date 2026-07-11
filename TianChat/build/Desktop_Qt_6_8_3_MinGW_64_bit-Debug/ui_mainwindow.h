@@ -19,7 +19,7 @@ QT_BEGIN_NAMESPACE
 class Ui_MainWindow
 {
 public:
-    QWidget *centralwidget;
+    QWidget *centralWidget;
 
     void setupUi(QMainWindow *MainWindow)
     {
@@ -28,9 +28,9 @@ public:
         MainWindow->resize(300, 500);
         MainWindow->setMinimumSize(QSize(300, 500));
         MainWindow->setMaximumSize(QSize(300, 500));
-        centralwidget = new QWidget(MainWindow);
-        centralwidget->setObjectName("centralwidget");
-        MainWindow->setCentralWidget(centralwidget);
+        centralWidget = new QWidget(MainWindow);
+        centralWidget->setObjectName("centralWidget");
+        MainWindow->setCentralWidget(centralWidget);
 
         retranslateUi(MainWindow);
 
@@ -39,7 +39,7 @@ public:
 
     void retranslateUi(QMainWindow *MainWindow)
     {
-        MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "tianchat", nullptr));
+        MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "llfcchat", nullptr));
     } // retranslateUi
 
 };

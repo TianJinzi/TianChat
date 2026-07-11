@@ -16,7 +16,7 @@
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
-#include <clickedbtn.h>
+#include "clickedbtn.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -32,7 +32,6 @@ public:
     QVBoxLayout *verticalLayout;
     QLabel *user_name_lb;
     QLabel *user_chat_lb;
-    QSpacerItem *horizontalSpacer_3;
     ClickedBtn *addBtn;
     QLabel *already_add_lb;
     QSpacerItem *horizontalSpacer_2;
@@ -41,7 +40,7 @@ public:
     {
         if (ApplyFriendItem->objectName().isEmpty())
             ApplyFriendItem->setObjectName("ApplyFriendItem");
-        ApplyFriendItem->resize(618, 80);
+        ApplyFriendItem->resize(451, 80);
         ApplyFriendItem->setMinimumSize(QSize(0, 80));
         ApplyFriendItem->setMaximumSize(QSize(16777215, 80));
         horizontalLayout = new QHBoxLayout(ApplyFriendItem);
@@ -62,15 +61,16 @@ public:
         widget = new QWidget(ApplyFriendItem);
         widget->setObjectName("widget");
         horizontalLayout_2 = new QHBoxLayout(widget);
-        horizontalLayout_2->setSpacing(7);
         horizontalLayout_2->setObjectName("horizontalLayout_2");
-        horizontalLayout_2->setContentsMargins(11, 2, 11, 2);
+        horizontalLayout_2->setContentsMargins(-1, 2, -1, 2);
         widget_2 = new QWidget(widget);
         widget_2->setObjectName("widget_2");
+        widget_2->setMinimumSize(QSize(0, 0));
+        widget_2->setMaximumSize(QSize(16777215, 16777215));
         verticalLayout = new QVBoxLayout(widget_2);
         verticalLayout->setSpacing(10);
         verticalLayout->setObjectName("verticalLayout");
-        verticalLayout->setContentsMargins(11, 2, 11, 2);
+        verticalLayout->setContentsMargins(-1, 2, -1, 2);
         user_name_lb = new QLabel(widget_2);
         user_name_lb->setObjectName("user_name_lb");
         user_name_lb->setMinimumSize(QSize(100, 30));
@@ -81,16 +81,12 @@ public:
         user_chat_lb = new QLabel(widget_2);
         user_chat_lb->setObjectName("user_chat_lb");
         user_chat_lb->setMinimumSize(QSize(100, 30));
-        user_chat_lb->setMaximumSize(QSize(200, 30));
+        user_chat_lb->setMaximumSize(QSize(500, 30));
 
         verticalLayout->addWidget(user_chat_lb);
 
 
         horizontalLayout_2->addWidget(widget_2);
-
-        horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Policy::Expanding, QSizePolicy::Policy::Minimum);
-
-        horizontalLayout_2->addItem(horizontalSpacer_3);
 
         addBtn = new ClickedBtn(widget);
         addBtn->setObjectName("addBtn");
@@ -102,6 +98,7 @@ public:
         already_add_lb = new QLabel(widget);
         already_add_lb->setObjectName("already_add_lb");
         already_add_lb->setMinimumSize(QSize(40, 0));
+        already_add_lb->setMaximumSize(QSize(40, 16777215));
 
         horizontalLayout_2->addWidget(already_add_lb);
 

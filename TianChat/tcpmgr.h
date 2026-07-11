@@ -9,6 +9,16 @@
 #include <QJsonArray>
 #include <memory>
 
+class TcpThread:public std::enable_shared_from_this<TcpThread>{
+public:
+    TcpThread();
+    ~TcpThread();
+
+private:
+    QThread* _tcp_thread;
+
+};
+
 class TcpMgr:public QObject, public Singleton<TcpMgr>,
         public std::enable_shared_from_this<TcpMgr>
 {
@@ -21,6 +31,7 @@ private:
     TcpMgr();
     void initHandlers();
     void handleMsg(ReqId id, int len, QByteArray data);
+    void registerMetaType();
     QTcpSocket _socket;
     QString _host;
     uint16_t _port;
@@ -29,9 +40,14 @@ private:
     quint16 _message_id;
     quint16 _message_len;
     QMap<ReqId, std::function<void(ReqId id, int len, QByteArray data)>> _handlers;
+    std::unique_ptr<QTimer> _timer;
 public slots:
     void slot_tcp_connect(ServerInfo);
     void slot_send_data(ReqId reqId, QByteArray data);
+
+    void slot_timer_start();
+    void slot_timer_stop();
+    void slot_close_socket();
 signals:
     void sig_con_success(bool bsuccess);
     void sig_send_data(ReqId reqId, QByteArray data);
@@ -52,6 +68,10 @@ signals:
         std::vector<std::shared_ptr<TextChatData>> msg_list);
 
     void sig_chat_msg_rsp(int thread_id, std::vector<std::shared_ptr<TextChatData>> msg_list);
+
+    void sig_timer_start();
+    void sig_timer_stop();
+
 };
 
 #endif // TCPMGR_H

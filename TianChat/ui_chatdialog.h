@@ -23,11 +23,11 @@
 #include <contactuserlist.h>
 #include <friendinfopage.h>
 #include <statewidget.h>
+#include <userinfopage.h>
 #include "chatuserlist.h"
 #include "clickedbtn.h"
 #include "customizeedit.h"
 #include "searchlist.h"
-#include "userinfopage.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -57,9 +57,9 @@ public:
     ContactUserList *con_user_list;
     QStackedWidget *stackedWidget;
     ChatPage *chat_page;
-    UserInfoPage *user_info_page;
     ApplyFriendPage *friend_apply_page;
     FriendInfoPage *friend_info_page;
+    UserInfoPage *user_info_page;
 
     void setupUi(QDialog *ChatDialog)
     {
@@ -87,7 +87,7 @@ public:
         widget_2->setObjectName("widget_2");
         widget_2->setMinimumSize(QSize(29, 29));
         verticalLayout_5 = new QVBoxLayout(widget_2);
-        verticalLayout_5->setSpacing(25);
+        verticalLayout_5->setSpacing(30);
         verticalLayout_5->setObjectName("verticalLayout_5");
         verticalLayout_5->setContentsMargins(0, 0, 0, 0);
         side_head_lb = new QLabel(widget_2);
@@ -201,22 +201,22 @@ public:
         chat_page = new ChatPage();
         chat_page->setObjectName("chat_page");
         stackedWidget->addWidget(chat_page);
-        user_info_page = new UserInfoPage();
-        user_info_page->setObjectName("user_info_page");
-        stackedWidget->addWidget(user_info_page);
         friend_apply_page = new ApplyFriendPage();
         friend_apply_page->setObjectName("friend_apply_page");
         stackedWidget->addWidget(friend_apply_page);
         friend_info_page = new FriendInfoPage();
         friend_info_page->setObjectName("friend_info_page");
         stackedWidget->addWidget(friend_info_page);
+        user_info_page = new UserInfoPage();
+        user_info_page->setObjectName("user_info_page");
+        stackedWidget->addWidget(user_info_page);
 
         horizontalLayout->addWidget(stackedWidget);
 
 
         retranslateUi(ChatDialog);
 
-        stackedWidget->setCurrentIndex(1);
+        stackedWidget->setCurrentIndex(2);
 
 
         QMetaObject::connectSlotsByName(ChatDialog);

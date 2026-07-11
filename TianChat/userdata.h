@@ -234,5 +234,14 @@ private:
     QMap<QString, std::shared_ptr<ChatDataBase>> _msg_unrsp_map;
 };
 
+Q_DECLARE_METATYPE(SearchInfo)
+Q_DECLARE_METATYPE(AddFriendApply)
+Q_DECLARE_METATYPE(ApplyInfo)
+Q_DECLARE_METATYPE(AuthInfo)
+Q_DECLARE_METATYPE(AuthRsp)
+Q_DECLARE_METATYPE(UserInfo)
+Q_DECLARE_METATYPE(TextChatData)
+Q_DECLARE_METATYPE(ChatThreadInfo)
+Q_DECLARE_METATYPE(ChatThreadData)
 
 #endif

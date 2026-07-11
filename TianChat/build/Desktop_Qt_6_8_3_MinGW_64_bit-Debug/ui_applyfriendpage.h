@@ -25,55 +25,56 @@ class Ui_ApplyFriendPage
 public:
     QVBoxLayout *verticalLayout;
     QWidget *friend_apply_wid;
-    QHBoxLayout *horizontalLayout;
-    QSpacerItem *horizontalSpacer_2;
+    QHBoxLayout *horizontalLayout_7;
+    QSpacerItem *horizontalSpacer_8;
     QLabel *friend_apply_lb;
-    QWidget *widget_2;
-    QVBoxLayout *verticalLayout_2;
+    QWidget *widget_3;
+    QVBoxLayout *verticalLayout_7;
     ApplyFriendList *apply_friend_list;
 
     void setupUi(QWidget *ApplyFriendPage)
     {
         if (ApplyFriendPage->objectName().isEmpty())
             ApplyFriendPage->setObjectName("ApplyFriendPage");
-        ApplyFriendPage->resize(400, 300);
+        ApplyFriendPage->resize(510, 491);
         verticalLayout = new QVBoxLayout(ApplyFriendPage);
         verticalLayout->setSpacing(0);
         verticalLayout->setObjectName("verticalLayout");
         verticalLayout->setContentsMargins(0, 0, 0, 0);
         friend_apply_wid = new QWidget(ApplyFriendPage);
         friend_apply_wid->setObjectName("friend_apply_wid");
-        horizontalLayout = new QHBoxLayout(friend_apply_wid);
-        horizontalLayout->setSpacing(0);
-        horizontalLayout->setObjectName("horizontalLayout");
-        horizontalLayout->setContentsMargins(0, 0, 0, 0);
-        horizontalSpacer_2 = new QSpacerItem(10, 20, QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Minimum);
+        friend_apply_wid->setMinimumSize(QSize(0, 0));
+        horizontalLayout_7 = new QHBoxLayout(friend_apply_wid);
+        horizontalLayout_7->setSpacing(0);
+        horizontalLayout_7->setObjectName("horizontalLayout_7");
+        horizontalLayout_7->setContentsMargins(0, 0, 0, 0);
+        horizontalSpacer_8 = new QSpacerItem(10, 20, QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Minimum);
 
-        horizontalLayout->addItem(horizontalSpacer_2);
+        horizontalLayout_7->addItem(horizontalSpacer_8);
 
         friend_apply_lb = new QLabel(friend_apply_wid);
         friend_apply_lb->setObjectName("friend_apply_lb");
         friend_apply_lb->setMinimumSize(QSize(0, 40));
         friend_apply_lb->setMaximumSize(QSize(16777215, 40));
 
-        horizontalLayout->addWidget(friend_apply_lb);
+        horizontalLayout_7->addWidget(friend_apply_lb);
 
 
         verticalLayout->addWidget(friend_apply_wid);
 
-        widget_2 = new QWidget(ApplyFriendPage);
-        widget_2->setObjectName("widget_2");
-        verticalLayout_2 = new QVBoxLayout(widget_2);
-        verticalLayout_2->setSpacing(0);
-        verticalLayout_2->setObjectName("verticalLayout_2");
-        verticalLayout_2->setContentsMargins(0, 0, 0, 0);
-        apply_friend_list = new ApplyFriendList(widget_2);
+        widget_3 = new QWidget(ApplyFriendPage);
+        widget_3->setObjectName("widget_3");
+        verticalLayout_7 = new QVBoxLayout(widget_3);
+        verticalLayout_7->setSpacing(0);
+        verticalLayout_7->setObjectName("verticalLayout_7");
+        verticalLayout_7->setContentsMargins(0, 0, 0, 0);
+        apply_friend_list = new ApplyFriendList(widget_3);
         apply_friend_list->setObjectName("apply_friend_list");
 
-        verticalLayout_2->addWidget(apply_friend_list);
+        verticalLayout_7->addWidget(apply_friend_list);
 
 
-        verticalLayout->addWidget(widget_2);
+        verticalLayout->addWidget(widget_3);
 
 
         retranslateUi(ApplyFriendPage);

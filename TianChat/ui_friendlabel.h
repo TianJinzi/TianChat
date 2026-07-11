@@ -14,7 +14,7 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QWidget>
-#include <clickedlabel.h>
+#include "clickedlabel.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -31,20 +31,22 @@ public:
     {
         if (FriendLabel->objectName().isEmpty())
             FriendLabel->setObjectName("FriendLabel");
-        FriendLabel->resize(400, 43);
+        FriendLabel->resize(493, 43);
         FriendLabel->setMinimumSize(QSize(0, 43));
         FriendLabel->setMaximumSize(QSize(16777215, 43));
-        FriendLabel->setStyleSheet(QString::fromUtf8("#FriendLabel{\n"
+        FriendLabel->setStyleSheet(QString::fromUtf8("#FriendLabel {\n"
 "	background: #daf6e7;\n"
-"	color: #48bf56;\n"
-"	border-radius: 10px;\n"
-"}"));
+"    color: #48bf56;\n"
+"    border-radius: 10px;\n"
+"} "));
         horizontalLayout = new QHBoxLayout(FriendLabel);
         horizontalLayout->setSpacing(0);
         horizontalLayout->setObjectName("horizontalLayout");
         horizontalLayout->setContentsMargins(0, 0, 0, 0);
         tip_lb = new QLabel(FriendLabel);
         tip_lb->setObjectName("tip_lb");
+        tip_lb->setMinimumSize(QSize(0, 20));
+        tip_lb->setMaximumSize(QSize(16777215, 20));
 
         horizontalLayout->addWidget(tip_lb);
 
@@ -60,7 +62,7 @@ public:
         close_lb->setObjectName("close_lb");
         close_lb->setMinimumSize(QSize(15, 15));
         close_lb->setMaximumSize(QSize(15, 15));
-        close_lb->setStyleSheet(QString::fromUtf8("border-image:url(:/res/tipclose.png);"));
+        close_lb->setStyleSheet(QString::fromUtf8("border-image: url(:/res/tipclose.png);"));
 
         horizontalLayout_2->addWidget(close_lb);
 

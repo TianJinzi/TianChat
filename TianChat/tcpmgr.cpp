@@ -1,16 +1,21 @@
 #include "tcpmgr.h"
 #include <QAbstractSocket>
 #include "usermgr.h"
+#include <QThread>
+#include <QTimer>
 
-TcpMgr::TcpMgr():_host(""),_port(0),_b_recv_pending(false),_message_id(0),_message_len(0)
+TcpMgr::TcpMgr():_host(""),_port(0),_b_recv_pending(false),_message_id(0),_message_len(0),_timer(nullptr)
 {
+    QObject::connect(this, &TcpMgr::sig_timer_start, this, &TcpMgr::slot_timer_start);
+    QObject::connect(this, &TcpMgr::sig_timer_stop, this, &TcpMgr::slot_timer_stop);
+
     QObject::connect(&_socket, &QTcpSocket::connected, [&]() {
            qDebug() << "Connected to server!";
            // 连接建立后发送消息
             emit sig_con_success(true);
        });
 
-       QObject::connect(&_socket, &QTcpSocket::readyRead, [&]() {
+    QObject::connect(&_socket, &QTcpSocket::readyRead, this,[&]() {
            // 当有数据可读时，读取所有数据
            // 读取所有数据并追加到缓冲区
            _buffer.append(_socket.readAll());
@@ -51,7 +56,6 @@ TcpMgr::TcpMgr():_host(""),_port(0),_b_recv_pending(false),_message_id(0),_messa
                _buffer = _buffer.mid(_message_len);
                handleMsg(ReqId(_message_id),_message_len, messageBody);
            }
-
        });
 
        QObject::connect(&_socket, QOverload<QAbstractSocket::SocketError>::of(&QTcpSocket::errorOccurred), this
@@ -64,6 +68,7 @@ TcpMgr::TcpMgr():_host(""),_port(0),_b_recv_pending(false),_message_id(0),_messa
                    break;
                case QAbstractSocket::RemoteHostClosedError:
                    qDebug() << "Remote host closed the connection.";
+                   emit sig_timer_stop();
                    break;
                case QAbstractSocket::HostNotFoundError:
                    qDebug() << "Host not found. Check hostname or IP.";
@@ -76,6 +81,7 @@ TcpMgr::TcpMgr():_host(""),_port(0),_b_recv_pending(false),_message_id(0),_messa
                case QAbstractSocket::NetworkError:
                    qDebug() << "Network error: cable disconnected or WiFi down.";
                    // 可以在这里触发重连逻辑
+                   emit sig_timer_stop();
                    break;
                default:
                    qDebug() << "Other socket error:" << socketError;
@@ -85,7 +91,7 @@ TcpMgr::TcpMgr():_host(""),_port(0),_b_recv_pending(false),_message_id(0),_messa
 
 
         // 处理连接断开
-        QObject::connect(&_socket, &QTcpSocket::disconnected, [&]() {
+        QObject::connect(&_socket, &QTcpSocket::disconnected, this,[&]() {
             qDebug() << "Disconnected from server.";
             //并且发送通知到界面
             emit sig_connection_closed();
@@ -94,11 +100,15 @@ TcpMgr::TcpMgr():_host(""),_port(0),_b_recv_pending(false),_message_id(0),_messa
         QObject::connect(this, &TcpMgr::sig_send_data, this, &TcpMgr::slot_send_data);
         //注册消息
         initHandlers();
+        registerMetaType();
+
+        // connect(_socket,&QTcpSocket::connected,this,&TcpMgr::sig_timer_start);
+
 }
 
-void TcpMgr::CloseConnection(){
-    _socket.close();
-}
+ void TcpMgr::CloseConnection(){
+     _socket.close();
+ }
 
 TcpMgr::~TcpMgr(){
 
@@ -155,6 +165,10 @@ void TcpMgr::initHandlers()
         }
 
         emit sig_swich_chatdlg();
+        //要在这里启动定时器，否则会因为访问空指针的成员崩溃
+        emit sig_timer_start();
+
+       
     });
 
 
@@ -681,6 +695,28 @@ void TcpMgr::handleMsg(ReqId id, int len, QByteArray data)
    find_iter.value()(id,len,data);
 }
 
+void TcpMgr::registerMetaType()
+{
+    qRegisterMetaType<ServerInfo>("ServerInfo");
+    qRegisterMetaType<SearchInfo>("SearchInfo");
+    qRegisterMetaType<std::shared_ptr<SearchInfo>>("std::shared_ptr<SearchInfo>");
+
+    qRegisterMetaType<AddFriendApply>("AddFriendApply");
+    qRegisterMetaType<std::shared_ptr<AddFriendApply>>("std::shared_ptr<AddFriendApply>");
+
+    qRegisterMetaType<ApplyInfo>("ApplyInfo");
+    qRegisterMetaType<std::shared_ptr<AuthInfo>>("std::shared_ptr<AuthInfo>");
+
+    qRegisterMetaType<AuthRsp>("AuthRsp");
+    qRegisterMetaType<std::shared_ptr<AuthRsp>>("std::shared_ptr<AuthRsp>");
+
+    qRegisterMetaType<UserInfo>("UserInfo");
+    qRegisterMetaType<std::vector<std::shared_ptr<TextChatData>>>("std::vector<std::shared_ptr<TextChatData>>");
+    qRegisterMetaType<std::vector<std::shared_ptr<ChatThreadInfo>>>("std::vector<std::shared_ptr<ChatThreadInfo>>");
+    qRegisterMetaType<std::shared_ptr<ChatThreadData>>("std::shared_ptr<ChatThreadData>");
+    qRegisterMetaType<ReqId>("ReqId");
+}
+
 void TcpMgr::slot_tcp_connect(ServerInfo si)
 {
     qDebug()<< "receive tcp connect signal";
@@ -716,4 +752,46 @@ void TcpMgr::slot_send_data(ReqId reqId, QByteArray dataBytes)
     qDebug() << "tcp mgr send byte data is " << block ;
 }
 
+void TcpMgr::slot_timer_start()
+{
+    //注册定时器
+    if (!_timer) {
+        _timer = std::make_unique<QTimer>();
+        connect(_timer.get(), &QTimer::timeout, this, [this]() {
+            auto user_info = UserMgr::GetInstance()->GetUserInfo();
+            QJsonObject textObj;
+            textObj["fromuid"] = user_info->_uid;
+            QJsonDocument doc(textObj);
+            QByteArray jsonData = doc.toJson(QJsonDocument::Compact);
+            emit TcpMgr::GetInstance()->sig_send_data(ReqId::ID_HEART_BEAT_REQ, jsonData);
+            });
+    }
+    _timer->start(10000);
+}
 
+void TcpMgr::slot_timer_stop() {
+    _timer->stop();
+}
+
+void TcpMgr::slot_close_socket() {
+    _socket.close();
+}
+
+
+
+TcpThread::TcpThread()
+{
+    _tcp_thread=new QThread();
+    TcpMgr::GetInstance()->moveToThread(_tcp_thread);
+    //让Qt自己回收更安全
+    QObject::connect(_tcp_thread,&QThread::finished,_tcp_thread,&QThread::deleteLater);
+
+    _tcp_thread->start();
+
+}
+
+TcpThread::~TcpThread()
+{
+    _tcp_thread->quit();
+    _tcp_thread->wait();
+}

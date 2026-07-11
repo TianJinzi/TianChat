@@ -36,6 +36,8 @@ public:
         verticalLayout->setContentsMargins(20, 0, 0, 0);
         label = new QLabel(GroupTipItem);
         label->setObjectName("label");
+        label->setMinimumSize(QSize(0, 16));
+        label->setMaximumSize(QSize(16777215, 16));
 
         verticalLayout->addWidget(label);
 

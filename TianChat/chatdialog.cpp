@@ -152,17 +152,17 @@ ChatDialog::ChatDialog(QWidget* parent) :
 	connect(TcpMgr::GetInstance().get(), &TcpMgr::sig_text_chat_msg,
 		this, &ChatDialog::slot_text_chat_msg);
 
-	_timer = new QTimer(this);
-	connect(_timer, &QTimer::timeout, this, [this]() {
-		auto user_info = UserMgr::GetInstance()->GetUserInfo();
-		QJsonObject textObj;
-		textObj["fromuid"] = user_info->_uid;
-		QJsonDocument doc(textObj);
-		QByteArray jsonData = doc.toJson(QJsonDocument::Compact);
-		emit TcpMgr::GetInstance()->sig_send_data(ReqId::ID_HEART_BEAT_REQ, jsonData);
-		});
+    // _timer = new QTimer(this);
+    // connect(_timer, &QTimer::timeout, this, [this]() {
+    // 	auto user_info = UserMgr::GetInstance()->GetUserInfo();
+    // 	QJsonObject textObj;
+    // 	textObj["fromuid"] = user_info->_uid;
+    // 	QJsonDocument doc(textObj);
+    // 	QByteArray jsonData = doc.toJson(QJsonDocument::Compact);
+    // 	emit TcpMgr::GetInstance()->sig_send_data(ReqId::ID_HEART_BEAT_REQ, jsonData);
+    // 	});
 
-	_timer->start(10000);
+    // _timer->start(10000);
 
 	//连接tcp返回的加载聊天回复
 	connect(TcpMgr::GetInstance().get(), &TcpMgr::sig_load_chat_thread,
@@ -171,7 +171,7 @@ ChatDialog::ChatDialog(QWidget* parent) :
 	//连接tcp返回的创建私聊的回复
 	connect(TcpMgr::GetInstance().get(), &TcpMgr::sig_create_private_chat,
 		this, &ChatDialog::slot_create_private_chat);
-
+	//连接加载联系人的信号
 	connect(TcpMgr::GetInstance().get(), &TcpMgr::sig_load_chat_msg,
 		this, &ChatDialog::slot_load_chat_msg);
 
@@ -345,11 +345,20 @@ void ChatDialog::slot_load_chat_thread(bool load_more, int last_thread_id,
 			other_uid = cti->_user1_id;
 		}
 
+        if(other_uid==0){
+            continue;
+        }
+
 		auto chat_thread_data = std::make_shared<ChatThreadData>(other_uid, cti->_thread_id, 0);
 		UserMgr::GetInstance()->AddChatThreadData(chat_thread_data, other_uid);
 
 		auto* chat_user_wid = new ChatUserWid();
+
+		if (chat_thread_data == nullptr) {
+			qDebug() << "chat_thread_data is nullptr\n";
+		}
 		chat_user_wid->SetChatData(chat_thread_data);
+		
 		QListWidgetItem* item = new QListWidgetItem;
 		//qDebug()<<"chat_user_wid sizeHint is " << chat_user_wid->sizeHint();
 		item->setSizeHint(chat_user_wid->sizeHint());
@@ -389,6 +398,10 @@ void ChatDialog::slot_create_private_chat(int uid, int other_id, int thread_id)
 		return;
 	}
 	UserMgr::GetInstance()->AddChatThreadData(chat_thread_data, other_id);
+
+	if (chat_thread_data == nullptr) {
+		qDebug() << "chat_thread_data is nullptr\n";
+	}
 
 	chat_user_wid->SetChatData(chat_thread_data);
 	QListWidgetItem* item = new QListWidgetItem;
@@ -666,6 +679,11 @@ void ChatDialog::SetSelectChatPage(int thread_id)
 
 		//设置信息
 		auto chat_data = con_item->GetChatData();
+
+		if (chat_data == nullptr) {
+			qDebug() << "chat_data is nullptr\n";
+		}
+
 		ui->chat_page->SetChatData(chat_data);
 		return;
 	}

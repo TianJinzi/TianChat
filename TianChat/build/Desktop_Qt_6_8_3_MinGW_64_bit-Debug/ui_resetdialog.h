@@ -18,168 +18,179 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QVBoxLayout>
-#include "timerbtn.h"
+#include <QtWidgets/QWidget>
+#include <timerbtn.h>
 
 QT_BEGIN_NAMESPACE
 
 class Ui_ResetDialog
 {
 public:
-    QVBoxLayout *verticalLayout_4;
-    QVBoxLayout *verticalLayout_3;
-    QSpacerItem *verticalSpacer_3;
-    QHBoxLayout *horizontalLayout_12;
+    QVBoxLayout *verticalLayout;
+    QSpacerItem *verticalSpacer;
     QLabel *err_tip;
-    QHBoxLayout *horizontalLayout_8;
-    QLabel *user_label;
+    QWidget *widget;
+    QHBoxLayout *horizontalLayout;
+    QLabel *user_lb;
     QLineEdit *user_edit;
-    QHBoxLayout *horizontalLayout_9;
-    QLabel *email_label;
+    QWidget *widget_2;
+    QHBoxLayout *horizontalLayout_2;
+    QLabel *email_lb;
     QLineEdit *email_edit;
-    QHBoxLayout *horizontalLayout_10;
-    QLabel *varify_label;
+    QWidget *widget_3;
+    QHBoxLayout *horizontalLayout_3;
+    QLabel *varify_lb;
     QLineEdit *varify_edit;
     TimerBtn *varify_btn;
-    QHBoxLayout *horizontalLayout_13;
-    QLabel *pwd_label;
+    QWidget *widget_4;
+    QHBoxLayout *horizontalLayout_4;
+    QLabel *pwd_lb;
     QLineEdit *pwd_edit;
-    QSpacerItem *verticalSpacer;
-    QHBoxLayout *horizontalLayout_14;
-    QPushButton *sure_btn;
-    QPushButton *cancel;
     QSpacerItem *verticalSpacer_2;
+    QWidget *widget_5;
+    QHBoxLayout *horizontalLayout_5;
+    QPushButton *sure_btn;
+    QPushButton *return_btn;
+    QSpacerItem *verticalSpacer_3;
 
     void setupUi(QDialog *ResetDialog)
     {
         if (ResetDialog->objectName().isEmpty())
             ResetDialog->setObjectName("ResetDialog");
-        ResetDialog->resize(300, 500);
-        ResetDialog->setMinimumSize(QSize(300, 500));
-        ResetDialog->setMaximumSize(QSize(300, 500));
-        verticalLayout_4 = new QVBoxLayout(ResetDialog);
-        verticalLayout_4->setObjectName("verticalLayout_4");
-        verticalLayout_3 = new QVBoxLayout();
-        verticalLayout_3->setSpacing(5);
-        verticalLayout_3->setObjectName("verticalLayout_3");
-        verticalLayout_3->setContentsMargins(5, 5, 5, 5);
-        verticalSpacer_3 = new QSpacerItem(20, 40, QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Expanding);
+        ResetDialog->resize(354, 538);
+        verticalLayout = new QVBoxLayout(ResetDialog);
+        verticalLayout->setObjectName("verticalLayout");
+        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Expanding);
 
-        verticalLayout_3->addItem(verticalSpacer_3);
+        verticalLayout->addItem(verticalSpacer);
 
-        horizontalLayout_12 = new QHBoxLayout();
-        horizontalLayout_12->setObjectName("horizontalLayout_12");
         err_tip = new QLabel(ResetDialog);
         err_tip->setObjectName("err_tip");
         err_tip->setMinimumSize(QSize(0, 25));
-        err_tip->setAlignment(Qt::AlignmentFlag::AlignCenter);
+        err_tip->setMaximumSize(QSize(16777215, 25));
+        err_tip->setAlignment(Qt::AlignCenter);
 
-        horizontalLayout_12->addWidget(err_tip);
+        verticalLayout->addWidget(err_tip);
 
+        widget = new QWidget(ResetDialog);
+        widget->setObjectName("widget");
+        horizontalLayout = new QHBoxLayout(widget);
+        horizontalLayout->setObjectName("horizontalLayout");
+        user_lb = new QLabel(widget);
+        user_lb->setObjectName("user_lb");
+        user_lb->setMinimumSize(QSize(0, 25));
+        user_lb->setMaximumSize(QSize(16777215, 25));
 
-        verticalLayout_3->addLayout(horizontalLayout_12);
+        horizontalLayout->addWidget(user_lb);
 
-        horizontalLayout_8 = new QHBoxLayout();
-        horizontalLayout_8->setObjectName("horizontalLayout_8");
-        user_label = new QLabel(ResetDialog);
-        user_label->setObjectName("user_label");
-        user_label->setMinimumSize(QSize(35, 25));
-        user_label->setMaximumSize(QSize(35, 25));
-
-        horizontalLayout_8->addWidget(user_label);
-
-        user_edit = new QLineEdit(ResetDialog);
+        user_edit = new QLineEdit(widget);
         user_edit->setObjectName("user_edit");
         user_edit->setMinimumSize(QSize(0, 25));
         user_edit->setMaximumSize(QSize(16777215, 25));
 
-        horizontalLayout_8->addWidget(user_edit);
+        horizontalLayout->addWidget(user_edit);
 
 
-        verticalLayout_3->addLayout(horizontalLayout_8);
+        verticalLayout->addWidget(widget);
 
-        horizontalLayout_9 = new QHBoxLayout();
-        horizontalLayout_9->setObjectName("horizontalLayout_9");
-        email_label = new QLabel(ResetDialog);
-        email_label->setObjectName("email_label");
-        email_label->setMinimumSize(QSize(35, 25));
-        email_label->setMaximumSize(QSize(35, 25));
+        widget_2 = new QWidget(ResetDialog);
+        widget_2->setObjectName("widget_2");
+        horizontalLayout_2 = new QHBoxLayout(widget_2);
+        horizontalLayout_2->setObjectName("horizontalLayout_2");
+        email_lb = new QLabel(widget_2);
+        email_lb->setObjectName("email_lb");
+        email_lb->setMinimumSize(QSize(48, 25));
+        email_lb->setMaximumSize(QSize(48, 25));
 
-        horizontalLayout_9->addWidget(email_label);
+        horizontalLayout_2->addWidget(email_lb);
 
-        email_edit = new QLineEdit(ResetDialog);
+        email_edit = new QLineEdit(widget_2);
         email_edit->setObjectName("email_edit");
+        email_edit->setMinimumSize(QSize(0, 25));
+        email_edit->setMaximumSize(QSize(16777215, 25));
 
-        horizontalLayout_9->addWidget(email_edit);
+        horizontalLayout_2->addWidget(email_edit);
 
 
-        verticalLayout_3->addLayout(horizontalLayout_9);
+        verticalLayout->addWidget(widget_2);
 
-        horizontalLayout_10 = new QHBoxLayout();
-        horizontalLayout_10->setObjectName("horizontalLayout_10");
-        varify_label = new QLabel(ResetDialog);
-        varify_label->setObjectName("varify_label");
-        varify_label->setMinimumSize(QSize(35, 25));
-        varify_label->setMaximumSize(QSize(35, 25));
+        widget_3 = new QWidget(ResetDialog);
+        widget_3->setObjectName("widget_3");
+        horizontalLayout_3 = new QHBoxLayout(widget_3);
+        horizontalLayout_3->setObjectName("horizontalLayout_3");
+        varify_lb = new QLabel(widget_3);
+        varify_lb->setObjectName("varify_lb");
+        varify_lb->setMinimumSize(QSize(0, 25));
+        varify_lb->setMaximumSize(QSize(16777215, 25));
 
-        horizontalLayout_10->addWidget(varify_label);
+        horizontalLayout_3->addWidget(varify_lb);
 
-        varify_edit = new QLineEdit(ResetDialog);
+        varify_edit = new QLineEdit(widget_3);
         varify_edit->setObjectName("varify_edit");
+        varify_edit->setMinimumSize(QSize(0, 25));
+        varify_edit->setMaximumSize(QSize(16777215, 25));
 
-        horizontalLayout_10->addWidget(varify_edit);
+        horizontalLayout_3->addWidget(varify_edit);
 
-        varify_btn = new TimerBtn(ResetDialog);
+        varify_btn = new TimerBtn(widget_3);
         varify_btn->setObjectName("varify_btn");
-        varify_btn->setMinimumSize(QSize(40, 0));
-        varify_btn->setMaximumSize(QSize(40, 16777215));
+        varify_btn->setMinimumSize(QSize(0, 25));
+        varify_btn->setMaximumSize(QSize(16777215, 25));
 
-        horizontalLayout_10->addWidget(varify_btn);
+        horizontalLayout_3->addWidget(varify_btn);
 
 
-        verticalLayout_3->addLayout(horizontalLayout_10);
+        verticalLayout->addWidget(widget_3);
 
-        horizontalLayout_13 = new QHBoxLayout();
-        horizontalLayout_13->setObjectName("horizontalLayout_13");
-        pwd_label = new QLabel(ResetDialog);
-        pwd_label->setObjectName("pwd_label");
-        pwd_label->setMinimumSize(QSize(35, 25));
-        pwd_label->setMaximumSize(QSize(35, 25));
+        widget_4 = new QWidget(ResetDialog);
+        widget_4->setObjectName("widget_4");
+        horizontalLayout_4 = new QHBoxLayout(widget_4);
+        horizontalLayout_4->setObjectName("horizontalLayout_4");
+        pwd_lb = new QLabel(widget_4);
+        pwd_lb->setObjectName("pwd_lb");
+        pwd_lb->setMinimumSize(QSize(0, 25));
+        pwd_lb->setMaximumSize(QSize(16777215, 25));
 
-        horizontalLayout_13->addWidget(pwd_label);
+        horizontalLayout_4->addWidget(pwd_lb);
 
-        pwd_edit = new QLineEdit(ResetDialog);
+        pwd_edit = new QLineEdit(widget_4);
         pwd_edit->setObjectName("pwd_edit");
+        pwd_edit->setMinimumSize(QSize(0, 25));
+        pwd_edit->setMaximumSize(QSize(16777215, 25));
 
-        horizontalLayout_13->addWidget(pwd_edit);
-
-
-        verticalLayout_3->addLayout(horizontalLayout_13);
-
-        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Expanding);
-
-        verticalLayout_3->addItem(verticalSpacer);
-
-        horizontalLayout_14 = new QHBoxLayout();
-        horizontalLayout_14->setObjectName("horizontalLayout_14");
-        sure_btn = new QPushButton(ResetDialog);
-        sure_btn->setObjectName("sure_btn");
-
-        horizontalLayout_14->addWidget(sure_btn);
-
-        cancel = new QPushButton(ResetDialog);
-        cancel->setObjectName("cancel");
-
-        horizontalLayout_14->addWidget(cancel);
+        horizontalLayout_4->addWidget(pwd_edit);
 
 
-        verticalLayout_3->addLayout(horizontalLayout_14);
+        verticalLayout->addWidget(widget_4);
 
         verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Expanding);
 
-        verticalLayout_3->addItem(verticalSpacer_2);
+        verticalLayout->addItem(verticalSpacer_2);
+
+        widget_5 = new QWidget(ResetDialog);
+        widget_5->setObjectName("widget_5");
+        horizontalLayout_5 = new QHBoxLayout(widget_5);
+        horizontalLayout_5->setObjectName("horizontalLayout_5");
+        sure_btn = new QPushButton(widget_5);
+        sure_btn->setObjectName("sure_btn");
+        sure_btn->setMinimumSize(QSize(0, 25));
+        sure_btn->setMaximumSize(QSize(16777215, 25));
+
+        horizontalLayout_5->addWidget(sure_btn);
+
+        return_btn = new QPushButton(widget_5);
+        return_btn->setObjectName("return_btn");
+        return_btn->setMinimumSize(QSize(0, 25));
+        return_btn->setMaximumSize(QSize(16777215, 25));
+
+        horizontalLayout_5->addWidget(return_btn);
 
 
-        verticalLayout_4->addLayout(verticalLayout_3);
+        verticalLayout->addWidget(widget_5);
+
+        verticalSpacer_3 = new QSpacerItem(20, 40, QSizePolicy::Policy::Minimum, QSizePolicy::Policy::Expanding);
+
+        verticalLayout->addItem(verticalSpacer_3);
 
 
         retranslateUi(ResetDialog);
@@ -190,14 +201,14 @@ public:
     void retranslateUi(QDialog *ResetDialog)
     {
         ResetDialog->setWindowTitle(QCoreApplication::translate("ResetDialog", "Dialog", nullptr));
-        err_tip->setText(QCoreApplication::translate("ResetDialog", "\351\224\231\350\257\257\346\217\220\347\244\272", nullptr));
-        user_label->setText(QCoreApplication::translate("ResetDialog", "\347\224\250\346\210\267\345\220\215", nullptr));
-        email_label->setText(QCoreApplication::translate("ResetDialog", "\351\202\256\347\256\261", nullptr));
-        varify_label->setText(QCoreApplication::translate("ResetDialog", "\351\252\214\350\257\201\347\240\201", nullptr));
+        err_tip->setText(QString());
+        user_lb->setText(QCoreApplication::translate("ResetDialog", "\347\224\250\346\210\267\345\220\215\357\274\232", nullptr));
+        email_lb->setText(QCoreApplication::translate("ResetDialog", "\351\202\256\347\256\261\357\274\232", nullptr));
+        varify_lb->setText(QCoreApplication::translate("ResetDialog", "\351\252\214\350\257\201\347\240\201\357\274\232", nullptr));
         varify_btn->setText(QCoreApplication::translate("ResetDialog", "\350\216\267\345\217\226", nullptr));
-        pwd_label->setText(QCoreApplication::translate("ResetDialog", "\346\226\260\345\257\206\347\240\201", nullptr));
+        pwd_lb->setText(QCoreApplication::translate("ResetDialog", "\346\226\260\345\257\206\347\240\201\357\274\232", nullptr));
         sure_btn->setText(QCoreApplication::translate("ResetDialog", "\347\241\256\350\256\244", nullptr));
-        cancel->setText(QCoreApplication::translate("ResetDialog", "\350\277\224\345\233\236", nullptr));
+        return_btn->setText(QCoreApplication::translate("ResetDialog", "\350\277\224\345\233\236", nullptr));
     } // retranslateUi
 
 };

@@ -26,6 +26,11 @@ void ChatUserWid::SetChatData(std::shared_ptr<ChatThreadData> chat_data) {
     _chat_data = chat_data;
     auto other_id = _chat_data->GetOtherId();
     auto other_info = UserMgr::GetInstance()->GetFriendById(other_id);
+    //放置崩溃
+    if (other_info == nullptr) {
+        std::cout << "other_info is nullpotr" << std::endl;
+        return;
+    }
     // 加载图片
     QPixmap pixmap(other_info->_icon);
 

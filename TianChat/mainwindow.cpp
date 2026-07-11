@@ -27,8 +27,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(TcpMgr::GetInstance().get(),&TcpMgr::sig_notify_offline, this, &MainWindow::SlotOffline);
     //连接服务器断开心跳超时或异常连接信息
     connect(TcpMgr::GetInstance().get(),&TcpMgr::sig_connection_closed, this, &MainWindow::SlotExcepConOffline);
-    //测试用
-    //emit TcpMgr::GetInstance()->sig_swich_chatdlg();
+
+    connect(this,&MainWindow::sig_request_close_socket, TcpMgr::GetInstance().get(), &TcpMgr::slot_close_socket);
 
 }
 
@@ -50,6 +50,7 @@ void MainWindow::SlotSwitchReg()
     _login_dlg->hide();
     _reg_dlg->show();
     _ui_status = REGISTER_UI;
+
 }
 
 //从注册界面返回登录界面
@@ -60,7 +61,6 @@ void MainWindow::SlotSwitchLogin()
     _login_dlg->setWindowFlags(Qt::CustomizeWindowHint|Qt::FramelessWindowHint);
     setCentralWidget(_login_dlg);
 
-   _reg_dlg->hide();
     _login_dlg->show();
     //连接登录界面注册信号
     connect(_login_dlg, &LoginDialog::switchRegister, this, &MainWindow::SlotSwitchReg);
@@ -71,7 +71,6 @@ void MainWindow::SlotSwitchLogin()
 
 void MainWindow::SlotSwitchReset()
 {
-    _ui_status = RESET_UI;
     //创建一个CentralWidget, 并将其设置为MainWindow的中心部件
     _reset_dlg = new ResetDialog(this);
     _reset_dlg->setWindowFlags(Qt::CustomizeWindowHint|Qt::FramelessWindowHint);
@@ -80,7 +79,8 @@ void MainWindow::SlotSwitchReset()
    _login_dlg->hide();
     _reset_dlg->show();
     //注册返回登录信号和槽函数
-    connect(_reset_dlg, &ResetDialog::switchLogin, this, &MainWindow::SlotSwitchLogin2);
+    connect(_reset_dlg, &ResetDialog::switchLogin, this, &MainWindow::SlotSwitchLogin);
+    _ui_status = RESET_UI;
 }
 
 //从重置界面返回登录界面
@@ -91,7 +91,6 @@ void MainWindow::SlotSwitchLogin2()
     _login_dlg->setWindowFlags(Qt::CustomizeWindowHint|Qt::FramelessWindowHint);
     setCentralWidget(_login_dlg);
 
-   _reset_dlg->hide();
     _login_dlg->show();
     //连接登录界面忘记密码信号
     connect(_login_dlg, &LoginDialog::switchReset, this, &MainWindow::SlotSwitchReset);
@@ -124,7 +123,7 @@ void MainWindow::SlotExcepConOffline()
 {
     // 使用静态方法直接弹出一个信息框
         QMessageBox::information(this, "下线提示", "心跳超时或临界异常，该终端下线！");
-        TcpMgr::GetInstance()->CloseConnection();
+        emit sig_request_close_socket();
         offlineLogin();
 }
 
