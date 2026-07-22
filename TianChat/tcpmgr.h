@@ -8,6 +8,7 @@
 #include "userdata.h"
 #include <QJsonArray>
 #include <memory>
+#include <qqueue.h>
 
 class TcpThread:public std::enable_shared_from_this<TcpThread>{
 public:
@@ -41,6 +42,13 @@ private:
     quint16 _message_len;
     QMap<ReqId, std::function<void(ReqId id, int len, QByteArray data)>> _handlers;
     std::unique_ptr<QTimer> _timer;
+    //发送队列
+    QQueue<QByteArray> _send_queue;
+    //当前正在发送的数据包
+    QByteArray _current_block;
+    //是否正在发送
+    bool _pending;
+
 public slots:
     void slot_tcp_connect(ServerInfo);
     void slot_send_data(ReqId reqId, QByteArray data);

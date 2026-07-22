@@ -4,7 +4,7 @@
 #include <QThread>
 #include <QTimer>
 
-TcpMgr::TcpMgr():_host(""),_port(0),_b_recv_pending(false),_message_id(0),_message_len(0),_timer(nullptr)
+TcpMgr::TcpMgr():_host(""),_port(0),_b_recv_pending(false),_message_id(0),_message_len(0),_timer(nullptr),_bytes_sent(0),_pending(false)
 {
     QObject::connect(this, &TcpMgr::sig_timer_start, this, &TcpMgr::slot_timer_start);
     QObject::connect(this, &TcpMgr::sig_timer_stop, this, &TcpMgr::slot_timer_stop);
@@ -103,6 +103,22 @@ TcpMgr::TcpMgr():_host(""),_port(0),_b_recv_pending(false),_message_id(0),_messa
         registerMetaType();
 
         // connect(_socket,&QTcpSocket::connected,this,&TcpMgr::sig_timer_start);
+
+        QObject::connect(&_socket, &QTcpSocket::bytesWritten, this, [this](qint64 bytes) {
+            // 忽略 bytes 参数，我们只关心是否所有数据都已送出
+            if (_socket.bytesToWrite() == 0) {
+                // 当前块已彻底发送完毕
+                if (_send_queue.empty()) {
+                    _current_block.clear();
+                    _pending = false;
+                }
+                else {
+                    _current_block = _send_queue.dequeue();
+                    _socket.write(_current_block);  // 整个块一次性写
+                }
+            }
+
+            });
 
 }
 
@@ -747,8 +763,19 @@ void TcpMgr::slot_send_data(ReqId reqId, QByteArray dataBytes)
     // 添加字符串数据
     block.append(dataBytes);
 
+    //判断是否正在发送
+    if (_pending) {
+        _send_queue.enqueue(block);
+        return;
+    }
+
+    //发送当前包
+    _current_block = block;
+    _pending = true;
+
+
     // 发送数据
-    _socket.write(block);
+    qint64 written=_socket.write(block);
     qDebug() << "tcp mgr send byte data is " << block ;
 }
 
