@@ -19,7 +19,7 @@ ChatItemBase::ChatItemBase(ChatRole role, QWidget *parent)
     QGridLayout *pGLayout = new QGridLayout();
     pGLayout->setVerticalSpacing(3);
     pGLayout->setHorizontalSpacing(3);
-    pGLayout->setContentsMargins(3, 3, 3, 3);
+    pGLayout->setContentsMargins(0, 0, 0, 0);
     QSpacerItem*pSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
     //添加状态图标控件
@@ -87,4 +87,13 @@ void ChatItemBase::setStatus(int status)
         m_pStatusLabel->setPixmap(QPixmap(":/res/readed.png"));
         return ;
     }
+}
+
+
+QLabel* ChatItemBase::getIconLabel() {
+    return m_pIconLabel;
+}
+
+QWidget* ChatItemBase::getBubble() {
+    return m_pBubble;
 }

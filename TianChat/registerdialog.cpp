@@ -11,7 +11,7 @@ RegisterDialog::RegisterDialog(QWidget *parent) :
     ui(new Ui::RegisterDialog),_countdown(5)
 {
     ui->setupUi(this);
-    ui->user_edit->setValidator(new QRegularExpressionValidator(QRegularExpression("[a-zA-Z0-9]+$"), ui->user_edit));
+    ui->user_edit->setValidator(new QRegularExpressionValidator(QRegularExpression("[a-zA-Z0-9]+")));
     //设置密码格式隐藏
     ui->pass_edit->setEchoMode(QLineEdit::Password);
     ui->confirm_edit->setEchoMode(QLineEdit::Password);

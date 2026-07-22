@@ -32,12 +32,19 @@ ResetDialog::ResetDialog(QWidget *parent) :
     initHandlers();
     connect(HttpMgr::GetInstance().get(), &HttpMgr::sig_reset_mod_finish, this,
             &ResetDialog::slot_reset_mod_finish);
+
 }
 
 
 ResetDialog::~ResetDialog()
 {
     delete ui;
+}
+
+void ResetDialog::on_return_btn_clicked()
+{
+    qDebug() << "sure btn clicked ";
+    emit switchLogin();
 }
 
 void ResetDialog::on_varify_btn_clicked()
@@ -242,10 +249,3 @@ void ResetDialog::on_sure_btn_clicked()
     HttpMgr::GetInstance()->PostHttpReq(QUrl(gate_url_prefix+"/reset_pwd"),
                  json_obj, ReqId::ID_RESET_PWD,Modules::RESETMOD);
 }
-
-void ResetDialog::on_return_btn_clicked()
-{
-    qDebug() << "sure btn clicked ";
-    emit switchLogin();
-}
-

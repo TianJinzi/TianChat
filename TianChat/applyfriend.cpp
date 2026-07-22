@@ -68,7 +68,7 @@ void ApplyFriend::InitTipLbs()
 		connect(lb, &ClickedLabel::clicked, this, &ApplyFriend::SlotChangeFriendLabelByTip);
 
 		QFontMetrics fontMetrics(lb->font()); // 获取QLabel控件的字体信息
-		int textWidth = fontMetrics.horizontalAdvance(lb->text()); // 获取文本的宽度
+        int textWidth = fontMetrics.horizontalAdvance(lb->text()); // 获取文本的宽度
 		int textHeight = fontMetrics.height(); // 获取文本的高度
 
 		if (_tip_cur_point.x() + textWidth + tip_offset > ui->lb_list->width()) {
@@ -172,8 +172,8 @@ void ApplyFriend::ShowMoreLabel()
 		connect(lb, &ClickedLabel::clicked, this, &ApplyFriend::SlotChangeFriendLabelByTip);
 
 		QFontMetrics fontMetrics(lb->font()); // 获取QLabel控件的字体信息
-		int textWidth = fontMetrics.horizontalAdvance(lb->text()); // 获取文本的宽度
-		int textHeight = fontMetrics.height(); // 获取文本的高度
+        int textWidth = fontMetrics.horizontalAdvance(lb->text()); // 获取文本的宽度
+        int textHeight = fontMetrics.height(); // 获取文本的高度
 
 		if (_tip_cur_point.x() + textWidth + tip_offset > ui->lb_list->width()) {
 
@@ -450,7 +450,7 @@ void ApplyFriend::SlotAddFirendLabelByClickTip(QString text)
     qDebug() << "_tip_cur_point.x() is " << _tip_cur_point.x();
    
 	QFontMetrics fontMetrics(lb->font()); // 获取QLabel控件的字体信息
-	int textWidth = fontMetrics.horizontalAdvance(lb->text()); // 获取文本的宽度
+    int textWidth = fontMetrics.horizontalAdvance(lb->text()); // 获取文本的宽度
 	int textHeight = fontMetrics.height(); // 获取文本的高度
     qDebug() << "textWidth is " << textWidth;
 

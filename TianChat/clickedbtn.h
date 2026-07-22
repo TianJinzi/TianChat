@@ -1,7 +1,6 @@
 #ifndef CLICKEDBTN_H
 #define CLICKEDBTN_H
 #include <QPushButton>
-#include <QEvent>
 
 class ClickedBtn:public QPushButton
 {

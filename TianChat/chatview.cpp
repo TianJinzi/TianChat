@@ -14,7 +14,7 @@ ChatView::ChatView(QWidget *parent)
 {
     QVBoxLayout *pMainLayout = new QVBoxLayout();
     this->setLayout(pMainLayout);
-    pMainLayout->setContentsMargins(0,0,0,0);
+    pMainLayout->setContentsMargins(0, 0, 0, 0);
 
     m_pScrollArea = new QScrollArea();
     m_pScrollArea->setObjectName("chat_area");
@@ -34,7 +34,7 @@ ChatView::ChatView(QWidget *parent)
     //把垂直ScrollBar放到上边 而不是原来的并排
     QHBoxLayout *pHLayout_2 = new QHBoxLayout();
     pHLayout_2->addWidget(pVScrollBar, 0, Qt::AlignRight);
-    pHLayout_2->setContentsMargins(0,0,0,0);
+    pHLayout_2->setContentsMargins(0, 0, 0, 0);
     m_pScrollArea->setLayout(pHLayout_2);
     pVScrollBar->setHidden(true);
 

@@ -11,6 +11,7 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    ClickableLabel.cpp \
     adduseritem.cpp \
     applyfriend.cpp \
     applyfrienditem.cpp \
@@ -30,6 +31,8 @@ SOURCES += \
     contactuserlist.cpp \
     conuseritem.cpp \
     customizeedit.cpp \
+    customizetextedit.cpp \
+    filetcpmgr.cpp \
     findfaildlg.cpp \
     findsuccessdlg.cpp \
     friendinfopage.cpp \
@@ -61,6 +64,7 @@ SOURCES += \
     usermgr.cpp
 
 HEADERS += \
+    ClickableLabel.h \
     adduseritem.h \
     applyfriend.h \
     applyfrienditem.h \
@@ -80,6 +84,8 @@ HEADERS += \
     contactuserlist.h \
     conuseritem.h \
     customizeedit.h \
+    customizetextedit.h \
+    filetcpmgr.h \
     findfaildlg.h \
     findsuccessdlg.h \
     friendinfopage.h \
@@ -107,6 +113,28 @@ HEADERS += \
     tcpmgr.h \
     textbubble.h \
     timerbtn.h \
+    ui_adduseritem.h \
+    ui_applyfriend.h \
+    ui_applyfrienditem.h \
+    ui_applyfriendpage.h \
+    ui_authenfriend.h \
+    ui_chatdialog.h \
+    ui_chatpage.h \
+    ui_chatuserwid.h \
+    ui_conuseritem.h \
+    ui_findfaildlg.h \
+    ui_findsuccessdlg.h \
+    ui_friendinfopage.h \
+    ui_friendlabel.h \
+    ui_grouptipitem.h \
+    ui_lineitem.h \
+    ui_loadingdlg.h \
+    ui_logindialog.h \
+    ui_mainwindow.h \
+    ui_offlinedialog.h \
+    ui_registerdialog.h \
+    ui_resetdialog.h \
+    ui_userinfopage.h \
     userdata.h \
     userinfopage.h \
     usermgr.h
@@ -144,10 +172,12 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
+    rc.qrc \
     rc.qrc
 
 DISTFILES += \
-    config.ini
+    config.ini \
+    icon.ico
 
 
 CONFIG(debug, debug | release) {

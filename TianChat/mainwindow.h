@@ -6,7 +6,6 @@
 #include "registerdialog.h"
 #include "resetdialog.h"
 #include "chatdialog.h"
-#include "tcpmgr.h"
 /******************************************************************************
  *
  * @file       mainwindow.h
@@ -42,6 +41,7 @@ public slots:
     void SlotSwitchChat();
     void SlotOffline();
     void SlotExcepConOffline();
+    void SlotResServerConOffline();
 
 private:
     void offlineLogin();
@@ -51,10 +51,6 @@ private:
     ResetDialog* _reset_dlg;
     ChatDialog* _chat_dlg;
     UIStatus _ui_status;
-    TcpThread _tcp_thread;
-
-signals:
-    void sig_request_close_socket();
 };
 
 #endif // MAINWINDOW_H

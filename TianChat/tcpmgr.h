@@ -1,4 +1,4 @@
-#ifndef TCPMGR_H
+ï»¿#ifndef TCPMGR_H
 #define TCPMGR_H
 #include <QTcpSocket>
 #include "singleton.h"
@@ -8,16 +8,15 @@
 #include "userdata.h"
 #include <QJsonArray>
 #include <memory>
-#include <qqueue.h>
+#include <QThread>
+#include <QQueue>
 
-class TcpThread:public std::enable_shared_from_this<TcpThread>{
+class TcpThread:public std::enable_shared_from_this<TcpThread> {
 public:
     TcpThread();
     ~TcpThread();
-
 private:
     QThread* _tcp_thread;
-
 };
 
 class TcpMgr:public QObject, public Singleton<TcpMgr>,
@@ -27,12 +26,17 @@ class TcpMgr:public QObject, public Singleton<TcpMgr>,
 public:
    ~ TcpMgr();
     void CloseConnection();
+    void SendData(ReqId reqId, QByteArray data);
+
 private:
     friend class Singleton<TcpMgr>;
     TcpMgr();
+    void registerMetaType();
     void initHandlers();
     void handleMsg(ReqId id, int len, QByteArray data);
-    void registerMetaType();
+    void CreatePlaceholderImgMsgL(QString img_path_str, QString msg_content,
+        int msg_id, int thread_id, int send_uid, int recv_id, int status, QString chat_time,
+        std::vector<std::shared_ptr<ChatDataBase>>& chat_datas);
     QTcpSocket _socket;
     QString _host;
     uint16_t _port;
@@ -41,22 +45,24 @@ private:
     quint16 _message_id;
     quint16 _message_len;
     QMap<ReqId, std::function<void(ReqId id, int len, QByteArray data)>> _handlers;
-    std::unique_ptr<QTimer> _timer;
-    //·¢ËÍ¶ÓÁĞ
+    //å‘é€é˜Ÿåˆ—
     QQueue<QByteArray> _send_queue;
-    //µ±Ç°ÕıÔÚ·¢ËÍµÄÊı¾İ°ü
-    QByteArray _current_block;
-    //ÊÇ·ñÕıÔÚ·¢ËÍ
+    //æ­£åœ¨å‘é€çš„åŒ…
+    QByteArray  _current_block;
+    //å½“å‰å·²å‘é€çš„å­—èŠ‚æ•°
+    qint64        _bytes_sent;
+    //æ˜¯å¦æ­£åœ¨å‘é€
     bool _pending;
-
 public slots:
-    void slot_tcp_connect(ServerInfo);
+    void slot_tcp_close();
+    void slot_tcp_connect(std::shared_ptr<ServerInfo> si);
     void slot_send_data(ReqId reqId, QByteArray data);
-
-    void slot_timer_start();
-    void slot_timer_stop();
-    void slot_close_socket();
+    void slot_test() {
+        qDebug() << "receve thread is " << QThread::currentThread();
+        qDebug() << "slot test......";
+    }
 signals:
+    void sig_close();
     void sig_con_success(bool bsuccess);
     void sig_send_data(ReqId reqId, QByteArray data);
     void sig_swich_chatdlg();
@@ -73,13 +79,11 @@ signals:
         std::vector<std::shared_ptr<ChatThreadInfo>> chat_list);
     void sig_create_private_chat(int uid, int other_id, int thread_id);
     void sig_load_chat_msg(int thread_id, int message_id, bool load_more,
-        std::vector<std::shared_ptr<TextChatData>> msg_list);
+        std::vector<std::shared_ptr<ChatDataBase>> msg_list);
 
     void sig_chat_msg_rsp(int thread_id, std::vector<std::shared_ptr<TextChatData>> msg_list);
-
-    void sig_timer_start();
-    void sig_timer_stop();
-
+    void sig_chat_img_rsp(int thread_id, std::shared_ptr<ImgChatData> msg_list);
+    void sig_img_chat_msg(std::shared_ptr<ImgChatData> msg_list);
 };
 
 #endif // TCPMGR_H
