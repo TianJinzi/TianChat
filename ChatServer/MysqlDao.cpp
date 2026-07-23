@@ -23,19 +23,19 @@ int MysqlDao::RegUser(const std::string& name, const std::string& email, const s
 		if (con == nullptr) {
 			return false;
 		}
-		// 准备调用存储过程
+		// ?????????????
 		std::unique_ptr < sql::PreparedStatement > stmt(con->_con->prepareStatement("CALL reg_user(?,?,?,@result)"));
-		// 设置输入参数
+		// ???????????
 		stmt->setString(1, name);
 		stmt->setString(2, email);
 		stmt->setString(3, pwd);
 
-		// 由于PreparedStatement不直接支持注册输出参数，我们需要使用会话变量或其他方法来获取输出参数的值
+		// ????PreparedStatement????????????????????????????????????????????????????????????
 
-		  // 执行存储过程
+		  // ?????????
 		stmt->execute();
-		// 如果存储过程设置了会话变量或有其他方式获取输出参数的值，你可以在这里执行SELECT查询来获取它们
-	   // 例如，如果存储过程设置了一个会话变量@result来存储输出结果，可以这样获取：
+		// ?????????????????????????????????????????????????????????????SELECT????????????
+	   // ??????????????????????????????@result??????????????????????????
 		std::unique_ptr<sql::Statement> stmtResult(con->_con->createStatement());
 		std::unique_ptr<sql::ResultSet> res(stmtResult->executeQuery("SELECT @result AS result"));
 		if (res->next()) {
@@ -63,16 +63,16 @@ bool MysqlDao::CheckEmail(const std::string& name, const std::string& email) {
 			return false;
 		}
 
-		// 准备查询语句
+		// ?????????
 		std::unique_ptr<sql::PreparedStatement> pstmt(con->_con->prepareStatement("SELECT email FROM user WHERE name = ?"));
 
-		// 绑定参数
+		// ?????
 		pstmt->setString(1, name);
 
-		// 执行查询
+		// ??????
 		std::unique_ptr<sql::ResultSet> res(pstmt->executeQuery());
 
-		// 遍历结果集
+		// ?????????
 		while (res->next()) {
 			std::cout << "Check Email: " << res->getString("email") << std::endl;
 			if (email != res->getString("email")) {
@@ -100,14 +100,14 @@ bool MysqlDao::UpdatePwd(const std::string& name, const std::string& newpwd) {
 			return false;
 		}
 
-		// 准备查询语句
+		// ?????????
 		std::unique_ptr<sql::PreparedStatement> pstmt(con->_con->prepareStatement("UPDATE user SET pwd = ? WHERE name = ?"));
 
-		// 绑定参数
+		// ?????
 		pstmt->setString(2, name);
 		pstmt->setString(1, newpwd);
 
-		// 执行更新
+		// ???????
 		int updateCount = pstmt->executeUpdate();
 
 		std::cout << "Updated rows: " << updateCount << std::endl;
@@ -134,17 +134,17 @@ bool MysqlDao::CheckPwd(const std::string& name, const std::string& pwd, UserInf
 		});
 
 	try {
-		// 准备SQL语句
+		// ???SQL???
 		std::unique_ptr<sql::PreparedStatement> pstmt(con->_con->prepareStatement("SELECT * FROM user WHERE name = ?"));
-		pstmt->setString(1, name); // 将username替换为你要查询的用户名
+		pstmt->setString(1, name); // ??username??I??????????????
 
-		// 执行查询
+		// ??????
 		std::unique_ptr<sql::ResultSet> res(pstmt->executeQuery());
 		std::string origin_pwd = "";
-		// 遍历结果集
+		// ?????????
 		while (res->next()) {
 			origin_pwd = res->getString("pwd");
-			// 输出查询到的密码
+			// ??????????????
 			std::cout << "Password: " << origin_pwd << std::endl;
 			break;
 		}
@@ -179,7 +179,7 @@ bool MysqlDao::AddFriendApply(const int& from, const int& to,
 		});
 
 	try {
-		// 准备SQL语句
+		// ???SQL???
 		std::unique_ptr<sql::PreparedStatement> pstmt(
 			con->_con->prepareStatement("INSERT INTO friend_apply (from_uid, to_uid, descs, back_name) "
 				"values (?,?,?,?) "
@@ -190,7 +190,7 @@ bool MysqlDao::AddFriendApply(const int& from, const int& to,
 		pstmt->setString(4, back_name);
 		pstmt->setString(5, desc);
 		pstmt->setString(6, back_name);
-		// 执行更新
+		// ???????
 		int rowAffected = pstmt->executeUpdate();
 		if (rowAffected < 0) {
 			return false;
@@ -219,13 +219,13 @@ bool MysqlDao::AuthFriendApply(const int& from, const int& to) {
 		});
 
 	try {
-		// 准备SQL语句
+		// ???SQL???
 		std::unique_ptr<sql::PreparedStatement> pstmt(con->_con->prepareStatement("UPDATE friend_apply SET status = 1 "
 			"WHERE from_uid = ? AND to_uid = ?"));
-		//反过来的申请时from，验证时to
+		//?????????????from??????to
 		pstmt->setInt(1, to); // from id
 		pstmt->setInt(2, from);
-		// 执行更新
+		// ???????
 		int rowAffected = pstmt->executeUpdate();
 		if (rowAffected < 0) {
 			return false;
@@ -243,6 +243,7 @@ bool MysqlDao::AuthFriendApply(const int& from, const int& to) {
 	return true;
 }
 
+
 bool MysqlDao::AddFriend(const int& from, const int& to, std::string back_name,
 	std::vector<std::shared_ptr<AddFriendMsg>>& chat_datas) {
 	auto con = pool_->getConnection();
@@ -255,14 +256,13 @@ bool MysqlDao::AddFriend(const int& from, const int& to, std::string back_name,
 		});
 
 	try {
-
-		//开始事务
+		// ???????
 		con->_con->setAutoCommit(false);
 		std::string reverse_back;
 		std::string apply_desc;
 
 		{
-			// 1. 锁定并读取
+			// 1. ?????????
 			std::unique_ptr<sql::PreparedStatement> selStmt(con->_con->prepareStatement(
 				"SELECT back_name, descs "
 				"FROM friend_apply "
@@ -279,55 +279,76 @@ bool MysqlDao::AddFriend(const int& from, const int& to, std::string back_name,
 				apply_desc = rsSel->getString("descs");
 			}
 			else {
-				// 没有对应的申请记录，直接 rollback 并返回失败
+				// ??????????????????? rollback ?????????
 				con->_con->rollback();
 				return false;
 			}
 		}
-		
+
 		{
-			// 2. 执行真正的更新
+			// 2. ????????????
 			std::unique_ptr<sql::PreparedStatement> updStmt(con->_con->prepareStatement(
 				"UPDATE friend_apply "
 				"SET status = 1 "
 				"WHERE from_uid = ? AND to_uid = ?"
 			));
-	
+
 			updStmt->setInt(1, to);
 			updStmt->setInt(2, from);
 
 			if (updStmt->executeUpdate() != 1) {
-				// 更新行数不对，回滚
+				// ????????????????
 				con->_con->rollback();
 				return false;
 			}
 		}
-		
+
 		{
-			// 3. 准备第一个SQL语句, 插入认证方好友数据
-			std::unique_ptr<sql::PreparedStatement> pstmt(con->_con->prepareStatement("INSERT IGNORE INTO friend(self_id, friend_id, back) "
-				"VALUES (?, ?, ?) "
+			// 3. ????????? - ???????????????????????????
+			// ???????????????? uid ???????
+			int smaller_uid = std::min(from, to);
+			int larger_uid = std::max(from, to);
+
+			// ??????????????? uid ??? self_id
+			std::unique_ptr<sql::PreparedStatement> pstmt(con->_con->prepareStatement(
+				"INSERT IGNORE INTO friend(self_id, friend_id, back) "
+				"VALUES (?, ?, ?)"
 			));
-			//反过来的申请时from，验证时to
-			pstmt->setInt(1, from); // from id
-			pstmt->setInt(2, to);
-			pstmt->setString(3, back_name);
-			// 执行更新
+
+			if (from == smaller_uid) {
+				pstmt->setInt(1, from);
+				pstmt->setInt(2, to);
+				pstmt->setString(3, back_name);
+			}
+			else {
+				pstmt->setInt(1, to);
+				pstmt->setInt(2, from);
+				pstmt->setString(3, reverse_back);
+			}
+
 			int rowAffected = pstmt->executeUpdate();
 			if (rowAffected < 0) {
 				con->_con->rollback();
 				return false;
 			}
 
-			//准备第二个SQL语句，插入申请方好友数据
-			std::unique_ptr<sql::PreparedStatement> pstmt2(con->_con->prepareStatement("INSERT IGNORE INTO friend(self_id, friend_id, back) "
-				"VALUES (?, ?, ?) "
+			// ????????????? uid ??? self_id
+			std::unique_ptr<sql::PreparedStatement> pstmt2(con->_con->prepareStatement(
+				"INSERT IGNORE INTO friend(self_id, friend_id, back) "
+				"VALUES (?, ?, ?)"
 			));
-			//反过来的申请时from，验证时to
-			pstmt2->setInt(1, to); // from id
-			pstmt2->setInt(2, from);
-			pstmt2->setString(3, reverse_back);
-			// 执行更新
+
+			if (from == larger_uid) {
+				pstmt2->setInt(1, from);
+				pstmt2->setInt(2, to);
+				pstmt2->setString(3, back_name);
+			}
+			else {
+				pstmt2->setInt(1, to);
+				pstmt2->setInt(2, from);
+				pstmt2->setString(3, reverse_back);
+			}
+
 			int rowAffected2 = pstmt2->executeUpdate();
 			if (rowAffected2 < 0) {
 				con->_con->rollback();
@@ -335,15 +356,13 @@ bool MysqlDao::AddFriend(const int& from, const int& to, std::string back_name,
 			}
 		}
 
-		
-
-		// 4. 创建 chat_thread
+		// 4. ???? chat_thread
 		long long threadId = 0;
 		{
 			std::unique_ptr<sql::PreparedStatement> threadStmt(con->_con->prepareStatement(
-				"INSERT INTO chat_thread (type, created_at) VALUES ('private', NOW());"
+				"INSERT INTO chat_thread (type, created_at) VALUES ('private', NOW())"
 			));
-			
+
 			threadStmt->executeUpdate();
 
 			std::unique_ptr<sql::Statement> stmt(con->_con->createStatement());
@@ -355,11 +374,12 @@ bool MysqlDao::AddFriend(const int& from, const int& to, std::string back_name,
 				threadId = rs->getInt64(1);
 			}
 			else {
+				con->_con->rollback();
 				return false;
 			}
 		}
 
-		// 5. 插入 private_chat
+		// 5. ???? private_chat
 		{
 			std::unique_ptr<sql::PreparedStatement> pcStmt(con->_con->prepareStatement(
 				"INSERT INTO private_chat(thread_id, user1_id, user2_id) VALUES (?, ?, ?)"
@@ -368,27 +388,37 @@ bool MysqlDao::AddFriend(const int& from, const int& to, std::string back_name,
 			pcStmt->setInt64(1, threadId);
 			pcStmt->setInt(2, from);
 			pcStmt->setInt(3, to);
-			if (pcStmt->executeUpdate() < 0) return false;
+
+			if (pcStmt->executeUpdate() < 0) {
+				con->_con->rollback();
+				return false;
+			}
 		}
 
-		// 6. 可选：插入初始消息到 chat_message
-		if (apply_desc.empty() == false)
+		// 6. ?????????????????????
+		if (!apply_desc.empty())
 		{
 			std::unique_ptr<sql::PreparedStatement> msgStmt(con->_con->prepareStatement(
-				"INSERT INTO chat_message(thread_id, sender_id, recv_id, content,created_at, updated_at, status) VALUES (?, ?, ?, ?,NOW(),NOW(),?)"
+				"INSERT INTO chat_message(thread_id, sender_id, recv_id, content, created_at, updated_at, status) "
+				"VALUES (?, ?, ?, ?, NOW(), NOW(), ?)"
 			));
-		
+
 			msgStmt->setInt64(1, threadId);
 			msgStmt->setInt(2, to);
 			msgStmt->setInt(3, from);
 			msgStmt->setString(4, apply_desc);
 			msgStmt->setInt(5, 2);
-			if (msgStmt->executeUpdate() < 0) { return false; }
+
+			if (msgStmt->executeUpdate() < 0) {
+				con->_con->rollback();
+				return false;
+			}
 
 			std::unique_ptr<sql::Statement> stmt(con->_con->createStatement());
 			std::unique_ptr<sql::ResultSet> rs(
 				stmt->executeQuery("SELECT LAST_INSERT_ID()")
 			);
+
 			if (rs->next()) {
 				auto messageId = rs->getInt64(1);
 				auto tx_data = std::make_shared<AddFriendMsg>();
@@ -402,28 +432,34 @@ bool MysqlDao::AddFriend(const int& from, const int& to, std::string back_name,
 				chat_datas.push_back(tx_data);
 			}
 			else {
+				con->_con->rollback();
 				return false;
 			}
 		}
 
+		// 7. ??????????????
 		{
 			std::unique_ptr<sql::PreparedStatement> msgStmt(con->_con->prepareStatement(
-				"INSERT INTO chat_message(thread_id, sender_id, recv_id, content, created_at, updated_at, status) VALUES (?, ?, ?, ?,NOW(),NOW(),?)"
+				"INSERT INTO chat_message(thread_id, sender_id, recv_id, content, created_at, updated_at, status) "
+				"VALUES (?, ?, ?, ?, NOW(), NOW(), ?)"
 			));
-		
+
 			msgStmt->setInt64(1, threadId);
 			msgStmt->setInt(2, from);
 			msgStmt->setInt(3, to);
 			msgStmt->setString(4, "We are friends now!");
-
 			msgStmt->setInt(5, 2);
 
-			if (msgStmt->executeUpdate() < 0) { return false; }
+			if (msgStmt->executeUpdate() < 0) {
+				con->_con->rollback();
+				return false;
+			}
 
 			std::unique_ptr<sql::Statement> stmt(con->_con->createStatement());
 			std::unique_ptr<sql::ResultSet> rs(
 				stmt->executeQuery("SELECT LAST_INSERT_ID()")
 			);
+
 			if (rs->next()) {
 				auto messageId = rs->getInt64(1);
 				auto tx_data = std::make_shared<AddFriendMsg>();
@@ -436,30 +472,38 @@ bool MysqlDao::AddFriend(const int& from, const int& to, std::string back_name,
 				chat_datas.push_back(tx_data);
 			}
 			else {
+				con->_con->rollback();
 				return false;
 			}
 		}
 
-		// 提交事务
+		// ??????
 		con->_con->commit();
 		std::cout << "addfriend insert friends success" << std::endl;
 
 		return true;
 	}
 	catch (sql::SQLException& e) {
-		// 如果发生错误，回滚事务
+		// ?????????????????
 		if (con) {
 			con->_con->rollback();
 		}
 		std::cerr << "SQLException: " << e.what();
 		std::cerr << " (MySQL error code: " << e.getErrorCode();
 		std::cerr << ", SQLState: " << e.getSQLState() << " )" << std::endl;
+
+		// ?????????????1213???????????????
+		if (e.getErrorCode() == 1213) {
+			std::cerr << "Deadlock detected, consider retry" << std::endl;
+		}
+
 		return false;
 	}
 
-
 	return true;
 }
+
+
 
 std::shared_ptr<UserInfo> MysqlDao::GetUser(int uid)
 {
@@ -473,14 +517,14 @@ std::shared_ptr<UserInfo> MysqlDao::GetUser(int uid)
 		});
 
 	try {
-		// 准备SQL语句
+		// ???SQL???
 		std::unique_ptr<sql::PreparedStatement> pstmt(con->_con->prepareStatement("SELECT * FROM user WHERE uid = ?"));
-		pstmt->setInt(1, uid); // 将uid替换为你要查询的uid
+		pstmt->setInt(1, uid); // ??uid??I?????????uid
 
-		// 执行查询
+		// ??????
 		std::unique_ptr<sql::ResultSet> res(pstmt->executeQuery());
 		std::shared_ptr<UserInfo> user_ptr = nullptr;
-		// 遍历结果集
+		// ?????????
 		while (res->next()) {
 			user_ptr.reset(new UserInfo);
 			user_ptr->pwd = res->getString("pwd");
@@ -515,14 +559,14 @@ std::shared_ptr<UserInfo> MysqlDao::GetUser(std::string name)
 		});
 
 	try {
-		// 准备SQL语句
+		// ???SQL???
 		std::unique_ptr<sql::PreparedStatement> pstmt(con->_con->prepareStatement("SELECT * FROM user WHERE name = ?"));
-		pstmt->setString(1, name); // 将uid替换为你要查询的uid
+		pstmt->setString(1, name); // ??uid??I?????????uid
 
-		// 执行查询
+		// ??????
 		std::unique_ptr<sql::ResultSet> res(pstmt->executeQuery());
 		std::shared_ptr<UserInfo> user_ptr = nullptr;
-		// 遍历结果集
+		// ?????????
 		while (res->next()) {
 			user_ptr.reset(new UserInfo);
 			user_ptr->pwd = res->getString("pwd");
@@ -558,17 +602,17 @@ bool MysqlDao::GetApplyList(int touid, std::vector<std::shared_ptr<ApplyInfo>>& 
 
 
 	try {
-		// 准备SQL语句, 根据起始id和限制条数返回列表
+		// ???SQL???, ???????id??????????????????
 		std::unique_ptr<sql::PreparedStatement> pstmt(con->_con->prepareStatement("select apply.from_uid, apply.status, user.name, "
 			"user.nick, user.sex from friend_apply as apply join user on apply.from_uid = user.uid where apply.to_uid = ? "
 			"and apply.id > ? order by apply.id ASC LIMIT ? "));
 
-		pstmt->setInt(1, touid); // 将uid替换为你要查询的uid
-		pstmt->setInt(2, begin); // 起始id
-		pstmt->setInt(3, limit); //偏移量
-		// 执行查询
+		pstmt->setInt(1, touid); // ??uid??I?????????uid
+		pstmt->setInt(2, begin); // ???id
+		pstmt->setInt(3, limit); //?????
+		// ??????
 		std::unique_ptr<sql::ResultSet> res(pstmt->executeQuery());
-		// 遍历结果集
+		// ?????????
 		while (res->next()) {
 			auto name = res->getString("name");
 			auto uid = res->getInt("from_uid");
@@ -601,18 +645,18 @@ bool MysqlDao::GetFriendList(int self_id, std::vector<std::shared_ptr<UserInfo> 
 
 
 	try {
-		// 准备SQL语句, 根据起始id和限制条数返回列表
+		// ???SQL???, ???????id??????????????????
 		std::unique_ptr<sql::PreparedStatement> pstmt(con->_con->prepareStatement("select * from friend where self_id = ? "));
 
-		pstmt->setInt(1, self_id); // 将uid替换为你要查询的uid
+		pstmt->setInt(1, self_id); // ??uid??I?????????uid
 
-		// 执行查询
+		// ??????
 		std::unique_ptr<sql::ResultSet> res(pstmt->executeQuery());
-		// 遍历结果集
+		// ?????????
 		while (res->next()) {
 			auto friend_id = res->getInt("friend_id");
 			auto back = res->getString("back");
-			//再一次查询friend_id对应的信息
+			//????????friend_id????????
 			auto user_info = GetUser(friend_id);
 			if (user_info == nullptr) {
 				continue;
@@ -633,7 +677,7 @@ bool MysqlDao::GetFriendList(int self_id, std::vector<std::shared_ptr<UserInfo> 
 	return true;
 }
 
-// 新增两个输出参数：loadMore, nextLastId
+// ?????????????????loadMore, nextLastId
 bool MysqlDao::GetUserThreads(
 	int64_t userId,
 	int64_t lastId,
@@ -642,7 +686,7 @@ bool MysqlDao::GetUserThreads(
 	bool& loadMore,
 	int& nextLastId)
 {
-	// 初始状态
+	// ?????
 	loadMore = false;
 	nextLastId = lastId;
 	threads.clear();
@@ -657,7 +701,7 @@ bool MysqlDao::GetUserThreads(
 	auto& conn = con->_con;
 
 	try {
-		// 准备分页查询：CTE + UNION ALL + ORDER + LIMIT N+1
+		// ???????????CTE + UNION ALL + ORDER + LIMIT N+1
 		std::string sql =
 			"WITH all_threads AS ( "
 			"  SELECT thread_id, 'private' AS type, user1_id, user2_id "
@@ -678,7 +722,7 @@ bool MysqlDao::GetUserThreads(
 		std::unique_ptr<sql::PreparedStatement> pstmt(
 			conn->prepareStatement(sql));
 
-		// 绑定参数：? 对应 (userId, userId, lastId, userId, lastId, pageSize+1)
+		// ???????? ??? (userId, userId, lastId, userId, lastId, pageSize+1)
 		int idx = 1;
 		pstmt->setInt64(idx++, userId);              // private.user1_id
 		pstmt->setInt64(idx++, userId);              // private.user2_id
@@ -687,10 +731,10 @@ bool MysqlDao::GetUserThreads(
 		pstmt->setInt64(idx++, lastId);              // group.thread_id > lastId
 		pstmt->setInt(idx++, pageSize + 1);          // LIMIT pageSize+1
 
-		// 执行
+		// ???
 		std::unique_ptr<sql::ResultSet> res(pstmt->executeQuery());
 
-		// 先把所有行读到临时容器
+		// ????????????????????
 		std::vector<std::shared_ptr<ChatThreadInfo>> tmp;
 		while (res->next()) {
 			auto cti = std::make_shared<ChatThreadInfo>();
@@ -701,18 +745,18 @@ bool MysqlDao::GetUserThreads(
 			tmp.push_back(cti);
 		}
 
-		// 判断是否多取到一条
+		// ??????????????
 		if ((int)tmp.size() > pageSize) {
 			loadMore = true;
-			tmp.pop_back();  // 丢掉第 pageSize+1 条
+			tmp.pop_back();  // ?????? pageSize+1 ??
 		}
 
-		// 如果还有数据，更新 nextLastId 为最后一条的 thread_id
+		// ???????????????? nextLastId ????????? thread_id
 		if (!tmp.empty()) {
 			nextLastId = tmp.back()->_thread_id;
 		}
 
-		// 移入输出向量
+		// ???????????
 		threads = std::move(tmp);
 	}
 	catch (sql::SQLException& e) {
@@ -731,20 +775,21 @@ bool MysqlDao::CreatePrivateChat(int user1_id, int user2_id, int& thread_id)
 	if (!con) {
 		return false;
 	}
+
 	Defer defer([this, &con]() {
 		pool_->returnConnection(std::move(con));
 		});
+
 	auto& conn = con->_con;
+	int uid1 = std::min(user1_id, user2_id);
+	int uid2 = std::max(user1_id, user2_id);
 	try {
-		// 开启事务
+		// ????????
 		conn->setAutoCommit(false);
-		// 1. 查询是否已存在私聊并加行级锁
-		int uid1 = std::min(user1_id, user2_id);
-		int uid2 = std::max(user1_id, user2_id);
+		// 1. ???????????????(????)
 		std::string check_sql =
 			"SELECT thread_id FROM private_chat "
-			"WHERE (user1_id = ? AND user2_id = ?) "
-			"FOR UPDATE;";
+			"WHERE user1_id = ? AND user2_id = ?;";
 
 		std::unique_ptr<sql::PreparedStatement> pstmt(conn->prepareStatement(check_sql));
 		pstmt->setInt64(1, uid1);
@@ -752,28 +797,28 @@ bool MysqlDao::CreatePrivateChat(int user1_id, int user2_id, int& thread_id)
 		std::unique_ptr<sql::ResultSet> res(pstmt->executeQuery());
 
 		if (res->next()) {
-			// 如果已存在，返回该 thread_id
+			// ?????????????? thread_id
 			thread_id = res->getInt("thread_id");
-			conn->commit();  // 提交事务
+			conn->commit();  // ??????
 			return true;
 		}
 
-		// 2. 如果未找到，创建新的 chat_thread 和 private_chat 记录
-		// 在 chat_thread 表插入新记录
+		// 2. ????????????????? chat_thread ?? private_chat ???
+		// ?? chat_thread ??????????
 		std::string insert_chat_thread_sql =
 			"INSERT INTO chat_thread (type, created_at) VALUES ('private', NOW());";
 
 		std::unique_ptr<sql::PreparedStatement> pstmt_insert_thread(conn->prepareStatement(insert_chat_thread_sql));
 		pstmt_insert_thread->executeUpdate();
 
-		// 获取新插入的 thread_id
+		// ????????? thread_id
 		std::string get_last_insert_id_sql = "SELECT LAST_INSERT_ID();";
 		std::unique_ptr<sql::PreparedStatement> pstmt_last_insert_id(conn->prepareStatement(get_last_insert_id_sql));
 		std::unique_ptr<sql::ResultSet> res_last_id(pstmt_last_insert_id->executeQuery());
 		res_last_id->next();
 		thread_id = res_last_id->getInt(1);
 
-		// 3. 在 private_chat 表插入新记录
+		// 3. ?? private_chat ??????????
 		std::string insert_private_chat_sql =
 			"INSERT INTO private_chat (thread_id, user1_id, user2_id, created_at) "
 			"VALUES (?, ?, ?, NOW());";
@@ -785,13 +830,39 @@ bool MysqlDao::CreatePrivateChat(int user1_id, int user2_id, int& thread_id)
 		pstmt_insert_private->setInt64(3, uid2);
 		pstmt_insert_private->executeUpdate();
 
-		// 提交事务
+		// ??????
 		conn->commit();
 		return true;
 	}
 	catch (sql::SQLException& e) {
-		std::cerr << "SQLException: " << e.what() << std::endl;
 		conn->rollback();
+
+		// ???????????????? (MySQL error code 1062)
+		if (e.getErrorCode() == 1062) {
+			// ??????????????
+			try {
+				conn->setAutoCommit(true);
+				std::string retry_sql =
+					"SELECT thread_id FROM private_chat "
+					"WHERE user1_id = ? AND user2_id = ?;";
+				std::unique_ptr<sql::PreparedStatement> pstmt_retry(
+					conn->prepareStatement(retry_sql));
+				pstmt_retry->setInt64(1, uid1);
+				pstmt_retry->setInt64(2, uid2);
+				std::unique_ptr<sql::ResultSet> res_retry(pstmt_retry->executeQuery());
+
+				if (res_retry->next()) {
+					thread_id = res_retry->getInt("thread_id");
+					return true;
+				}
+			}
+			catch (...) {
+				return false;
+			}
+		}
+
+		std::cerr << "SQLException: " << e.what()
+			<< " (Code: " << e.getErrorCode() << ")" << std::endl;
 		return false;
 	}
 	return false;
@@ -812,12 +883,10 @@ std::shared_ptr<PageResult> MysqlDao::LoadChatMsg(int thread_id, int last_messag
 	try {
 		auto page_res = std::make_shared<PageResult>();
 		page_res->load_more = false;
-		page_res->next_cursor = last_message_id;
-
-		// SQL：多取一条，用于判断是否还有更多
+		// SQL???????????????????????????
 		const std::string sql = R"(
         SELECT message_id, thread_id, sender_id, recv_id, content,
-               created_at, updated_at, status
+               created_at, updated_at, status,msg_type
         FROM chat_message
         WHERE thread_id = ?
           AND message_id > ?
@@ -835,7 +904,7 @@ std::shared_ptr<PageResult> MysqlDao::LoadChatMsg(int thread_id, int last_messag
 
 		auto rs = std::unique_ptr<sql::ResultSet>(pstmt->executeQuery());
 
-		// 读取 fetch_limit 条记录
+		// ??? fetch_limit ?????
 		while (rs->next()) {
 			ChatMessage msg;
 			msg.message_id = rs->getUInt64("message_id");
@@ -845,7 +914,19 @@ std::shared_ptr<PageResult> MysqlDao::LoadChatMsg(int thread_id, int last_messag
 			msg.content = rs->getString("content");
 			msg.chat_time = rs->getString("created_at");
 			msg.status = rs->getInt("status");
+			msg.msg_type = rs->getInt("msg_type");
 			page_res->messages.push_back(std::move(msg));
+		}
+		if (page_res->messages.size() > page_size) {
+			page_res->messages.pop_back();
+			page_res->load_more = true;
+		}
+
+		if (!page_res->messages.empty()) {
+			page_res->next_cursor = page_res->messages.back().message_id;
+		}
+		else {
+			page_res->next_cursor = 0;
 		}
 
 		return page_res;
@@ -872,18 +953,18 @@ bool MysqlDao::AddChatMsg(std::vector<std::shared_ptr<ChatMessage>>& chat_datas)
 
 
 	try {
-		//关闭自动提交，以手动管理事务
+		//???????????????????????
 		conn->setAutoCommit(false);
 		auto pstmt = std::unique_ptr<sql::PreparedStatement>(
 			conn->prepareStatement(
 				"INSERT INTO chat_message "
-				"(thread_id, sender_id, recv_id, content, created_at, updated_at, status) "
-				"VALUES (?, ?, ?, ?, ?, ?, ?)"
+				"(thread_id, sender_id, recv_id, content, created_at, updated_at, status,msg_type) "
+				"VALUES (?, ?, ?, ?, ?, ?, ?,?)"
 			)
 		);
 
 		for (auto& msg : chat_datas) {
-			// 普通字段
+			// ??????
 			pstmt->setUInt64(1, msg->thread_id);
 			pstmt->setUInt64(2, msg->sender_id);
 			pstmt->setUInt64(3, msg->recv_id);
@@ -893,9 +974,10 @@ bool MysqlDao::AddChatMsg(std::vector<std::shared_ptr<ChatMessage>>& chat_datas)
 			pstmt->setString(6, msg->chat_time);  // updated_at
 
 			pstmt->setInt(7, msg->status);
+			pstmt->setInt(8, msg->msg_type);
 			pstmt->executeUpdate();
 
-			// 2. 取 LAST_INSERT_ID()
+			// 2. ? LAST_INSERT_ID()
 			std::unique_ptr<sql::Statement> keyStmt(
 				conn->createStatement()
 			);
@@ -920,4 +1002,106 @@ bool MysqlDao::AddChatMsg(std::vector<std::shared_ptr<ChatMessage>>& chat_datas)
 	}
 	return true;
 
+}
+
+bool MysqlDao::AddChatMsg(std::shared_ptr<ChatMessage> chat_data) {
+	auto con = pool_->getConnection();
+	if (!con) {
+		return false;
+	}
+	Defer defer([this, &con]() {
+		pool_->returnConnection(std::move(con));
+		});
+	auto& conn = con->_con;
+
+	try {
+		//???????????????????????
+		conn->setAutoCommit(false);
+		auto pstmt = std::unique_ptr<sql::PreparedStatement>(
+			conn->prepareStatement(
+				"INSERT INTO chat_message "
+				"(thread_id, sender_id, recv_id, content, created_at, updated_at, status,msg_type) "
+				"VALUES (?, ?, ?, ?, ?, ?, ?,?)"
+			)
+			);
+
+		// ?????
+		pstmt->setUInt64(1, chat_data->thread_id);
+		pstmt->setUInt64(2, chat_data->sender_id);
+		pstmt->setUInt64(3, chat_data->recv_id);
+		pstmt->setString(4, chat_data->content);
+		pstmt->setString(5, chat_data->chat_time);  // created_at
+		pstmt->setString(6, chat_data->chat_time);  // updated_at
+		pstmt->setInt(7, chat_data->status);
+		pstmt->setInt(8, chat_data->msg_type);
+
+		pstmt->executeUpdate();
+
+		// ???????????
+		std::unique_ptr<sql::Statement> keyStmt(
+			conn->createStatement()
+		);
+		std::unique_ptr<sql::ResultSet> rs(
+			keyStmt->executeQuery("SELECT LAST_INSERT_ID()")
+		);
+		if (rs->next()) {
+			chat_data->message_id = rs->getUInt64(1);
+		}
+
+		conn->commit();
+		return true;
+	}
+	catch (sql::SQLException& e) {
+		std::cerr << "SQLException: " << e.what() << std::endl;
+		conn->rollback();
+		return false;
+	}
+}
+
+std::shared_ptr<ChatMessage> MysqlDao::GetChatMsg(int message_id)
+{
+	auto con = pool_->getConnection();
+	if (!con) {
+		return nullptr;
+	}
+
+	Defer defer([this, &con]() {
+		pool_->returnConnection(std::move(con));
+		});
+
+	auto& conn = con->_con;
+
+	try {
+		auto pstmt = std::unique_ptr<sql::PreparedStatement>(
+			conn->prepareStatement(
+				"SELECT message_id, thread_id, sender_id, recv_id, "
+				"content, created_at, updated_at, status , msg_type"
+				"FROM chat_message WHERE message_id = ?"
+			)
+			);
+
+		pstmt->setUInt64(1, message_id);
+		auto rs = std::unique_ptr<sql::ResultSet>(pstmt->executeQuery());
+
+		if (rs->next()) {
+			auto msg = std::make_shared<ChatMessage>();
+			msg->message_id = rs->getUInt64("message_id");
+			msg->thread_id = rs->getUInt64("thread_id");
+			msg->sender_id = rs->getUInt64("sender_id");
+			msg->recv_id = rs->getUInt64("recv_id");
+			msg->content = rs->getString("content");
+			msg->chat_time = rs->getString("created_at");
+			msg->status = rs->getInt("status");
+			msg->msg_type = rs->getInt("msg_type");
+
+			return msg;
+		}
+
+		return nullptr;
+
+	}
+	catch (sql::SQLException& e) {
+		std::cerr << "GetChatMessageById SQLException: " << e.what() << std::endl;
+		return nullptr;
+	}
 }

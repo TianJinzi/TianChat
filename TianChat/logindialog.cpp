@@ -97,7 +97,6 @@ void LoginDialog::initHttpHandlers()
         _si->_res_host = jsonObj["reshost"].toString();
         _si->_res_port = jsonObj["resport"].toString();
 
-
         qDebug()<< "email is " << email << " uid is " << _si->_uid <<" chat host is "
                 << _si->_chat_host << " chat port is "
                 << _si->_chat_port << " token is " << _si->_token

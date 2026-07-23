@@ -6,8 +6,7 @@
 #include <json/reader.h>
 #include "RedisMgr.h"
 #include "MysqlMgr.h"
-#include "CServer.h"
-
+#include "utils.h"
 
 ChatServiceImpl::ChatServiceImpl()
 {
@@ -84,6 +83,19 @@ Status ChatServiceImpl::NotifyAuthFriend(ServerContext* context, const AuthFrien
 		rtvalue["error"] = ErrorCodes::UidInvalid;
 	}
 
+	auto chat_time = getCurrentTimestamp();
+	for(auto& msg : request->textmsgs()) {
+		Json::Value  chat;
+		chat["sender"] = msg.sender_id();
+		chat["msg_id"] = msg.msg_id();
+		chat["thread_id"] = msg.thread_id();
+		chat["unique_id"] = msg.unique_id();
+		chat["msg_content"] = msg.msgcontent();
+		chat["chat_time"] = chat_time;
+		chat["status"] = msg.status();
+		rtvalue["chat_datas"].append(chat);
+	}
+
 	std::string return_str = rtvalue.toStyledString();
 
 	session->Send(return_str, ID_NOTIFY_AUTH_FRIEND_REQ);
@@ -107,16 +119,18 @@ Status ChatServiceImpl::NotifyTextChatMsg(::grpc::ServerContext* context,
 	rtvalue["error"] = ErrorCodes::Success;
 	rtvalue["fromuid"] = request->fromuid();
 	rtvalue["touid"] = request->touid();
-
+	rtvalue["thread_id"] = request->thread_id();
 	//将聊天数据组织为数组
 	Json::Value text_array;
 	for (auto& msg : request->textmsgs()) {
 		Json::Value element;
 		element["content"] = msg.msgcontent();
-		element["msgid"] = msg.msg_id();
+		element["unique_id"] = msg.unique_id();
+		element["message_id"] = msg.msg_id();
+		element["chat_time"] = msg.chat_time();
 		text_array.append(element);
 	}
-	rtvalue["text_array"] = text_array;
+	rtvalue["chat_datas"] = text_array;
 
 	std::string return_str = rtvalue.toStyledString();
 
@@ -172,7 +186,7 @@ bool ChatServiceImpl::GetBaseInfo(std::string base_key, int uid, std::shared_ptr
 	return true;
 }
 
-Status ChatServiceImpl::NotifyKickUser(::grpc::ServerContext* context,
+Status ChatServiceImpl::NotifyKickUser(::grpc::ServerContext* context, 
 	const KickUserReq* request, KickUserRsp* reply)
 {
 	//查找用户是否在本服务器
@@ -200,4 +214,28 @@ Status ChatServiceImpl::NotifyKickUser(::grpc::ServerContext* context,
 void ChatServiceImpl::RegisterServer(std::shared_ptr<CServer> pServer)
 {
 	_p_server = pServer;
+}
+
+Status ChatServiceImpl::NotifyChatImgMsg(::grpc::ServerContext* context, const ::message::NotifyChatImgReq* request, ::message::NotifyChatImgRsp* response)
+{
+	//查找用户是否在本服务器
+	auto uid = request->to_uid();
+	auto session = UserMgr::GetInstance()->GetSession(uid);
+
+	Defer defer([request, response]() {
+		//设置具体的回包信息
+		response->set_error(ErrorCodes::Success);
+		response->set_message_id(request->message_id());
+		});
+
+	//用户不在内存中则直接返回
+	if (session == nullptr) {
+		//这里只是返回1个状态
+		return Status::OK;
+	}
+
+	//在内存中则直接发送通知对方
+	session->NotifyChatImgRecv(request);
+	//这里只是返回1个状态
+	return Status::OK;
 }

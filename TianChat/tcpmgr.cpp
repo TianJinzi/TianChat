@@ -712,6 +712,8 @@ void TcpMgr::initHandlers()
 
         int err = jsonObj["error"].toInt();
         if (err != ErrorCodes::SUCCESS) {
+            //这里需要添加防御性编程，例如停止加载界面的展示之类的  BUG
+
             qDebug() << "get create private chat failed, error is " << err;
             return;
         }

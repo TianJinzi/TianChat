@@ -145,8 +145,8 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="config.ini" />
     <None Include="message.proto" />
     <None Include="PropertySheet.props" />
+    <None Include="config.ini" />
   </ItemGroup>
 </Project>

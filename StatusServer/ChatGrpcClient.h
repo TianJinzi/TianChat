@@ -1,4 +1,4 @@
-Ôªø#pragma once
+#pragma once
 #include "const.h"
 #include "Singleton.h"
 #include "ConfigMgr.h"
@@ -47,7 +47,7 @@ public:
 			}
 			return !connections_.empty();
 			});
-		//   Õ£÷π  ÷± ”∑  ÿø ÷∏  
+		//»Áπ˚Õ£÷π‘Ú÷±Ω”∑µªÿø’÷∏’Î
 		if (b_stop_) {
 			return  nullptr;
 		}
@@ -71,7 +71,7 @@ public:
 	}
 
 private:
-	std::atomic<bool> b_stop_;
+	atomic<bool> b_stop_;
 	size_t poolSize_;
 	std::string host_;
 	std::string port_;
@@ -92,7 +92,7 @@ public:
 
 private:
 	ChatGrpcClient();
-	std::unordered_map<std::string, std::unique_ptr<ChatConPool>> _pools;
+	unordered_map<std::string, std::unique_ptr<ChatConPool>> _pools;	
 };
 
 
